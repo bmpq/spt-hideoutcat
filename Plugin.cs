@@ -18,6 +18,7 @@ public class Plugin : BaseUnityPlugin
         InitConfiguration();
 
         new PatchHideoutAwake().Enable();
+        new PatchAreaSelected().Enable();
     }
 
     private void InitConfiguration()
