@@ -22,9 +22,19 @@ namespace hideoutcat
             }
         }
 
+        void ResetAnimatorSpeed()
+        {
+            animator.speed = 1f;
+        }
+
         // todo: think of a better solution than this lol
         public void SetCurrentSelectedArea(AreaData area)
         {
+            // hacky way to instant state switch (do I even want this?)
+            animator.Play("Idle", 0);
+            animator.speed = 10000f;
+            Invoke("ResetAnimatorSpeed", 0.1f);
+
             animator.SetBool("Defecating", area.Template.Type == EFT.EAreaType.WaterCloset);
             animator.SetBool("Sleeping", Random.value < 0.3f);
             animator.SetBool("LyingSide", false);
@@ -32,6 +42,10 @@ namespace hideoutcat
             animator.SetBool("Sitting", false);
             animator.SetBool("Crouching", false);
             animator.ResetTrigger("Fidget");
+
+            animator.ResetTrigger("Jump");
+            animator.SetFloat("Thrust", 0);
+            animator.SetFloat("Turn", 0);
 
             switch (area.Template.Type)
             {
@@ -69,6 +83,15 @@ namespace hideoutcat
                         animator.SetBool("Sitting", true);
                         transform.localPosition = new Vector3(-2.1639f, 0.7264f, -5.0941f);
                         transform.localEulerAngles = new Vector3(0, -14.889f, 0);
+                    }
+                    break;
+                case EFT.EAreaType.CircleOfCultists:
+                    if (area.CurrentLevel == 1)
+                    {
+                        transform.localPosition = new Vector3(-8.783f, 2.839f, -17.707f);
+                        transform.localEulerAngles = new Vector3(0, 268.734f, 0);
+                        animator.SetFloat("Thrust", 3.6f); // max speed
+                        animator.SetFloat("Turn", -1f);
                     }
                     break;
             }
