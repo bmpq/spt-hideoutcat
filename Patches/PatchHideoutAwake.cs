@@ -18,7 +18,7 @@ namespace hideoutcat
     {
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.Method(typeof(AreasController), nameof(AreasController.Awake));
+            return AccessTools.Method(typeof(AreasController), nameof(AreasController.HideoutAwake));
         }
 
         [PatchPostfix]
