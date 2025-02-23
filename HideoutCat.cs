@@ -41,6 +41,7 @@ namespace hideoutcat
             animator.SetBool("LyingBelly", false);
             animator.SetBool("Sitting", false);
             animator.SetBool("Crouching", false);
+            animator.SetBool("Eating", false);
             animator.ResetTrigger("Fidget");
 
             animator.ResetTrigger("Jump");
@@ -92,6 +93,39 @@ namespace hideoutcat
                         transform.localEulerAngles = new Vector3(0, 268.734f, 0);
                         animator.SetFloat("Thrust", 3.6f); // max speed
                         animator.SetFloat("Turn", -1f);
+                    }
+                    break;
+                case EFT.EAreaType.Kitchen:
+                    if (area.CurrentLevel == 1)
+                    {
+                        transform.localPosition = new Vector3(5.7741f, 0.847f, -5.4869f);
+                        transform.localEulerAngles = new Vector3(0, -139.41f, 0);
+                        animator.SetBool("Eating", true);
+                    }
+                    else if (area.CurrentLevel == 2 || area.CurrentLevel == 3)
+                    {
+                        transform.localPosition = new Vector3(5.666f, 0.7508f, -5.333f);
+                        transform.localEulerAngles = new Vector3(0, -33.965f, 0);
+                        animator.SetBool("Eating", true);
+                    }
+                    break;
+                case EFT.EAreaType.RestSpace:
+                    animator.SetBool("Sleeping", true);
+                    animator.SetBool("LyingSide", true);
+                    if (area.CurrentLevel == 1)
+                    {
+                        transform.localPosition = new Vector3(15.663f, 0.2107f, -0.962f);
+                        transform.localEulerAngles = new Vector3(0, 116.911f, 0);
+                    }
+                    else if (area.CurrentLevel == 2)
+                    {
+                        transform.localPosition = new Vector3(16.06f, 0.6086f, -0.483f);
+                        transform.localEulerAngles = new Vector3(0, 263.607f, 0);
+                    }
+                    else if (area.CurrentLevel == 3)
+                    {
+                        transform.localPosition = new Vector3(15.8471f, 0.6587f, -0.5829f);
+                        transform.localEulerAngles = new Vector3(0, 124.53f, 0);
                     }
                     break;
             }
