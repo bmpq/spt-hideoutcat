@@ -1,5 +1,8 @@
-﻿using EFT;
+﻿using Comfort.Common;
+using EFT;
 using EFT.Hideout;
+using System.Collections.Generic;
+using tarkin;
 using UnityEngine;
 
 namespace hideoutcat
@@ -7,12 +10,47 @@ namespace hideoutcat
     public class HideoutCat : MonoBehaviourSingleton<HideoutCat>
     {
         Animator animator;
-        EAreaType prevArea = EAreaType.NotSet;
+        AreaData currentArea;
 
-        public override void Awake()
+        Dictionary<AreaData, System.Action> OnAreaUpgradeInstalledUnsubscribeActions = new Dictionary<AreaData, System.Action>();
+
+        void Start()
         {
-            base.Awake();
             animator = GetComponent<Animator>();
+            transform.position = new Vector3(0, -10f, 0);
+            HideUnwantedSceneObjects();
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            // half the time BSG doesn't bother with unsubscribing from BindableEvent? or maybe I'm looking wrong and they unsubscribe somewhere sneaky
+            foreach (var kvp in OnAreaUpgradeInstalledUnsubscribeActions)
+            {
+                kvp.Value.Invoke();
+            }
+        }
+
+        void HideUnwantedSceneObjects()
+        {
+            // heating 1
+            UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(14.38238f, 0.5160349f, -5.618773f))?.SetActive(false); // books_01 (1)
+
+            // heating 2
+            UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(14.20716f, 0.5158756f, -5.420396f))?.SetActive(false); // books_01 (2)
+
+            // heating 3
+            UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(15.85126f, 0.5397013f, -4.845883f))?.SetActive(false); // paper3 (1)
+            UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(15.84810f, 0.5374010f, -5.039324f))?.SetActive(false); // paper3 (2)
+            UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(15.97384f, 0.5497416f, -4.821522f))?.SetActive(false); // Firewood_4 (7)
+            UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(16.07953f, 0.5244959f, -4.975954f))?.SetActive(false); // Firewood_4 (6)
+        }
+
+        private void OnAreaUpdated()
+        {
+            HideUnwantedSceneObjects();
+            SetCurrentSelectedArea(currentArea, true);
         }
 
         void FixedUpdate()
@@ -24,12 +62,20 @@ namespace hideoutcat
             }
         }
 
-        // todo: think of a better solution than this lol
-        public void SetCurrentSelectedArea(AreaData area)
+        public void SetCurrentSelectedArea(AreaData area, bool force = false)
         {
-            if (area.Template.Type == prevArea)
+            if (!OnAreaUpgradeInstalledUnsubscribeActions.ContainsKey(area))
+                // could not find a better place to hook into the area upgrade install event, seems it's individual area based, it'd be simpler if there was a hideout-wide event 
+                OnAreaUpgradeInstalledUnsubscribeActions[area] = area.LevelUpdated.Subscribe(new System.Action(OnAreaUpdated)); // I'm 90% sure this is a valid way to use BindableEvent
+
+            if (!force && area == currentArea)
+            {
                 return;
-            prevArea = area.Template.Type;
+            }
+            currentArea = area;
+
+
+            // todo location and behaviours: data-driven approach, json or something idk
 
             animator.SetBool("Defecating", area.Template.Type == EAreaType.WaterCloset);
             animator.SetBool("Sleeping", Random.value < 0.3f);
@@ -46,6 +92,26 @@ namespace hideoutcat
 
             switch (area.Template.Type)
             {
+                case EAreaType.Heating:
+                    if (area.CurrentLevel == 1)
+                    {
+                        animator.SetBool("Sitting", true);
+                        transform.localPosition = new Vector3(14.475f, 0.5097f, -5.618f);
+                        transform.localEulerAngles = new Vector3(0, 47.646f, 0);
+                    }
+                    else if (area.CurrentLevel == 2)
+                    {
+                        animator.SetBool("LyingBelly", true);
+                        transform.localPosition = new Vector3(14.1269f, 0.5097f, -5.437f);
+                        transform.localEulerAngles = new Vector3(0, 107.964f, 0);
+                    }
+                    else if (area.CurrentLevel == 3)
+                    {
+                        animator.SetBool("LyingBelly", true);
+                        transform.localPosition = new Vector3(16.011f, 0.5097f, -4.895f);
+                        transform.localEulerAngles = new Vector3(0, -138.265f, 0);
+                    }
+                    break;
                 case EAreaType.WaterCloset:
                     if (area.CurrentLevel == 2)
                     {
