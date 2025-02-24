@@ -16,7 +16,7 @@ namespace tarkin
                 }
             }
 
-            Plugin.Log.LogError(position + " not found");
+            Plugin.Log.LogWarning($"GameObject with {typeof(T)} at position {position} not found");
 
             return null;
         }

@@ -1,0 +1,280 @@
+[
+  {
+    "Area": "WaterCloset",
+    "AreaLevel": 2,
+    "Chance": 1.0,
+    "TransformPosition": {
+      "x": -6.8886,
+      "y": 0.5198,
+      "z": 4.3919
+    },
+    "TransformRotation": {
+      "x": 0.0,
+      "y": 85.0879745,
+      "z": 0.0
+    },
+    "Parameters": [
+      {
+        "Name": "Defecating",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "Area": "WaterCloset",
+    "AreaLevel": 3,
+    "Chance": 1.0,
+    "TransformPosition": {
+      "x": -6.854,
+      "y": 0.5989,
+      "z": 6.2104
+    },
+    "TransformRotation": {
+      "x": 0.0,
+      "y": 85.0879745,
+      "z": 0.0
+    },
+    "Parameters": [
+      {
+        "Name": "Defecating",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "Area": "Generator",
+    "AreaLevel": 3,
+    "Chance": 1.0,
+    "TransformPosition": {
+      "x": -1.164,
+      "y": 1.6511,
+      "z": -5.4177
+    },
+    "TransformRotation": {
+      "x": 0.0,
+      "y": 314.789978,
+      "z": 0.0
+    },
+    "Parameters": [
+      {
+        "Name": "LyingSide",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      },
+      {
+        "Name": "Sleeping",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "Area": "Heating",
+    "AreaLevel": 1,
+    "Chance": 1.0,
+    "TransformPosition": {
+      "x": 14.475,
+      "y": 0.5097,
+      "z": -5.618
+    },
+    "TransformRotation": {
+      "x": 0.0,
+      "y": 47.6463127,
+      "z": 0.0
+    },
+    "Parameters": [
+      {
+        "Name": "Sitting",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "Area": "Heating",
+    "AreaLevel": 2,
+    "Chance": 1.0,
+    "TransformPosition": {
+      "x": 14.1269,
+      "y": 0.5097,
+      "z": -5.437
+    },
+    "TransformRotation": {
+      "x": 0.0,
+      "y": 107.963593,
+      "z": 0.0
+    },
+    "Parameters": [
+      {
+        "Name": "LyingBelly",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "Area": "Heating",
+    "AreaLevel": 3,
+    "Chance": 1.0,
+    "TransformPosition": {
+      "x": 15.971,
+      "y": 0.5097,
+      "z": -4.915
+    },
+    "TransformRotation": {
+      "x": 0.0,
+      "y": 195.9473,
+      "z": 0.0
+    },
+    "Parameters": [
+      {
+        "Name": "LyingSide",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "Area": "MedStation",
+    "AreaLevel": 1,
+    "Chance": 1.0,
+    "TransformPosition": {
+      "x": 11.4247,
+      "y": 0.1687,
+      "z": -0.4223
+    },
+    "TransformRotation": {
+      "x": 0.0,
+      "y": 221.610718,
+      "z": 0.0
+    },
+    "Parameters": [
+      {
+        "Name": "Sitting",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "Area": "MedStation",
+    "AreaLevel": 2,
+    "Chance": 1.0,
+    "TransformPosition": {
+      "x": 11.4584,
+      "y": 0.555,
+      "z": -0.3466
+    },
+    "TransformRotation": {
+      "x": 0.0,
+      "y": 272.4856,
+      "z": 0.0
+    },
+    "Parameters": [
+      {
+        "Name": "LyingBelly",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "Area": "MedStation",
+    "AreaLevel": 3,
+    "Chance": 1.0,
+    "TransformPosition": {
+      "x": 11.196,
+      "y": 0.8502,
+      "z": -0.921
+    },
+    "TransformRotation": {
+      "x": 0.0,
+      "y": 150.366745,
+      "z": 0.0
+    },
+    "Parameters": [
+      {
+        "Name": "LyingSide",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "Area": "MedStation",
+    "AreaLevel": 3,
+    "Chance": 1.0,
+    "TransformPosition": {
+      "x": 11.6684,
+      "y": 1.3078,
+      "z": -1.4083
+    },
+    "TransformRotation": {
+      "x": 0.0,
+      "y": 270.841217,
+      "z": 0.0
+    },
+    "Parameters": [
+      {
+        "Name": "Sitting",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "Area": "RestSpace",
+    "AreaLevel": 1,
+    "Chance": 1.0,
+    "TransformPosition": {
+      "x": 15.8471,
+      "y": 0.6587,
+      "z": -0.5829
+    },
+    "TransformRotation": {
+      "x": 0.0,
+      "y": 124.530045,
+      "z": 0.0
+    },
+    "Parameters": [
+      {
+        "Name": "LyingSide",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      },
+      {
+        "Name": "Sleeping",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  }
+]
