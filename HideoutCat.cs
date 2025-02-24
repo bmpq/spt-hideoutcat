@@ -56,7 +56,7 @@ namespace hideoutcat
         void FixedUpdate()
         {
             animator.SetFloat("Random", Random.value); // used for different variants of fidgeting
-            if (Random.value < 0.002f) // on avg every 10 seconds @ 50 calls per sec (1/500)
+            if (Random.value < 0.00166f) // on avg every 10 seconds @ 60 calls per sec (1/600)
             {
                 animator.SetTrigger("Fidget");
             }
@@ -77,7 +77,7 @@ namespace hideoutcat
 
             // todo location and behaviours: data-driven approach, json or something idk
 
-            animator.SetBool("Defecating", area.Template.Type == EAreaType.WaterCloset);
+            animator.SetBool("Defecating", false);
             animator.SetBool("Sleeping", Random.value < 0.3f);
             animator.SetBool("LyingSide", false);
             animator.SetBool("LyingBelly", false);
@@ -112,14 +112,45 @@ namespace hideoutcat
                         transform.localEulerAngles = new Vector3(0, -138.265f, 0);
                     }
                     break;
+                case EAreaType.MedStation:
+                    if (area.CurrentLevel == 1)
+                    {
+                        animator.SetBool("Sitting", true);
+                        transform.localPosition = new Vector3(11.4247f, 0.1687f, -0.4223f);
+                        transform.localEulerAngles = new Vector3(0, -138.389f, 0);
+                    }
+                    else if (area.CurrentLevel == 2)
+                    {
+                        animator.SetBool("LyingBelly", true);
+                        transform.localPosition = new Vector3(11.4584f, 0.555f, -0.3466f);
+                        transform.localEulerAngles = new Vector3(0, -87.51401f, 0);
+                    }
+                    else if (area.CurrentLevel == 3)
+                    {
+                        if (Random.value > 0.5f)
+                        {
+                            animator.SetBool("Sitting", true);
+                            transform.localPosition = new Vector3(11.6684f, 1.3078f, -1.4083f);
+                            transform.localEulerAngles = new Vector3(0, -89.159f, 0);
+                        }
+                        else
+                        {
+                            animator.SetBool("LyingSide", true);
+                            transform.localPosition = new Vector3(11.196f, 0.8502f, -0.921f);
+                            transform.localEulerAngles = new Vector3(0, -209.633f, 0);
+                        }
+                    }
+                    break;
                 case EAreaType.WaterCloset:
                     if (area.CurrentLevel == 2)
                     {
+                        animator.SetBool("Defecating", true);
                         transform.localPosition = new Vector3(-6.8886f, 0.5198f, 4.3919f);
                         transform.localEulerAngles = new Vector3(0, 85.08801f, 0);
                     }
                     else if (area.CurrentLevel == 3)
                     {
+                        animator.SetBool("Defecating", true);
                         transform.localPosition = new Vector3(-6.854f, 0.5989f, 6.2104f);
                         transform.localEulerAngles = new Vector3(0, 85.08801f, 0);
                     }
@@ -218,16 +249,16 @@ namespace hideoutcat
                     }
                     else if (area.CurrentLevel == 1)
                     {
-                        animator.Play("LieBelly", 0, 0);
-                        animator.SetBool("Sleeping", true);
-                        animator.SetBool("LyingBelly", true);
                         if (Random.value > 0.5f)
                         {
+                            animator.SetBool("Sleeping", true);
+                            animator.SetBool("LyingBelly", true);
                             transform.localPosition = new Vector3(10.886f, 1.895f, 12.626f);
                             transform.localEulerAngles = new Vector3(0, -100.212f, 0);
                         }
                         else
                         {
+                            animator.SetBool("LyingSide", true);
                             transform.localPosition = new Vector3(11.997f, 0.089f, 11.206f);
                             transform.localEulerAngles = new Vector3(0, -196.733f, 0);
                         }
