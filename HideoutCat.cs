@@ -131,7 +131,9 @@ namespace hideoutcat
             transform.eulerAngles = selectedAction.TransformRotation;
 
             string instantStateOverride = "Idle";
-            if (animator.GetBool("LyingSide"))
+            if (animator.GetBool("Sitting"))
+                instantStateOverride = "Sit";
+            else if (animator.GetBool("LyingSide"))
                 instantStateOverride = animator.GetBool("Sleeping") ? "LieSideSleep" : "LieSide";
             else if (animator.GetBool("LyingBelly"))
                 instantStateOverride = animator.GetBool("Sleeping") ? "LieBellySleep" : "LieBelly";
