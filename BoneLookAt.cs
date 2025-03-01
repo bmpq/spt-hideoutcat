@@ -13,6 +13,9 @@ namespace hideoutcat
         public Vector3 maxAngleLimits = new Vector3(45f, 45f, 45f);
         public Vector3 minAngleLimits = new Vector3(-45f, -45f, -45f);
 
+        public float smoothTime = 0.2f;
+        public float resetSmoothTime = 0.5f; // separate smooth time for resetting when the target is null
+
         public Vector3 rotationOffsetEuler
         {
             get
@@ -28,36 +31,84 @@ namespace hideoutcat
         private Vector3 _rotationOffsetEuler = Vector3.zero;
         private Quaternion _rotationOffset = Quaternion.identity;
 
-        // LateUpdate to override Animator
+        private Quaternion _currentRotation;
+        private Quaternion _targetRotation;
+        private Vector3 _currentAngularVelocity = Vector3.zero;
+        private Quaternion _initialLocalRotation;
+
+        void Start()
+        {
+            if (bone != null)
+            {
+                _currentRotation = bone.localRotation;
+                _initialLocalRotation = bone.localRotation;
+            }
+            _targetRotation = _currentRotation;
+        }
+
+        // running LateUpdate() to override Animator
         void LateUpdate()
         {
-            if (bone == null || targetLookAt == null)
+            if (bone == null)
             {
                 return;
             }
 
-            Vector3 finalTargetPosition = targetLookAt.position + targetOffset;
-            Vector3 upVector = (customUpVector == Vector3.zero) ? bone.up : customUpVector;
-            Quaternion lookAtRotation = Quaternion.LookRotation(finalTargetPosition - bone.position, upVector);
-
-            Quaternion targetLocalRotation = Quaternion.identity;
-            if (bone.parent != null)
+            if (targetLookAt != null)
             {
-                targetLocalRotation = Quaternion.Inverse(bone.parent.rotation) * lookAtRotation;
+                // Calculate the target rotation as before
+                Vector3 finalTargetPosition = targetLookAt.position + targetOffset;
+                Vector3 upVector = (customUpVector == Vector3.zero) ? bone.up : customUpVector;
+                Quaternion lookAtRotation = Quaternion.LookRotation(finalTargetPosition - bone.position, upVector);
+
+                Quaternion targetLocalRotation = Quaternion.identity;
+                if (bone.parent != null)
+                {
+                    targetLocalRotation = Quaternion.Inverse(bone.parent.rotation) * lookAtRotation;
+                }
+                else
+                {
+                    targetLocalRotation = lookAtRotation;
+                }
+
+                targetLocalRotation *= _rotationOffset;
+
+                if (useAngleLimits)
+                {
+                    targetLocalRotation = ClampRotation(targetLocalRotation);
+                }
+
+                _targetRotation = targetLocalRotation;
             }
             else
             {
-                targetLocalRotation = lookAtRotation;
+                _targetRotation = _initialLocalRotation;
             }
 
-            targetLocalRotation *= _rotationOffset;
+            float currentSmoothTime = (targetLookAt != null) ? smoothTime : resetSmoothTime;
 
-            if (useAngleLimits)
-            {
-                targetLocalRotation = ClampRotation(targetLocalRotation);
-            }
+            _currentRotation = SmoothDampQuaternion(_currentRotation, _targetRotation, ref _currentAngularVelocity, currentSmoothTime);
+            bone.localRotation = Quaternion.Slerp(bone.localRotation, _currentRotation, weight);
 
-            bone.localRotation = Quaternion.Slerp(bone.localRotation, targetLocalRotation, weight);
+        }
+
+        public static Quaternion SmoothDampQuaternion(Quaternion current, Quaternion target, ref Vector3 currentAngularVelocity, float smoothTime)
+        {
+            // idk bro, I stole this, seems to work fine
+            float dot = Quaternion.Dot(current, target);
+            float sign = dot > 0f ? 1f : -1f;
+            target.x *= sign;
+            target.y *= sign;
+            target.z *= sign;
+            target.w *= sign;
+
+            Vector3 eulerAngles = new Vector3(
+               Mathf.SmoothDampAngle(current.eulerAngles.x, target.eulerAngles.x, ref currentAngularVelocity.x, smoothTime),
+               Mathf.SmoothDampAngle(current.eulerAngles.y, target.eulerAngles.y, ref currentAngularVelocity.y, smoothTime),
+               Mathf.SmoothDampAngle(current.eulerAngles.z, target.eulerAngles.z, ref currentAngularVelocity.z, smoothTime)
+           );
+
+            return Quaternion.Euler(eulerAngles);
         }
 
         private Quaternion ClampRotation(Quaternion targetRotation)
