@@ -2,7 +2,7 @@
 
 namespace tarkin
 {
-    public class UnityExtensions
+    public static class UnityExtensions
     {
         public static GameObject FindGameObjectWithComponentAtPosition<T>(Vector3 position, float tolerance = 0.01f) where T : Component
         {
@@ -19,6 +19,27 @@ namespace tarkin
             Plugin.Log.LogWarning($"GameObject with {typeof(T)} at position {position} not found");
 
             return null;
+        }
+
+        public static T GetOrAddComponent<T>(this GameObject gameObject) where T : Component
+        {
+            if (gameObject.TryGetComponent<T>(out T t))
+            {
+                return t;
+            }
+            else
+            {
+                return gameObject.AddComponent<T>();
+            }
+        }
+
+        public static void SetPositionIndividualAxis(this Transform transform, float? x = null, float? y = null, float? z = null)
+        {
+            Vector3 pos = transform.position;
+            if (x.HasValue) pos.x = x.Value;
+            if (y.HasValue) pos.y = y.Value;
+            if (z.HasValue) pos.z = z.Value;
+            transform.position = pos;
         }
     }
 }

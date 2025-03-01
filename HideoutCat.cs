@@ -1,6 +1,7 @@
 ﻿using Comfort.Common;
 using EFT;
 using EFT.Hideout;
+using hideoutcat.Pathfinding;
 using System.Collections.Generic;
 using System.Linq;
 using tarkin;
@@ -15,47 +16,18 @@ namespace hideoutcat
 
         Dictionary<AreaData, System.Action> OnAreaUpgradeInstalledUnsubscribeActions = new Dictionary<AreaData, System.Action>();
 
-        BoneLookAt constraintNeck;
-        BoneLookAt constraintHead;
+        CatLookAt lookAt;
 
-        public void SetLookTarget(Transform targetLookAt)
-        {
-            Transform boneHead = transform.Find("Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08");
-            Transform boneNeck = transform.Find("Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07");
-
-            if (constraintNeck == null)
-            {
-                // the order of adding components matters! (LateUpdate() call, neck rot has to affect head rot)
-                constraintNeck = gameObject.AddComponent<BoneLookAt>();
-                constraintNeck.bone = boneNeck;
-                constraintNeck.weight = 0.6f;
-                constraintNeck.rotationOffsetEuler = new Vector3(-56f, 180f, 0f);
-                constraintNeck.customUpVector = Vector3.up;
-                constraintNeck.useAngleLimits = true;
-                constraintNeck.maxAngleLimits = new Vector3(40, 40, 50);
-                constraintNeck.minAngleLimits = new Vector3(-40, -40, -50);
-
-                constraintHead = gameObject.AddComponent<BoneLookAt>();
-                constraintHead.bone = boneHead;
-                constraintHead.weight = 1f;
-                constraintHead.rotationOffsetEuler = new Vector3(-73f, 180f, 0f);
-                constraintHead.customUpVector = Vector3.up;
-                constraintHead.useAngleLimits = true;
-                constraintHead.maxAngleLimits = new Vector3(30, 30, 40);
-                constraintHead.minAngleLimits = new Vector3(-30, -30, -40);
-            }
-
-            constraintNeck.targetLookAt = targetLookAt;
-            constraintHead.targetLookAt = targetLookAt;
-        }
+        CatGraphTraverser catGraphTraverser;
 
         void Start()
         {
             animator = GetComponent<Animator>();
-            transform.position = new Vector3(0, -10f, 0);
+            lookAt = gameObject.GetOrAddComponent<CatLookAt>();
+            catGraphTraverser = gameObject.GetOrAddComponent<CatGraphTraverser>();
+
+            transform.position = new Vector3(4.837f, 0f, -2.884f);
             HideUnwantedSceneObjects();
-            if (constraintNeck == null)
-                SetLookTarget(Camera.main.transform);
         }
 
         public override void OnDestroy()
@@ -95,7 +67,7 @@ namespace hideoutcat
             animator.SetFloat("Random", Random.value); // used for different variants of fidgeting
             if (Random.value < 0.00166f) // on avg every 10 seconds @ 60 calls per sec (1/600)
             {
-                animator.SetTrigger("Fidget");
+                //animator.SetTrigger("Fidget");
             }
         }
 
@@ -117,6 +89,8 @@ namespace hideoutcat
 
         public void SetCurrentSelectedArea(AreaData area, bool force = false)
         {
+            return;
+
             if (!OnAreaUpgradeInstalledUnsubscribeActions.ContainsKey(area))
                 // could not find a better place to hook into the area upgrade install event, seems it's individual area based, it'd be simpler if there was a hideout-wide event 
                 OnAreaUpgradeInstalledUnsubscribeActions[area] = area.LevelUpdated.Subscribe(new System.Action(OnAreaUpdated)); // I'm 90% sure this is a valid way to use BindableEvent
