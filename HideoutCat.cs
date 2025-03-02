@@ -1,4 +1,5 @@
-﻿using Comfort.Common;
+﻿using BepInEx;
+using Comfort.Common;
 using EFT;
 using EFT.Hideout;
 using hideoutcat.Pathfinding;
@@ -59,7 +60,13 @@ namespace hideoutcat
         private void OnAreaUpdated()
         {
             HideUnwantedSceneObjects();
+            ResetPositionToClosestWaypoint();
             SetCurrentSelectedArea(currentArea, true);
+        }
+
+        void ResetPositionToClosestWaypoint()
+        {
+            transform.position = Plugin.CatGraph.GetNodeWaypointClosest(transform.position).position;
         }
 
         void FixedUpdate()
@@ -89,8 +96,6 @@ namespace hideoutcat
 
         public void SetCurrentSelectedArea(AreaData area, bool force = false)
         {
-            return;
-
             if (!OnAreaUpgradeInstalledUnsubscribeActions.ContainsKey(area))
                 // could not find a better place to hook into the area upgrade install event, seems it's individual area based, it'd be simpler if there was a hideout-wide event 
                 OnAreaUpgradeInstalledUnsubscribeActions[area] = area.LevelUpdated.Subscribe(new System.Action(OnAreaUpdated)); // I'm 90% sure this is a valid way to use BindableEvent
@@ -101,77 +106,14 @@ namespace hideoutcat
             }
             currentArea = area;
 
-            CatAreaAction[] actionVariants = Plugin.CatConfig
-                .Where(action =>
-                action.Area == area.Template.Type &&
-                action.AreaLevel == area.CurrentLevel)
-                .ToArray();
-            if (actionVariants.Length == 0)
-                return;
-
-            ResetAnimatorParameters();
-            animator.SetBool("Sleeping", Random.value < 0.3f);
-
-            CatAreaAction selectedAction = ChooseActionFromChance(actionVariants);
-
-            Plugin.Log.LogInfo($"Playing in {selectedAction.Area} (level {selectedAction.AreaLevel})");
-            foreach (var parameter in selectedAction.Parameters)
+            List<Node> targetNodes = Plugin.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(area.Template.Type, area.CurrentLevel);
+            if (targetNodes.Count == 0)
             {
-                switch (parameter.Type)
-                {
-                    case AnimatorControllerParameterType.Bool:
-                        animator.SetBool(parameter.Name, parameter.BoolValue);
-                        break;
-                    case AnimatorControllerParameterType.Float:
-                        animator.SetFloat(parameter.Name, parameter.FloatValue);
-                        break;
-                    case AnimatorControllerParameterType.Int:
-                        animator.SetInteger(parameter.Name, parameter.IntValue);
-                        break;
-                    case AnimatorControllerParameterType.Trigger:
-                        animator.SetTrigger(parameter.Name);
-                        break;
-                    default:
-                        break;
-                }
-                Plugin.Log.LogInfo($"Setting animator parameter {parameter.Name}");
+                Plugin.Log.LogInfo($"No available nodes for {area.Template.Type} level {area.CurrentLevel}");
             }
 
-            transform.position = selectedAction.TransformPosition;
-            transform.eulerAngles = selectedAction.TransformRotation;
-
-            string instantStateOverride = "Idle";
-            if (animator.GetBool("Sitting"))
-                instantStateOverride = "Sit";
-            else if (animator.GetBool("LyingSide"))
-                instantStateOverride = animator.GetBool("Sleeping") ? "LieSideSleep" : "LieSide";
-            else if (animator.GetBool("LyingBelly"))
-                instantStateOverride = animator.GetBool("Sleeping") ? "LieBellySleep" : "LieBelly";
-
-            animator.Play(instantStateOverride, 0, 0);
-            animator.Update(0f);
-        }
-
-        private CatAreaAction ChooseActionFromChance(CatAreaAction[] actions)
-        {
-            if (actions.Length == 1)
-                return actions[0];
-
-            float totalChance = actions.Sum(action => action.Chance);
-            float randomValue = Random.Range(0f, totalChance);
-            float cumulativeChance = 0;
-
-            foreach (var action in actions)
-            {
-                cumulativeChance += action.Chance;
-                if (randomValue <= cumulativeChance)
-                {
-                    return action;
-                }
-            }
-
-            // should not reach here
-            return actions[actions.Length - 1];
+            Node targetNode = targetNodes[Random.Range(0, targetNodes.Count)];
+            catGraphTraverser.LayNewPath(targetNode);
         }
     }
 }

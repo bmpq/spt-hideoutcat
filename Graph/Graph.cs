@@ -1,3 +1,4 @@
+using EFT;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,10 +8,19 @@ namespace hideoutcat.Pathfinding
     public class Graph
     {
         public List<Node> nodes;
+        public readonly List<Node> waypointNodes;
 
         public Graph(List<Node> nodes)
         {
             this.nodes = nodes;
+
+            waypointNodes = new List<Node>();
+
+            foreach (var node in nodes)
+            {
+                if (node.areaType == EAreaType.NotSet)
+                    waypointNodes.Add(node);
+            }
         }
 
         public void AddNode(Node node)
@@ -18,14 +28,21 @@ namespace hideoutcat.Pathfinding
             nodes.Add(node);
         }
 
-        public Node FindNodeById(string id)
+        public Node FindNodeByName(string name)
         {
-            return nodes.Find(n => n.name == id);
+            return nodes.Find(n => n.name == name);
         }
 
         public Node GetNodeClosestNoPathfinding(Vector3 worldPos)
         {
             return nodes
+                .OrderBy(t => (t.position - worldPos).sqrMagnitude)
+                .FirstOrDefault();
+        }
+
+        public Node GetNodeWaypointClosest(Vector3 worldPos)
+        {
+            return waypointNodes
                 .OrderBy(t => (t.position - worldPos).sqrMagnitude)
                 .FirstOrDefault();
         }
@@ -78,6 +95,24 @@ namespace hideoutcat.Pathfinding
 
             path.Reverse();
             return path;
+        }
+
+        public List<Node> FindDeadEndNodesByAreaTypeAndLevel(EAreaType areaType, int areaLevel)
+        {
+            List<Node> deadEndNodes = new List<Node>();
+
+            foreach (Node node in nodes)
+            {
+                // a dead end node is defined as a node with 0 or 1 connections. 0 shouldn't be possible tho
+                if (node.connectedTo.Count <= 1)
+                {
+                    if (node.areaType == areaType && node.areaLevel == areaLevel)
+                    {
+                        deadEndNodes.Add(node);
+                    }
+                }
+            }
+            return deadEndNodes;
         }
     }
 }

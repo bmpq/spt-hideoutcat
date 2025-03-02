@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using EFT;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace hideoutcat.Pathfinding
@@ -8,6 +9,10 @@ namespace hideoutcat.Pathfinding
     {
         public string name;
         public Vector3 position;
-        public List<Node> connectedTo;
+        public List<Node> connectedTo = new List<Node>();
+        public bool forwardJump;
+
+        public EAreaType areaType; // if NotSet, it's a waypoint
+        public int areaLevel;
     }
 }
