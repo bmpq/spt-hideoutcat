@@ -26,9 +26,18 @@ namespace hideoutcat
             animator = GetComponent<Animator>();
             lookAt = gameObject.GetOrAddComponent<CatLookAt>();
             catGraphTraverser = gameObject.GetOrAddComponent<CatGraphTraverser>();
+            catGraphTraverser.OnDestinationReached += CatGraphTraverser_OnDestinationReached;
 
-            transform.position = new Vector3(4.837f, 0f, -2.884f);
+            transform.position = Plugin.CatGraph.GetNodeWaypointClosest(new Vector3(15, 0, 0)).position;
             HideUnwantedSceneObjects();
+        }
+
+        private void CatGraphTraverser_OnDestinationReached(Node node)
+        {
+            foreach (var parameter in node.poseParameters)
+            {
+                parameter.Apply(animator);
+            }
         }
 
         public override void OnDestroy()
@@ -72,9 +81,13 @@ namespace hideoutcat
         void FixedUpdate()
         {
             animator.SetFloat("Random", Random.value); // used for different variants of fidgeting
-            if (Random.value < 0.00166f) // on avg every 10 seconds @ 60 calls per sec (1/600)
+
+            if (catGraphTraverser.Velocity.magnitude < 0.1f)
             {
-                //animator.SetTrigger("Fidget");
+                if (Random.value < 0.00166f) // on avg every 10 seconds @ 60 calls per sec (1/600)
+                {
+                    animator.SetTrigger("Fidget");
+                }
             }
         }
 
@@ -110,8 +123,10 @@ namespace hideoutcat
             if (targetNodes.Count == 0)
             {
                 Plugin.Log.LogInfo($"No available nodes for {area.Template.Type} level {area.CurrentLevel}");
+                return;
             }
 
+            ResetAnimatorParameters();
             Node targetNode = targetNodes[Random.Range(0, targetNodes.Count)];
             catGraphTraverser.LayNewPath(targetNode);
         }

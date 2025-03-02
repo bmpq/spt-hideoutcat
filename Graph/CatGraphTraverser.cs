@@ -2,11 +2,15 @@
 using System.Linq;
 using UnityEngine;
 using tarkin;
+using System;
 
 namespace hideoutcat.Pathfinding
 {
     public class CatGraphTraverser : MonoBehaviour
     {
+        public Vector3 Velocity { get; private set; }
+        private Vector3 prevPos;
+
         public string[] testTargetNodes;
         public int testTargetNodeIndex;
 
@@ -18,6 +22,8 @@ namespace hideoutcat.Pathfinding
         Animator animator;
 
         CatLookAt catLookAt;
+
+        public event Action<Node> OnDestinationReached;
 
         void Start()
         {
@@ -56,18 +62,35 @@ namespace hideoutcat.Pathfinding
             {
                 catLookAt.SetLookTarget(currentPath[Mathf.Min(currentPath.Count - 1, currentPathIndex + 1)].position + new Vector3(0, 0.3f, 0));
 
-                if (Vector3.Distance(transform.position, currentPath[currentPathIndex].position) < 0.2f && !animator.GetBool("JumpingUp") && !animator.GetBool("JumpingDown"))
+                bool lastNode = currentPathIndex == currentPath.Count - 1;
+
+                float distToTargetNode = Vector3.Distance(transform.position, currentPath[currentPathIndex].position);
+
+                if (distToTargetNode < (lastNode ? 0.1f : 0.2f) && !animator.GetBool("JumpingUp") && !animator.GetBool("JumpingDown"))
                 {
                     currentNode = currentPath[currentPathIndex];
-                    currentPathIndex++;
 
-                    Plugin.Log.LogError($"Set next node to: {currentNode.name}");
-
-                    // the end of the path
-                    if (currentPathIndex >= currentPath.Count)
+                    if (lastNode)
                     {
-                        catLookAt.SetLookTarget(null);
-                        Plugin.Log.LogInfo("Reached final destination!");
+                        float angleDifference = Mathf.DeltaAngle(currentNode.poseRotation, transform.eulerAngles.y);
+                        if (Mathf.Abs(angleDifference) > 10f)
+                        {
+                            float turn = -Mathf.Sign(angleDifference);
+                            animator.SetFloat("Turn", Mathf.Lerp(animator.GetFloat("Turn"), turn, Time.deltaTime * 3f));
+                            animator.SetFloat("Thrust", 0);
+                        }
+                        else
+                        {
+                            currentPathIndex++;
+                            catLookAt.SetLookTarget(null);
+                            Plugin.Log.LogInfo("Reached final destination!");
+                            OnDestinationReached?.Invoke(currentPath[currentPath.Count - 1]);
+                        }
+                    }
+                    else
+                    {
+                        currentPathIndex++;
+                        Plugin.Log.LogInfo($"Set next node to: {currentPath[currentPathIndex].name}");
                     }
                 }
             }
@@ -75,6 +98,8 @@ namespace hideoutcat.Pathfinding
 
         void LateUpdate()
         {
+            Velocity = transform.position - prevPos;
+
             if (currentPath == null)
                 return;
 

@@ -14,5 +14,13 @@ namespace hideoutcat.Pathfinding
 
         public EAreaType areaType; // if NotSet, it's a waypoint
         public int areaLevel;
+
+        public float poseRotation;
+        public List<AnimatorParameter> poseParameters = new List<AnimatorParameter>();
+
+        public override string ToString() 
+        {
+            return $"{areaType}:{areaLevel}" + (poseParameters.Count > 0 ? "(Pose)" : "") + $"-{name}";
+        }
     }
 }

@@ -16,7 +16,6 @@ using UnityEngine;
 public class Plugin : BaseUnityPlugin
 {
     internal static new ManualLogSource Log;
-    public static CatAreaAction[] CatConfig;
     public static Graph CatGraph;
 
     private void Start()
@@ -36,18 +35,9 @@ public class Plugin : BaseUnityPlugin
     {
         try
         {
-            string fileName = "CatAreaData.json";
+            string fileName = "CatNodeGraph.json";
             string filePath = Path.Combine(Path.GetDirectoryName(Application.dataPath), "BepInEx", "plugins", "tarkin", "bundles", fileName);
-            JsonSerializerSettings settings = new JsonSerializerSettings()
-            {
-                Converters = { new Vector3Converter() }
-            };
-            CatConfig = JsonConvert.DeserializeObject<CatAreaAction[]>(File.ReadAllText(filePath));
-
-
-            fileName = "CatNodeGraph.json";
-            filePath = Path.Combine(Path.GetDirectoryName(Application.dataPath), "BepInEx", "plugins", "tarkin", "bundles", fileName);
-            settings = new JsonSerializerSettings
+            JsonSerializerSettings settings = new JsonSerializerSettings
             {
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects,
                 ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
@@ -61,8 +51,7 @@ public class Plugin : BaseUnityPlugin
         }
         catch (Exception ex)
         {
-            Plugin.Log.LogError("error loading cat config files");
-            CatConfig = [];
+            Plugin.Log.LogError("error loading cat config file");
             return false;
         }
     }

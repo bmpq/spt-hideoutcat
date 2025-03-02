@@ -84,9 +84,9 @@
                                 "$id": "8",
                                 "name": "ed3dd4ca",
                                 "position": {
-                                  "x": 13.386,
+                                  "x": 13.567,
                                   "y": 0.0,
-                                  "z": -5.049
+                                  "z": -4.63
                                 },
                                 "connectedTo": [
                                   {
@@ -94,19 +94,211 @@
                                   },
                                   {
                                     "$ref": "7"
+                                  },
+                                  {
+                                    "$id": "9",
+                                    "name": "29af1784",
+                                    "position": {
+                                      "x": 13.993,
+                                      "y": 0.0,
+                                      "z": -5.261
+                                    },
+                                    "connectedTo": [
+                                      {
+                                        "$ref": "8"
+                                      },
+                                      {
+                                        "$id": "10",
+                                        "name": "9a560e3d",
+                                        "position": {
+                                          "x": 14.3222,
+                                          "y": 0.5158,
+                                          "z": -5.6864
+                                        },
+                                        "connectedTo": [
+                                          {
+                                            "$ref": "9"
+                                          }
+                                        ],
+                                        "forwardJump": false,
+                                        "areaType": "Heating",
+                                        "areaLevel": 1,
+                                        "poseRotation": 41.2075348,
+                                        "poseParameters": [
+                                          {
+                                            "$id": "11",
+                                            "Name": "LyingBelly",
+                                            "Type": "Bool",
+                                            "BoolValue": true,
+                                            "FloatValue": 0.0,
+                                            "IntValue": 0
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "forwardJump": false,
+                                    "areaType": "Heating",
+                                    "areaLevel": 1,
+                                    "poseRotation": 0.0,
+                                    "poseParameters": []
+                                  },
+                                  {
+                                    "$id": "12",
+                                    "name": "cba7491b",
+                                    "position": {
+                                      "x": 13.845,
+                                      "y": 0.0,
+                                      "z": -5.151
+                                    },
+                                    "connectedTo": [
+                                      {
+                                        "$ref": "8"
+                                      },
+                                      {
+                                        "$id": "13",
+                                        "name": "2d4aa1b3",
+                                        "position": {
+                                          "x": 14.177,
+                                          "y": 0.5142,
+                                          "z": -5.499
+                                        },
+                                        "connectedTo": [
+                                          {
+                                            "$ref": "12"
+                                          }
+                                        ],
+                                        "forwardJump": false,
+                                        "areaType": "Heating",
+                                        "areaLevel": 2,
+                                        "poseRotation": 0.0,
+                                        "poseParameters": [
+                                          {
+                                            "$id": "14",
+                                            "Name": "LyingSide",
+                                            "Type": "Bool",
+                                            "BoolValue": true,
+                                            "FloatValue": 0.0,
+                                            "IntValue": 0
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "forwardJump": false,
+                                    "areaType": "Heating",
+                                    "areaLevel": 2,
+                                    "poseRotation": 0.0,
+                                    "poseParameters": []
+                                  },
+                                  {
+                                    "$id": "15",
+                                    "name": "69805519",
+                                    "position": {
+                                      "x": 15.788,
+                                      "y": 0.0,
+                                      "z": -4.561
+                                    },
+                                    "connectedTo": [
+                                      {
+                                        "$ref": "8"
+                                      },
+                                      {
+                                        "$id": "16",
+                                        "name": "3afb9a18",
+                                        "position": {
+                                          "x": 15.955,
+                                          "y": 0.5157,
+                                          "z": -4.905
+                                        },
+                                        "connectedTo": [
+                                          {
+                                            "$ref": "15"
+                                          }
+                                        ],
+                                        "forwardJump": false,
+                                        "areaType": "Heating",
+                                        "areaLevel": 3,
+                                        "poseRotation": 223.098648,
+                                        "poseParameters": [
+                                          {
+                                            "$id": "17",
+                                            "Name": "LyingSide",
+                                            "Type": "Bool",
+                                            "BoolValue": true,
+                                            "FloatValue": 0.0,
+                                            "IntValue": 0
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "forwardJump": false,
+                                    "areaType": "Heating",
+                                    "areaLevel": 3,
+                                    "poseRotation": 0.0,
+                                    "poseParameters": []
                                   }
                                 ],
                                 "forwardJump": false,
                                 "areaType": "NotSet",
-                                "areaLevel": -1
+                                "areaLevel": -1,
+                                "poseRotation": 0.0,
+                                "poseParameters": []
+                              },
+                              {
+                                "$id": "18",
+                                "name": "0f10ac8f",
+                                "position": {
+                                  "x": 15.79,
+                                  "y": 0.0,
+                                  "z": -3.095
+                                },
+                                "connectedTo": [
+                                  {
+                                    "$ref": "7"
+                                  },
+                                  {
+                                    "$id": "19",
+                                    "name": "5fe0a39a",
+                                    "position": {
+                                      "x": 16.101,
+                                      "y": 0.4295,
+                                      "z": -3.487
+                                    },
+                                    "connectedTo": [
+                                      {
+                                        "$ref": "18"
+                                      }
+                                    ],
+                                    "forwardJump": false,
+                                    "areaType": "Library",
+                                    "areaLevel": 1,
+                                    "poseRotation": 312.68866,
+                                    "poseParameters": [
+                                      {
+                                        "$id": "20",
+                                        "Name": "LyingSide",
+                                        "Type": "Bool",
+                                        "BoolValue": true,
+                                        "FloatValue": 0.0,
+                                        "IntValue": 0
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "forwardJump": false,
+                                "areaType": "Library",
+                                "areaLevel": 1,
+                                "poseRotation": 0.0,
+                                "poseParameters": []
                               }
                             ],
                             "forwardJump": false,
                             "areaType": "NotSet",
-                            "areaLevel": -1
+                            "areaLevel": -1,
+                            "poseRotation": 0.0,
+                            "poseParameters": []
                           },
                           {
-                            "$id": "9",
+                            "$id": "21",
                             "name": "caasdv (2)",
                             "position": {
                               "x": 15.667,
@@ -118,7 +310,7 @@
                                 "$ref": "6"
                               },
                               {
-                                "$id": "10",
+                                "$id": "22",
                                 "name": "restspace3_bed",
                                 "position": {
                                   "x": 15.718,
@@ -127,10 +319,10 @@
                                 },
                                 "connectedTo": [
                                   {
-                                    "$ref": "9"
+                                    "$ref": "21"
                                   },
                                   {
-                                    "$id": "11",
+                                    "$id": "23",
                                     "name": "restspace3_bed_center",
                                     "position": {
                                       "x": 16.1160011,
@@ -139,20 +331,33 @@
                                     },
                                     "connectedTo": [
                                       {
-                                        "$ref": "10"
+                                        "$ref": "22"
                                       }
                                     ],
                                     "forwardJump": false,
                                     "areaType": "RestSpace",
-                                    "areaLevel": 3
+                                    "areaLevel": 3,
+                                    "poseRotation": 173.629562,
+                                    "poseParameters": [
+                                      {
+                                        "$id": "24",
+                                        "Name": "LyingSide",
+                                        "Type": "Bool",
+                                        "BoolValue": true,
+                                        "FloatValue": 0.0,
+                                        "IntValue": 0
+                                      }
+                                    ]
                                   }
                                 ],
                                 "forwardJump": false,
                                 "areaType": "RestSpace",
-                                "areaLevel": 3
+                                "areaLevel": 3,
+                                "poseRotation": 0.0,
+                                "poseParameters": []
                               },
                               {
-                                "$id": "12",
+                                "$id": "25",
                                 "name": "restspace2_bed",
                                 "position": {
                                   "x": 15.7150927,
@@ -161,23 +366,36 @@
                                 },
                                 "connectedTo": [
                                   {
-                                    "$ref": "9"
+                                    "$ref": "21"
                                   }
                                 ],
                                 "forwardJump": false,
                                 "areaType": "RestSpace",
-                                "areaLevel": 2
+                                "areaLevel": 2,
+                                "poseRotation": 180.907837,
+                                "poseParameters": [
+                                  {
+                                    "$id": "26",
+                                    "Name": "LyingSide",
+                                    "Type": "Bool",
+                                    "BoolValue": true,
+                                    "FloatValue": 0.0,
+                                    "IntValue": 0
+                                  }
+                                ]
                               }
                             ],
                             "forwardJump": false,
                             "areaType": "NotSet",
-                            "areaLevel": -1
+                            "areaLevel": -1,
+                            "poseRotation": 0.0,
+                            "poseParameters": []
                           },
                           {
                             "$ref": "5"
                           },
                           {
-                            "$id": "13",
+                            "$id": "27",
                             "name": "restspace1_bed",
                             "position": {
                               "x": 15.627,
@@ -194,15 +412,28 @@
                             ],
                             "forwardJump": true,
                             "areaType": "RestSpace",
-                            "areaLevel": 1
+                            "areaLevel": 1,
+                            "poseRotation": 139.590744,
+                            "poseParameters": [
+                              {
+                                "$id": "28",
+                                "Name": "LyingSide",
+                                "Type": "Bool",
+                                "BoolValue": true,
+                                "FloatValue": 0.0,
+                                "IntValue": 0
+                              }
+                            ]
                           }
                         ],
                         "forwardJump": false,
                         "areaType": "NotSet",
-                        "areaLevel": -1
+                        "areaLevel": -1,
+                        "poseRotation": 0.0,
+                        "poseParameters": []
                       },
                       {
-                        "$id": "14",
+                        "$id": "29",
                         "name": "restspace2_couch",
                         "position": {
                           "x": 14.2759085,
@@ -216,54 +447,63 @@
                         ],
                         "forwardJump": false,
                         "areaType": "RestSpace",
-                        "areaLevel": 2
+                        "areaLevel": 2,
+                        "poseRotation": 154.183533,
+                        "poseParameters": [
+                          {
+                            "$id": "30",
+                            "Name": "LyingSide",
+                            "Type": "Bool",
+                            "BoolValue": true,
+                            "FloatValue": 0.0,
+                            "IntValue": 0
+                          }
+                        ]
                       },
                       {
-                        "$id": "15",
+                        "$id": "31",
                         "name": "restspace3_couch",
                         "position": {
-                          "x": 14.442,
-                          "y": 0.4846,
-                          "z": -0.693
+                          "x": 14.451,
+                          "y": 0.474,
+                          "z": -0.677
                         },
                         "connectedTo": [
                           {
                             "$ref": "5"
-                          },
-                          {
-                            "$id": "16",
-                            "name": "restspace3_couch_center",
-                            "position": {
-                              "x": 14.03,
-                              "y": 0.484600067,
-                              "z": -0.656
-                            },
-                            "connectedTo": [
-                              {
-                                "$ref": "15"
-                              }
-                            ],
-                            "forwardJump": false,
-                            "areaType": "RestSpace",
-                            "areaLevel": 3
                           }
                         ],
                         "forwardJump": false,
                         "areaType": "RestSpace",
-                        "areaLevel": 3
+                        "areaLevel": 3,
+                        "poseRotation": 169.624084,
+                        "poseParameters": [
+                          {
+                            "$id": "32",
+                            "Name": "LyingSide",
+                            "Type": "Bool",
+                            "BoolValue": true,
+                            "FloatValue": 0.0,
+                            "IntValue": 0
+                          }
+                        ]
                       },
                       {
-                        "$ref": "13"
+                        "$ref": "27"
                       }
                     ],
                     "forwardJump": false,
                     "areaType": "NotSet",
-                    "areaLevel": -1
+                    "areaLevel": -1,
+                    "poseRotation": 0.0,
+                    "poseParameters": []
                   }
                 ],
                 "forwardJump": false,
                 "areaType": "NotSet",
-                "areaLevel": -1
+                "areaLevel": -1,
+                "poseRotation": 0.0,
+                "poseParameters": []
               },
               {
                 "$ref": "8"
@@ -272,7 +512,7 @@
                 "$ref": "7"
               },
               {
-                "$id": "17",
+                "$id": "33",
                 "name": "ea87b525",
                 "position": {
                   "x": 11.672,
@@ -290,7 +530,7 @@
                     "$ref": "3"
                   },
                   {
-                    "$id": "18",
+                    "$id": "34",
                     "name": "d790e074",
                     "position": {
                       "x": 11.421,
@@ -302,10 +542,10 @@
                         "$ref": "1"
                       },
                       {
-                        "$ref": "17"
+                        "$ref": "33"
                       },
                       {
-                        "$id": "19",
+                        "$id": "35",
                         "name": "medstation2_chair",
                         "position": {
                           "x": 11.4281,
@@ -314,25 +554,31 @@
                         },
                         "connectedTo": [
                           {
-                            "$ref": "18"
+                            "$ref": "34"
                           }
                         ],
                         "forwardJump": false,
                         "areaType": "MedStation",
-                        "areaLevel": 2
+                        "areaLevel": 2,
+                        "poseRotation": 0.0,
+                        "poseParameters": []
                       }
                     ],
                     "forwardJump": false,
                     "areaType": "MedStation",
-                    "areaLevel": 2
+                    "areaLevel": 2,
+                    "poseRotation": 0.0,
+                    "poseParameters": []
                   }
                 ],
                 "forwardJump": false,
                 "areaType": "MedStation",
-                "areaLevel": 2
+                "areaLevel": 2,
+                "poseRotation": 0.0,
+                "poseParameters": []
               },
               {
-                "$id": "20",
+                "$id": "36",
                 "name": "f134b50f",
                 "position": {
                   "x": 11.135,
@@ -347,7 +593,7 @@
                     "$ref": "3"
                   },
                   {
-                    "$id": "21",
+                    "$id": "37",
                     "name": "6787bbb1",
                     "position": {
                       "x": 11.267,
@@ -356,25 +602,31 @@
                     },
                     "connectedTo": [
                       {
-                        "$ref": "20"
+                        "$ref": "36"
                       }
                     ],
                     "forwardJump": true,
                     "areaType": "NotSet",
-                    "areaLevel": -1
+                    "areaLevel": -1,
+                    "poseRotation": 0.0,
+                    "poseParameters": []
                   }
                 ],
                 "forwardJump": false,
                 "areaType": "MedStation",
-                "areaLevel": 1
+                "areaLevel": 1,
+                "poseRotation": 0.0,
+                "poseParameters": []
               }
             ],
             "forwardJump": false,
             "areaType": "NotSet",
-            "areaLevel": -1
+            "areaLevel": -1,
+            "poseRotation": 0.0,
+            "poseParameters": []
           },
           {
-            "$id": "22",
+            "$id": "38",
             "name": "350e620c",
             "position": {
               "x": 8.527988,
@@ -389,7 +641,7 @@
                 "$ref": "2"
               },
               {
-                "$id": "23",
+                "$id": "39",
                 "name": "e364807a",
                 "position": {
                   "x": 7.135,
@@ -398,10 +650,10 @@
                 },
                 "connectedTo": [
                   {
-                    "$ref": "22"
+                    "$ref": "38"
                   },
                   {
-                    "$id": "24",
+                    "$id": "40",
                     "name": "69775fbe",
                     "position": {
                       "x": 4.717,
@@ -410,10 +662,10 @@
                     },
                     "connectedTo": [
                       {
-                        "$ref": "23"
+                        "$ref": "39"
                       },
                       {
-                        "$id": "25",
+                        "$id": "41",
                         "name": "b1c08b33",
                         "position": {
                           "x": 2.595,
@@ -422,10 +674,10 @@
                         },
                         "connectedTo": [
                           {
-                            "$ref": "24"
+                            "$ref": "40"
                           },
                           {
-                            "$id": "26",
+                            "$id": "42",
                             "name": "cc64b8d7",
                             "position": {
                               "x": 2.266,
@@ -434,10 +686,10 @@
                             },
                             "connectedTo": [
                               {
-                                "$ref": "25"
+                                "$ref": "41"
                               },
                               {
-                                "$id": "27",
+                                "$id": "43",
                                 "name": "20cd6246",
                                 "position": {
                                   "x": 2.702,
@@ -446,7 +698,7 @@
                                 },
                                 "connectedTo": [
                                   {
-                                    "$id": "28",
+                                    "$id": "44",
                                     "name": "73354087",
                                     "position": {
                                       "x": 3.375,
@@ -455,10 +707,10 @@
                                     },
                                     "connectedTo": [
                                       {
-                                        "$ref": "27"
+                                        "$ref": "43"
                                       },
                                       {
-                                        "$id": "29",
+                                        "$id": "45",
                                         "name": "watercol3_top",
                                         "position": {
                                           "x": 4.082,
@@ -467,43 +719,55 @@
                                         },
                                         "connectedTo": [
                                           {
-                                            "$ref": "28"
+                                            "$ref": "44"
                                           }
                                         ],
                                         "forwardJump": true,
                                         "areaType": "WaterCollector",
-                                        "areaLevel": 3
+                                        "areaLevel": 3,
+                                        "poseRotation": 0.0,
+                                        "poseParameters": []
                                       }
                                     ],
                                     "forwardJump": false,
                                     "areaType": "WaterCollector",
-                                    "areaLevel": 3
+                                    "areaLevel": 3,
+                                    "poseRotation": 0.0,
+                                    "poseParameters": []
                                   },
                                   {
-                                    "$ref": "26"
+                                    "$ref": "42"
                                   }
                                 ],
                                 "forwardJump": false,
                                 "areaType": "WaterCollector",
-                                "areaLevel": 3
+                                "areaLevel": 3,
+                                "poseRotation": 0.0,
+                                "poseParameters": []
                               }
                             ],
                             "forwardJump": false,
                             "areaType": "WaterCollector",
-                            "areaLevel": 3
+                            "areaLevel": 3,
+                            "poseRotation": 0.0,
+                            "poseParameters": []
                           }
                         ],
                         "forwardJump": false,
                         "areaType": "NotSet",
-                        "areaLevel": -1
+                        "areaLevel": -1,
+                        "poseRotation": 0.0,
+                        "poseParameters": []
                       }
                     ],
                     "forwardJump": false,
                     "areaType": "NotSet",
-                    "areaLevel": -1
+                    "areaLevel": -1,
+                    "poseRotation": 0.0,
+                    "poseParameters": []
                   },
                   {
-                    "$id": "30",
+                    "$id": "46",
                     "name": "kitchen",
                     "position": {
                       "x": 5.603,
@@ -512,10 +776,10 @@
                     },
                     "connectedTo": [
                       {
-                        "$ref": "23"
+                        "$ref": "39"
                       },
                       {
-                        "$id": "31",
+                        "$id": "47",
                         "name": "kitchen3_eat",
                         "position": {
                           "x": 5.5784,
@@ -524,15 +788,17 @@
                         },
                         "connectedTo": [
                           {
-                            "$ref": "30"
+                            "$ref": "46"
                           }
                         ],
                         "forwardJump": false,
                         "areaType": "Kitchen",
-                        "areaLevel": 3
+                        "areaLevel": 3,
+                        "poseRotation": 0.0,
+                        "poseParameters": []
                       },
                       {
-                        "$id": "32",
+                        "$id": "48",
                         "name": "14f72f9d",
                         "position": {
                           "x": 5.861,
@@ -541,10 +807,10 @@
                         },
                         "connectedTo": [
                           {
-                            "$ref": "30"
+                            "$ref": "46"
                           },
                           {
-                            "$id": "33",
+                            "$id": "49",
                             "name": "kitchen1_eat",
                             "position": {
                               "x": 5.835,
@@ -553,20 +819,24 @@
                             },
                             "connectedTo": [
                               {
-                                "$ref": "32"
+                                "$ref": "48"
                               }
                             ],
                             "forwardJump": false,
                             "areaType": "Kitchen",
-                            "areaLevel": 1
+                            "areaLevel": 1,
+                            "poseRotation": 0.0,
+                            "poseParameters": []
                           }
                         ],
                         "forwardJump": false,
                         "areaType": "Kitchen",
-                        "areaLevel": 1
+                        "areaLevel": 1,
+                        "poseRotation": 0.0,
+                        "poseParameters": []
                       },
                       {
-                        "$id": "34",
+                        "$id": "50",
                         "name": "kitchen2_eat",
                         "position": {
                           "x": 5.553,
@@ -575,10 +845,10 @@
                         },
                         "connectedTo": [
                           {
-                            "$ref": "30"
+                            "$ref": "46"
                           },
                           {
-                            "$id": "35",
+                            "$id": "51",
                             "name": "kitchen2_table",
                             "position": {
                               "x": 5.6,
@@ -587,30 +857,38 @@
                             },
                             "connectedTo": [
                               {
-                                "$ref": "34"
+                                "$ref": "50"
                               }
                             ],
                             "forwardJump": false,
                             "areaType": "Kitchen",
-                            "areaLevel": 2
+                            "areaLevel": 2,
+                            "poseRotation": 0.0,
+                            "poseParameters": []
                           }
                         ],
                         "forwardJump": false,
                         "areaType": "Kitchen",
-                        "areaLevel": 2
+                        "areaLevel": 2,
+                        "poseRotation": 0.0,
+                        "poseParameters": []
                       }
                     ],
                     "forwardJump": false,
                     "areaType": "NotSet",
-                    "areaLevel": -1
+                    "areaLevel": -1,
+                    "poseRotation": 0.0,
+                    "poseParameters": []
                   }
                 ],
                 "forwardJump": false,
                 "areaType": "NotSet",
-                "areaLevel": -1
+                "areaLevel": -1,
+                "poseRotation": 0.0,
+                "poseParameters": []
               },
               {
-                "$id": "36",
+                "$id": "52",
                 "name": "f3d374bd",
                 "position": {
                   "x": 8.973,
@@ -619,10 +897,10 @@
                 },
                 "connectedTo": [
                   {
-                    "$ref": "22"
+                    "$ref": "38"
                   },
                   {
-                    "$id": "37",
+                    "$id": "53",
                     "name": "medstation3_chair",
                     "position": {
                       "x": 9.2844,
@@ -631,20 +909,24 @@
                     },
                     "connectedTo": [
                       {
-                        "$ref": "36"
+                        "$ref": "52"
                       }
                     ],
                     "forwardJump": false,
                     "areaType": "MedStation",
-                    "areaLevel": 3
+                    "areaLevel": 3,
+                    "poseRotation": 0.0,
+                    "poseParameters": []
                   }
                 ],
                 "forwardJump": false,
                 "areaType": "MedStation",
-                "areaLevel": 3
+                "areaLevel": 3,
+                "poseRotation": 0.0,
+                "poseParameters": []
               },
               {
-                "$id": "38",
+                "$id": "54",
                 "name": "fa27ee57",
                 "position": {
                   "x": 9.667,
@@ -656,10 +938,10 @@
                     "$ref": "1"
                   },
                   {
-                    "$ref": "22"
+                    "$ref": "38"
                   },
                   {
-                    "$id": "39",
+                    "$id": "55",
                     "name": "medstation2_underdesk",
                     "position": {
                       "x": 10.433,
@@ -668,36 +950,44 @@
                     },
                     "connectedTo": [
                       {
-                        "$ref": "38"
+                        "$ref": "54"
                       }
                     ],
                     "forwardJump": false,
                     "areaType": "MedStation",
-                    "areaLevel": 2
+                    "areaLevel": 2,
+                    "poseRotation": 0.0,
+                    "poseParameters": []
                   }
                 ],
                 "forwardJump": false,
                 "areaType": "MedStation",
-                "areaLevel": 2
+                "areaLevel": 2,
+                "poseRotation": 0.0,
+                "poseParameters": []
               }
             ],
             "forwardJump": false,
             "areaType": "NotSet",
-            "areaLevel": -1
+            "areaLevel": -1,
+            "poseRotation": 0.0,
+            "poseParameters": []
           },
           {
-            "$ref": "17"
+            "$ref": "33"
           }
         ],
         "forwardJump": false,
         "areaType": "NotSet",
-        "areaLevel": -1
+        "areaLevel": -1,
+        "poseRotation": 0.0,
+        "poseParameters": []
       },
       {
-        "$ref": "22"
+        "$ref": "38"
       },
       {
-        "$id": "40",
+        "$id": "56",
         "name": "a6ac3c51",
         "position": {
           "x": 11.018,
@@ -709,7 +999,7 @@
             "$ref": "1"
           },
           {
-            "$id": "41",
+            "$id": "57",
             "name": "medstation3_desk",
             "position": {
               "x": 11.293,
@@ -718,34 +1008,40 @@
             },
             "connectedTo": [
               {
-                "$ref": "40"
+                "$ref": "56"
               }
             ],
             "forwardJump": false,
             "areaType": "MedStation",
-            "areaLevel": 3
+            "areaLevel": 3,
+            "poseRotation": 0.0,
+            "poseParameters": []
           }
         ],
         "forwardJump": false,
         "areaType": "MedStation",
-        "areaLevel": 3
+        "areaLevel": 3,
+        "poseRotation": 0.0,
+        "poseParameters": []
       },
       {
-        "$ref": "18"
+        "$ref": "34"
       },
       {
-        "$ref": "38"
+        "$ref": "54"
       },
       {
-        "$ref": "17"
+        "$ref": "33"
       },
       {
-        "$ref": "20"
+        "$ref": "36"
       }
     ],
     "forwardJump": false,
     "areaType": "NotSet",
-    "areaLevel": -1
+    "areaLevel": -1,
+    "poseRotation": 0.0,
+    "poseParameters": []
   },
   {
     "$ref": "2"
@@ -763,7 +1059,7 @@
     "$ref": "6"
   },
   {
-    "$ref": "9"
+    "$ref": "21"
   },
   {
     "$ref": "5"
@@ -772,43 +1068,61 @@
     "$ref": "8"
   },
   {
-    "$ref": "22"
+    "$ref": "38"
   },
   {
-    "$ref": "24"
+    "$ref": "40"
   },
   {
-    "$ref": "23"
+    "$ref": "39"
   },
   {
-    "$ref": "25"
+    "$ref": "41"
   },
   {
-    "$ref": "30"
+    "$ref": "46"
   },
   {
-    "$ref": "13"
-  },
-  {
-    "$ref": "12"
-  },
-  {
-    "$ref": "14"
-  },
-  {
-    "$ref": "11"
+    "$ref": "9"
   },
   {
     "$ref": "10"
   },
   {
-    "$ref": "16"
+    "$ref": "12"
+  },
+  {
+    "$ref": "13"
   },
   {
     "$ref": "15"
   },
   {
-    "$ref": "32"
+    "$ref": "16"
+  },
+  {
+    "$ref": "44"
+  },
+  {
+    "$ref": "45"
+  },
+  {
+    "$ref": "43"
+  },
+  {
+    "$ref": "42"
+  },
+  {
+    "$ref": "57"
+  },
+  {
+    "$ref": "56"
+  },
+  {
+    "$ref": "53"
+  },
+  {
+    "$ref": "52"
   },
   {
     "$ref": "33"
@@ -820,51 +1134,54 @@
     "$ref": "35"
   },
   {
-    "$ref": "31"
+    "$ref": "54"
   },
   {
-    "$ref": "41"
-  },
-  {
-    "$ref": "40"
-  },
-  {
-    "$ref": "37"
+    "$ref": "55"
   },
   {
     "$ref": "36"
   },
   {
-    "$ref": "17"
+    "$ref": "37"
+  },
+  {
+    "$ref": "48"
+  },
+  {
+    "$ref": "49"
+  },
+  {
+    "$ref": "50"
+  },
+  {
+    "$ref": "51"
+  },
+  {
+    "$ref": "47"
+  },
+  {
+    "$ref": "27"
+  },
+  {
+    "$ref": "25"
+  },
+  {
+    "$ref": "29"
+  },
+  {
+    "$ref": "23"
+  },
+  {
+    "$ref": "22"
+  },
+  {
+    "$ref": "31"
   },
   {
     "$ref": "18"
   },
   {
     "$ref": "19"
-  },
-  {
-    "$ref": "38"
-  },
-  {
-    "$ref": "39"
-  },
-  {
-    "$ref": "20"
-  },
-  {
-    "$ref": "21"
-  },
-  {
-    "$ref": "28"
-  },
-  {
-    "$ref": "29"
-  },
-  {
-    "$ref": "27"
-  },
-  {
-    "$ref": "26"
   }
 ]

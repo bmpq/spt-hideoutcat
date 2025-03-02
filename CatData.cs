@@ -4,17 +4,6 @@ using UnityEngine;
 namespace hideoutcat
 {
     [System.Serializable]
-    public class CatAreaAction
-    {
-        public EAreaType Area;
-        public int AreaLevel;
-        public AnimatorParameter[] Parameters;
-        public Vector3 TransformPosition;
-        public Vector3 TransformRotation;
-        public float Chance;
-    }
-
-    [System.Serializable]
     public class AnimatorParameter
     {
         public string Name;
@@ -22,5 +11,27 @@ namespace hideoutcat
         public bool BoolValue;
         public float FloatValue;
         public int IntValue;
+
+        public void Apply(Animator animator)
+        {
+            Plugin.Log.LogInfo($"Setting animator parameter {Name}");
+            switch (Type)
+            {
+                case AnimatorControllerParameterType.Bool:
+                    animator.SetBool(Name, BoolValue);
+                    break;
+                case AnimatorControllerParameterType.Float:
+                    animator.SetFloat(Name, FloatValue);
+                    break;
+                case AnimatorControllerParameterType.Int:
+                    animator.SetInteger(Name, IntValue);
+                    break;
+                case AnimatorControllerParameterType.Trigger:
+                    animator.SetTrigger(Name);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
