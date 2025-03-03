@@ -52,21 +52,14 @@ namespace hideoutcat.Pathfinding
             {
                 return;
             }
-            else if (currentPathIndex >= currentPath.Count) // on the end
-            {
-                animator.SetFloat("Thrust", Mathf.Lerp(animator.GetFloat("Thrust"), 0f, Time.deltaTime * 4f));
-                animator.SetFloat("Turn", Mathf.Lerp(animator.GetFloat("Turn"), 0f, Time.deltaTime * 4f));
-            }
 
             if (currentPathIndex < currentPath.Count)
             {
-                catLookAt.SetLookTarget(currentPath[Mathf.Min(currentPath.Count - 1, currentPathIndex + 1)].position + new Vector3(0, 0.3f, 0));
-
                 bool lastNode = currentPathIndex == currentPath.Count - 1;
 
                 float distToTargetNode = Vector3.Distance(transform.position, currentPath[currentPathIndex].position);
 
-                if (distToTargetNode < (lastNode ? 0.1f : 0.2f) && !animator.GetBool("JumpingUp") && !animator.GetBool("JumpingDown"))
+                if (distToTargetNode < 0.1f && !animator.GetBool("JumpingUp") && !animator.GetBool("JumpingDown"))
                 {
                     currentNode = currentPath[currentPathIndex];
 
@@ -76,23 +69,31 @@ namespace hideoutcat.Pathfinding
                         if (Mathf.Abs(angleDifference) > 10f)
                         {
                             float turn = -Mathf.Sign(angleDifference);
-                            animator.SetFloat("Turn", Mathf.Lerp(animator.GetFloat("Turn"), turn, Time.deltaTime * 3f));
-                            animator.SetFloat("Thrust", 0);
+                            SetMovement(0, turn);
                         }
                         else
                         {
+                            SetMovement(0, 0);
+
                             currentPathIndex++;
-                            catLookAt.SetLookTarget(null);
                             Plugin.Log.LogInfo("Reached final destination!");
                             OnDestinationReached?.Invoke(currentPath[currentPath.Count - 1]);
+
+                            catLookAt.SetLookTarget(null);
                         }
                     }
                     else
                     {
                         currentPathIndex++;
                         Plugin.Log.LogInfo($"Set next node to: {currentPath[currentPathIndex].name}");
+
+                        catLookAt.SetLookTarget(currentPath[Mathf.Min(currentPath.Count - 1, currentPathIndex + 1)].position + new Vector3(0, 0.3f, 0));
                     }
                 }
+            }
+            else
+            {
+                SetMovement(0, 0);
             }
         }
 
@@ -100,7 +101,7 @@ namespace hideoutcat.Pathfinding
         {
             Velocity = transform.position - prevPos;
 
-            if (currentPath == null)
+            if (currentPath == null || currentPath.Count == 0)
                 return;
 
             if (currentPathIndex < currentPath.Count)
@@ -111,6 +112,21 @@ namespace hideoutcat.Pathfinding
             {
                 transform.SetPositionIndividualAxis(y: Mathf.Lerp(transform.position.y, currentPath[currentPath.Count - 1].position.y, Time.deltaTime * 3f));
             }
+        }
+
+        float currentTurnVelocity;
+        float currentThrustVelocity;
+
+        float smoothTimeTurn = 0.2f;
+        float smoothTimeThrust = 0.2f;
+
+        public void SetMovement(float thrust, float turn)
+        {
+            float smoothedThrust = Mathf.SmoothDamp(animator.GetFloat("Thrust"), thrust, ref currentThrustVelocity, smoothTimeThrust);
+            float smoothedTurn = Mathf.SmoothDamp(animator.GetFloat("Turn"), turn, ref currentTurnVelocity, smoothTimeTurn);
+
+            animator.SetFloat("Thrust", smoothedThrust);
+            animator.SetFloat("Turn", smoothedTurn);
         }
 
         float prevDistToDest = 0f;
@@ -127,7 +143,10 @@ namespace hideoutcat.Pathfinding
             }
             else if (animator.IsInTransition(0) && animator.GetAnimatorTransitionInfo(0).IsName("JumpUpAir -> JumpUpEnd"))
             {
-                transform.SetPositionIndividualAxis(y: Mathf.Lerp(targetPosition.y - jumpUpEndOffset, targetPosition.y, animator.GetAnimatorTransitionInfo(0).normalizedTime));
+                float t = animator.GetAnimatorTransitionInfo(0).normalizedTime;
+                transform.SetPositionIndividualAxis(y: Mathf.Lerp(targetPosition.y - jumpUpEndOffset, targetPosition.y, t));
+
+                transform.position += transform.forward * Time.deltaTime * (1f - t);
             }
             else if (animator.GetBool("JumpingDown"))
             {
@@ -141,58 +160,63 @@ namespace hideoutcat.Pathfinding
             {
                 Vector3 directionToTarget = (targetPosition - transform.position).normalized;
                 directionToTarget.y = 0f;
-
                 float angleToTarget = Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up);
-                float turn = Mathf.Lerp(animator.GetFloat("Turn"), Mathf.Clamp(angleToTarget / 45f, -1f, 1f), Time.deltaTime * 5f);
 
-                // turn in place logic
-                float distToDest = Vector3.Distance(transform.position, targetPosition);
-                float targetThrust = prevDistToDest < distToDest ? 0f : 1f;
+                float targetThrust = 0;
+                float targetTurn = angleToTarget.RemapClamped(-40f, 40f, -1f, 1f);
 
-                if (targetNode.forwardJump && distToDest > 0.4f) // jump to
+                float distToTarget = Vector3.Distance(transform.position, targetPosition);
+
+                if (targetNode.forwardJump && distToTarget > 0.4f) // jump to
                 {
-                    if (Mathf.Abs(angleToTarget) > 7f) // wait to face the direction
+                    if (Mathf.Abs(angleToTarget) < 7f) // wait to face the direction
                     {
-                        targetThrust = 0f;
-                    }
-                    else // then start the jump up
-                    {
-                        prevDistToDest = float.MaxValue;
                         animator.SetBool("JumpingForward", true);
                     }
                 }
                 else if (targetPosition.y > transform.position.y + 0.4f) // means we need to initiate jump up
                 {
-                    if (Mathf.Abs(angleToTarget) > 10f) // wait to face the direction
-                    {
-                        targetThrust = 0f;
-                    }
-                    else // then start the jump up
+                    if (Mathf.Abs(angleToTarget) < 10f) // wait to face the direction
                     {
                         animator.SetBool("JumpingUp", true);
                     }
                 }
                 else if (targetPosition.y < transform.position.y - 0.4f) // means we need to initiate jump down
                 {
-                    if (Mathf.Abs(angleToTarget) > 10f) // wait to face the direction
-                    {
-                        targetThrust = 0f;
-                    }
-                    else // then start the jump down
+                    if (Mathf.Abs(angleToTarget) < 10f) // wait to face the direction
                     {
                         animator.SetBool("JumpingDown", true);
                     }
                 }
-                else
+                else // keep moving
                 {
+                    // turn in place logic
+                    if (Mathf.Abs(angleToTarget) > 20f && distToTarget < 0.5f)
+                    {
+                        targetThrust *= 0;
+                    }
+                    else
+                    {
+                        targetThrust = 1f;
+                    }
+
                     // evil hack to keep the cat on the ground
                     transform.SetPositionIndividualAxis(y: Mathf.Lerp(transform.position.y, targetPosition.y, Time.deltaTime * 3f));
+
+                    // last node, yield movement control
+                    if (currentPathIndex == currentPath.Count - 1)
+                    {
+                        if (distToTarget < 0.1f)
+                        {
+                            return;
+                        }
+                    }
+
+                    Debug.Log(angleToTarget);
                 }
 
-                float thrust = Mathf.Lerp(animator.GetFloat("Thrust"), targetThrust, Time.deltaTime * 3f);
-                animator.SetFloat("Thrust", thrust);
-                animator.SetFloat("Turn", turn);
-                prevDistToDest = distToDest;
+                SetMovement(targetThrust, targetTurn);
+                prevDistToDest = distToTarget;
             }
         }
 
@@ -233,22 +257,32 @@ namespace hideoutcat.Pathfinding
 
         private void HandleJumpingUp()
         {
+            float horizontalSpeed = 0;
+
             Vector3 targetPosition = currentPath[currentPathIndex].position;
 
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("JumpUpAir"))
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("JumpUpStart"))
+            {
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.75f)
+                {
+                    horizontalSpeed = Time.deltaTime;
+                }
+            }
+            else if (animator.GetCurrentAnimatorStateInfo(0).IsName("JumpUpAir"))
             {
                 float timeInAir = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
                 float upSpeed = Time.deltaTime * 3f;
-                float horizontalSpeed = Time.deltaTime;
 
                 // slowing down as time goes, but with hard min limit, the cat still has to go up no matter what
                 upSpeed -= Mathf.Sin((Mathf.Clamp01(timeInAir) * Mathf.PI) / 2f) * Time.deltaTime * 2f;
                 upSpeed = Mathf.Max(upSpeed, Time.deltaTime / 4f);
 
                 transform.position += new Vector3(0, upSpeed, 0);
-                transform.position += transform.forward * horizontalSpeed;
+                horizontalSpeed = Time.deltaTime;
             }
+
+            transform.position += transform.forward * horizontalSpeed;
 
             if (transform.position.y > targetPosition.y - 0.5f)
             {
