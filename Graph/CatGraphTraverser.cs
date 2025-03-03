@@ -114,6 +114,7 @@ namespace hideoutcat.Pathfinding
         }
 
         float prevDistToDest = 0f;
+        float jumpUpEndOffset = -0.5f;
 
         void Locomotion()
         {
@@ -124,6 +125,10 @@ namespace hideoutcat.Pathfinding
             {
                 HandleJumpingUp();
             }
+            else if (animator.IsInTransition(0) && animator.GetAnimatorTransitionInfo(0).IsName("JumpUpAir -> JumpUpEnd"))
+            {
+                transform.SetPositionIndividualAxis(y: Mathf.Lerp(targetPosition.y - jumpUpEndOffset, targetPosition.y, animator.GetAnimatorTransitionInfo(0).normalizedTime));
+            }
             else if (animator.GetBool("JumpingDown"))
             {
                 HandleJumpingDown();
@@ -131,10 +136,6 @@ namespace hideoutcat.Pathfinding
             else if (animator.GetBool("JumpingForward"))
             {
                 HandleJumpingForward();
-            }
-            else if (animator.GetCurrentAnimatorStateInfo(0).IsName("JumpUpEnd") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.45f)
-            {
-                // this condition scope is purposely empty to not let the ground stick logic affect the root motion of this clip, in the first half
             }
             else
             {
@@ -148,8 +149,7 @@ namespace hideoutcat.Pathfinding
                 float distToDest = Vector3.Distance(transform.position, targetPosition);
                 float targetThrust = prevDistToDest < distToDest ? 0f : 1f;
 
-                if ((targetNode.forwardJump && distToDest > 0.4f) || // jump to
-                    (currentPathIndex > 0 && currentPath[currentPathIndex - 1].forwardJump)) // jump from
+                if (targetNode.forwardJump && distToDest > 0.4f) // jump to
                 {
                     if (Mathf.Abs(angleToTarget) > 7f) // wait to face the direction
                     {
@@ -250,10 +250,10 @@ namespace hideoutcat.Pathfinding
                 transform.position += transform.forward * horizontalSpeed;
             }
 
-            if (transform.position.y > targetPosition.y - 0.45f)
+            if (transform.position.y > targetPosition.y - 0.5f)
             {
-                transform.SetPositionIndividualAxis(y: targetPosition.y - 0.45f);
                 animator.SetBool("JumpingUp", false);
+                jumpUpEndOffset = targetPosition.y - transform.position.y;
             }
         }
 
