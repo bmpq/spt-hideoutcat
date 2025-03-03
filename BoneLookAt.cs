@@ -34,16 +34,15 @@ namespace hideoutcat
         private Quaternion _currentRotation;
         private Quaternion _targetRotation;
         private Vector3 _currentAngularVelocity = Vector3.zero;
-        private Quaternion _initialLocalRotation;
+        private Quaternion _resetRotation; // Store rotation to reset to when target is null
+        private bool _wasTargetNotNull = true; // Track if target was not null in the previous frame
+
 
         void Start()
         {
-            if (bone != null)
-            {
-                _currentRotation = bone.localRotation;
-                _initialLocalRotation = bone.localRotation;
-            }
-            _targetRotation = _currentRotation;
+            if (bone == null) bone = transform; // added null check for bone
+            _currentRotation = bone.localRotation;
+            _resetRotation = bone.localRotation; // Initialize resetRotation with current rotation
         }
 
         // running LateUpdate() to override Animator
@@ -54,8 +53,19 @@ namespace hideoutcat
                 return;
             }
 
-            if (targetLookAt != null)
+            if (targetLookAt == null)
             {
+                if (_wasTargetNotNull) // Target just became null, store current rotation
+                {
+                    _resetRotation = bone.localRotation;
+                    _wasTargetNotNull = false;
+                }
+                _targetRotation = _resetRotation; // Reset target rotation to the stored reset rotation
+            }
+            else
+            {
+                _wasTargetNotNull = true; // Target is not null, so set the flag for next null check
+
                 // Calculate the target rotation as before
                 Vector3 finalTargetPosition = targetLookAt.position + targetOffset;
                 Vector3 upVector = (customUpVector == Vector3.zero) ? bone.up : customUpVector;
@@ -80,12 +90,9 @@ namespace hideoutcat
 
                 _targetRotation = targetLocalRotation;
             }
-            else
-            {
-                _targetRotation = _initialLocalRotation;
-            }
 
-            float currentSmoothTime = (targetLookAt != null) ? smoothTime : resetSmoothTime;
+
+            float currentSmoothTime = (targetLookAt == null) ? resetSmoothTime : smoothTime;
 
             _currentRotation = SmoothDampQuaternion(_currentRotation, _targetRotation, ref _currentAngularVelocity, currentSmoothTime);
             bone.localRotation = Quaternion.Slerp(bone.localRotation, _currentRotation, weight);
