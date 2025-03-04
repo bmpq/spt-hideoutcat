@@ -11,9 +11,6 @@ namespace hideoutcat.Pathfinding
         public Vector3 Velocity { get; private set; }
         private Vector3 prevPos;
 
-        public string[] testTargetNodes;
-        public int testTargetNodeIndex;
-
         private Graph pathfindingGraph => Plugin.CatGraph;
         private Node currentNode;
         private List<Node> currentPath;
@@ -33,7 +30,7 @@ namespace hideoutcat.Pathfinding
 
         public void LayNewPath(Node targetNode)
         {
-            currentNode = pathfindingGraph.GetNodeClosestNoPathfinding(transform.position);
+            currentNode = pathfindingGraph.GetNodeClosestAny(transform.position);
 
             currentPath = pathfindingGraph.FindPathBFS(currentNode, targetNode);
             currentPathIndex = 0;
@@ -64,7 +61,7 @@ namespace hideoutcat.Pathfinding
                     if (lastNode)
                     {
                         float angleDifference = Mathf.DeltaAngle(currentNode.poseRotation, transform.eulerAngles.y);
-                        if (Mathf.Abs(angleDifference) > 10f)
+                        if (currentNode.poseParameters.Count > 0 && Mathf.Abs(angleDifference) > 10f) // if no pose needed, skip turning, consider reached
                         {
                             float turn = -Mathf.Sign(angleDifference);
                             SetMovement(0, turn);
@@ -116,7 +113,7 @@ namespace hideoutcat.Pathfinding
         float currentThrustVelocity;
 
         float smoothTimeTurn = 0.2f;
-        float smoothTimeThrust = 0.2f;
+        float smoothTimeThrust = 0.3f;
 
         public void SetMovement(float thrust, float turn)
         {
@@ -165,7 +162,7 @@ namespace hideoutcat.Pathfinding
 
                 float distToTarget = Vector3.Distance(transform.position, targetPosition);
 
-                if (targetNode.forwardJump && distToTarget > 0.4f) // jump to
+                if (targetNode.forwardJump && distToTarget > 0.4f) // jump forward
                 {
                     if (Mathf.Abs(angleToTarget) < 7f) // wait to face the direction
                     {
@@ -243,6 +240,7 @@ namespace hideoutcat.Pathfinding
             AnimatorStateInfo curState = animator.GetCurrentAnimatorStateInfo(0);
             if (curState.IsName("JumpForwardStart") || curState.IsName("JumpForwardAir"))
             {
+                // unsatisfactory linear vertical movement. not sure how to do this better
                 float verticalSpeed = Time.deltaTime * 10f;
                 float horizontalSpeed = Time.deltaTime * 2f;
                 if (curState.IsName("JumpForwardStart"))
@@ -262,6 +260,7 @@ namespace hideoutcat.Pathfinding
 
             float distToTarget = Vector3.Distance(transform.position, targetPosition);
 
+            // beside obvious check for distane to target, we also check for previous distance, it's a failsafe in case the cat misses and overshoots
             if (distToTarget < 0.2f || distToTarget > prevDistToDest)
             {
                 transform.SetPositionIndividualAxis(y: targetPosition.y);
@@ -279,6 +278,7 @@ namespace hideoutcat.Pathfinding
 
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("JumpUpStart"))
             {
+                // 0.75 is the point in the (start) clip where the hind legs liftoff the ground
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.75f)
                 {
                     horizontalSpeed = Time.deltaTime;
@@ -300,7 +300,7 @@ namespace hideoutcat.Pathfinding
 
             transform.position += transform.forward * horizontalSpeed;
 
-            if (transform.position.y > targetPosition.y - 0.5f)
+            if (transform.position.y > targetPosition.y - 0.5f) // the (end) clip expects exactly 0.5 offset on Y
             {
                 animator.SetBool("JumpingUp", false);
                 jumpUpEndOffset = targetPosition.y - transform.position.y;

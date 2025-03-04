@@ -33,14 +33,14 @@ namespace hideoutcat.Pathfinding
             return nodes.Find(n => n.name == name);
         }
 
-        public Node GetNodeClosestNoPathfinding(Vector3 worldPos)
+        public Node GetNodeClosestAny(Vector3 worldPos)
         {
             return nodes
                 .OrderBy(t => (t.position - worldPos).sqrMagnitude)
                 .FirstOrDefault();
         }
 
-        public Node GetNodeWaypointClosest(Vector3 worldPos)
+        public Node GetNodeClosestWaypoint(Vector3 worldPos)
         {
             return waypointNodes
                 .OrderBy(t => (t.position - worldPos).sqrMagnitude)
@@ -105,8 +105,7 @@ namespace hideoutcat.Pathfinding
 
             foreach (Node node in nodes)
             {
-                // a dead end node is defined as a node with 0 or 1 connections. 0 shouldn't be possible tho
-                if (node.connectedTo.Count <= 1)
+                if (node.poseParameters.Count > 0)
                 {
                     if (node.areaType == areaType && node.areaLevel == areaLevel)
                     {

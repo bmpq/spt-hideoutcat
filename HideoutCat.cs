@@ -82,7 +82,7 @@ namespace hideoutcat
 
         void ResetPositionToClosestWaypoint()
         {
-            transform.position = Plugin.CatGraph.GetNodeWaypointClosest(transform.position).position;
+            transform.position = Plugin.CatGraph.GetNodeClosestWaypoint(transform.position).position;
         }
 
         void FixedUpdate()
@@ -110,8 +110,6 @@ namespace hideoutcat
             animator.ResetTrigger("Fidget");
 
             animator.ResetTrigger("Jump");
-            animator.SetFloat("Thrust", 0);
-            animator.SetFloat("Turn", 0);
         }
 
         public void SetCurrentSelectedArea(AreaData area, bool force = false)

@@ -53,7 +53,7 @@ namespace hideoutcat
             }
 
             Plugin.Log.LogDebug("no available areas, defaulting to a random waypoint node");
-            Node waypointNode = Plugin.CatGraph.GetNodeWaypointClosest(new Vector3(Random.value * 16f, 0, 0));
+            Node waypointNode = Plugin.CatGraph.GetNodeClosestWaypoint(new Vector3(Random.value * 16f, 0, 0));
             cat.transform.position = waypointNode.position;
             cat.SetTargetNode(waypointNode);
         }
