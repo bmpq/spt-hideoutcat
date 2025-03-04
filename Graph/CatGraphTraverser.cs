@@ -169,14 +169,14 @@ namespace hideoutcat.Pathfinding
                         animator.SetBool("JumpingForward", true);
                     }
                 }
-                else if (targetPosition.y > transform.position.y + 0.4f) // means we need to initiate jump up
+                else if (targetPosition.y > transform.position.y + 0.3f) // means we need to initiate jump up
                 {
                     if (Mathf.Abs(angleToTarget) < 10f) // wait to face the direction
                     {
                         animator.SetBool("JumpingUp", true);
                     }
                 }
-                else if (targetPosition.y < transform.position.y - 0.4f) // means we need to initiate jump down
+                else if (targetPosition.y < transform.position.y - 0.3f) // means we need to initiate jump down
                 {
                     if (Mathf.Abs(angleToTarget) < 10f) // wait to face the direction
                     {
@@ -272,35 +272,25 @@ namespace hideoutcat.Pathfinding
 
         private void HandleJumpingUp()
         {
-            float horizontalSpeed = 0;
-
             Vector3 targetPosition = currentPath[currentPathIndex].position;
 
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("JumpUpStart"))
-            {
+            bool drive =
                 // 0.75 is the point in the (start) clip where the hind legs liftoff the ground
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.75f)
-                {
-                    horizontalSpeed = Time.deltaTime;
-                }
-            }
-            else if (animator.GetCurrentAnimatorStateInfo(0).IsName("JumpUpAir"))
+                (animator.GetCurrentAnimatorStateInfo(0).IsName("JumpUpStart") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.75f)
+                // or just the in air clip
+                || animator.GetCurrentAnimatorStateInfo(0).IsName("JumpUpAir");
+
+            if (drive)
             {
-                float timeInAir = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-
                 float upSpeed = Time.deltaTime * 3f;
-
-                // slowing down as time goes, but with hard min limit, the cat still has to go up no matter what
-                upSpeed -= Mathf.Sin((Mathf.Clamp01(timeInAir) * Mathf.PI) / 2f) * Time.deltaTime * 2f;
-                upSpeed = Mathf.Max(upSpeed, Time.deltaTime / 4f);
+                float horizontalSpeed = Time.deltaTime;
 
                 transform.position += new Vector3(0, upSpeed, 0);
-                horizontalSpeed = Time.deltaTime;
+                transform.position += transform.forward * horizontalSpeed;
             }
 
-            transform.position += transform.forward * horizontalSpeed;
 
-            if (transform.position.y > targetPosition.y - 0.5f) // the (end) clip expects exactly 0.5 offset on Y
+            if (transform.position.y > targetPosition.y - 0.7f) // the (end) clip expects exactly 0.5 offset on Y
             {
                 animator.SetBool("JumpingUp", false);
                 jumpUpEndOffset = targetPosition.y - transform.position.y;
