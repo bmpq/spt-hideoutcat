@@ -36,6 +36,7 @@ namespace hideoutcat
         private Vector3 _currentAngularVelocity = Vector3.zero;
         private Quaternion _resetRotation; // Store rotation to reset to when target is null
         private bool _wasTargetNotNull = true; // Track if target was not null in the previous frame
+        private float weightTargetNotNull = 1f;
 
 
         void Start()
@@ -52,6 +53,9 @@ namespace hideoutcat
             {
                 return;
             }
+
+            // smooth target losing and acquiring
+            weightTargetNotNull = Mathf.Lerp(weightTargetNotNull, targetLookAt == null ? 0 : 1f, Time.deltaTime * 3f);
 
             if (targetLookAt == null)
             {
@@ -95,7 +99,7 @@ namespace hideoutcat
             float currentSmoothTime = (targetLookAt == null) ? resetSmoothTime : smoothTime;
 
             _currentRotation = SmoothDampQuaternion(_currentRotation, _targetRotation, ref _currentAngularVelocity, currentSmoothTime);
-            bone.localRotation = Quaternion.Slerp(bone.localRotation, _currentRotation, weight);
+            bone.localRotation = Quaternion.Slerp(bone.localRotation, _currentRotation, weight * weightTargetNotNull);
 
         }
 
