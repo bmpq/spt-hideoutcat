@@ -196,6 +196,24 @@ namespace hideoutcat.Pathfinding
                     else
                     {
                         targetThrust = 1f;
+
+                        // move faster if on a straight path and the target is far
+                        if (Mathf.Abs(angleToTarget) < 30f)
+                        {
+                            for (int i = currentPathIndex; i < currentPath.Count; i++)
+                            {
+                                Vector3 positionNextNextTarget = currentPath[i].position;
+                                Vector3 directionToNextNextTarget = (positionNextNextTarget - transform.position).normalized;
+                                float angleToNextNextTarget = Vector3.SignedAngle(transform.forward, directionToNextNextTarget, Vector3.up);
+                                float distToNextNextTarget = Vector3.Distance(transform.position, positionNextNextTarget);
+                                if (distToNextNextTarget > 8f && Mathf.Abs(angleToTarget) < 5f)
+                                    targetThrust = Mathf.Max(targetThrust, 3.6f);
+                                else if (distToNextNextTarget > 5f)
+                                    targetThrust = Mathf.Max(targetThrust, 2.55f);
+                                else if (distToNextNextTarget > 3f)
+                                    targetThrust = Mathf.Max(targetThrust, 1.66f);
+                            }
+                        }
                     }
 
                     // evil hack to keep the cat on the ground
