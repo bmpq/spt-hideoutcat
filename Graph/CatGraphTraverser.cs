@@ -14,7 +14,7 @@ namespace hideoutcat.Pathfinding
         public string[] testTargetNodes;
         public int testTargetNodeIndex;
 
-        private Graph pathfindingGraph;
+        private Graph pathfindingGraph => Plugin.CatGraph;
         private Node currentNode;
         private List<Node> currentPath;
         private int currentPathIndex;
@@ -29,8 +29,6 @@ namespace hideoutcat.Pathfinding
         {
             catLookAt = GetComponent<CatLookAt>();
             animator = GetComponent<Animator>();
-
-            pathfindingGraph = Plugin.CatGraph;
         }
 
         public void LayNewPath(Node targetNode)

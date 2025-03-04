@@ -28,8 +28,15 @@ namespace hideoutcat
             catGraphTraverser = gameObject.GetOrAddComponent<CatGraphTraverser>();
             catGraphTraverser.OnDestinationReached += CatGraphTraverser_OnDestinationReached;
 
-            transform.position = Plugin.CatGraph.GetNodeWaypointClosest(new Vector3(15, 0, 0)).position;
             HideUnwantedSceneObjects();
+        }
+
+        public void SetTargetNode(Node node)
+        {
+            if (catGraphTraverser == null)
+                catGraphTraverser = gameObject.GetOrAddComponent<CatGraphTraverser>();
+
+            catGraphTraverser.LayNewPath(node);
         }
 
         private void CatGraphTraverser_OnDestinationReached(Node node)

@@ -2,8 +2,8 @@
 using EFT.HealthSystem;
 using EFT.Hideout;
 using HarmonyLib;
+using hideoutcat.Pathfinding;
 using SPT.Reflection.Patching;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using tarkin;
 
 namespace hideoutcat
 {
@@ -25,10 +26,36 @@ namespace hideoutcat
         private static void Postfix(AreasController __instance)
         {
             GameObject catObject = GameObject.Instantiate(BundleLoader.Load("hideoutcat").LoadAsset<GameObject>("hideoutcat"));
-
-            catObject.AddComponent<HideoutCat>();
-
             ReplaceShadersToNative(catObject);
+
+            HideoutCat cat = catObject.AddComponent<HideoutCat>();
+
+            List<HideoutArea> availableArea = new List<HideoutArea>();
+            foreach (var kvp in __instance.Areas)
+            {
+                if (kvp.Value.Data.CurrentLevel > 0)
+                    availableArea.Add(kvp.Value);
+            }
+            if (availableArea.Count > 0)
+            {
+                UnityExtensions.Shuffle(availableArea);
+                foreach (var spawnArea in availableArea)
+                {
+                    var nodes = Plugin.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(spawnArea.AreaTemplate.Type, spawnArea.Data.CurrentLevel);
+                    if (nodes.Count > 0)
+                    {
+                        Node target = nodes[Random.Range(0, nodes.Count)];
+                        cat.transform.position = target.position;
+                        cat.SetTargetNode(target);
+                        return;
+                    }
+                }
+            }
+
+            Plugin.Log.LogDebug("no available areas, defaulting to a random waypoint node");
+            Node waypointNode = Plugin.CatGraph.GetNodeWaypointClosest(new Vector3(Random.value * 16f, 0, 0));
+            cat.transform.position = waypointNode.position;
+            cat.SetTargetNode(waypointNode);
         }
 
         static void ReplaceShadersToNative(GameObject go)

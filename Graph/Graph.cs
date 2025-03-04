@@ -99,6 +99,8 @@ namespace hideoutcat.Pathfinding
 
         public List<Node> FindDeadEndNodesByAreaTypeAndLevel(EAreaType areaType, int areaLevel)
         {
+            Plugin.Log.LogDebug($"requesting deadend node for {areaType} (level {areaLevel})");
+
             List<Node> deadEndNodes = new List<Node>();
 
             foreach (Node node in nodes)
