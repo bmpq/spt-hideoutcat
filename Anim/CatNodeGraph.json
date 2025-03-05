@@ -1,7 +1,7 @@
 [
   {
     "$id": "1",
-    "name": "Node_medstation",
+    "name": "171c_Waypoint",
     "position": {
       "x": 10.081,
       "y": 0.0,
@@ -10,7 +10,7 @@
     "connectedTo": [
       {
         "$id": "2",
-        "name": "Node_1",
+        "name": "b749_Waypoint",
         "position": {
           "x": 10.333,
           "y": 0.0,
@@ -19,7 +19,7 @@
         "connectedTo": [
           {
             "$id": "3",
-            "name": "Node_2",
+            "name": "ccb7_Waypoint",
             "position": {
               "x": 12.669,
               "y": 0.0,
@@ -28,7 +28,7 @@
             "connectedTo": [
               {
                 "$id": "4",
-                "name": "Node_23",
+                "name": "3c5d_Waypoint",
                 "position": {
                   "x": 12.847,
                   "y": 0.0,
@@ -40,11 +40,11 @@
                   },
                   {
                     "$id": "5",
-                    "name": "afdsgsdfg (1)",
+                    "name": "ad37_Waypoint",
                     "position": {
-                      "x": 14.455,
+                      "x": 14.33,
                       "y": 0.0,
-                      "z": -1.32
+                      "z": -1.174
                     },
                     "connectedTo": [
                       {
@@ -52,7 +52,7 @@
                       },
                       {
                         "$id": "6",
-                        "name": "restspace2_couch",
+                        "name": "877a_RestSpace_L2_POSE",
                         "position": {
                           "x": 14.2759085,
                           "y": 0.400000036,
@@ -80,7 +80,7 @@
                       },
                       {
                         "$id": "8",
-                        "name": "restspace3_couch",
+                        "name": "473b_RestSpace_L3_POSE",
                         "position": {
                           "x": 14.451,
                           "y": 0.474,
@@ -108,288 +108,235 @@
                       },
                       {
                         "$id": "10",
-                        "name": "restspace1_bed",
+                        "name": "0aef_RestSpace_L1_POSE",
                         "position": {
-                          "x": 15.627,
-                          "y": 0.206,
-                          "z": -0.877
+                          "x": 15.417,
+                          "y": 0.205,
+                          "z": -0.885
                         },
                         "connectedTo": [
                           {
                             "$ref": "5"
-                          }
-                        ],
-                        "forwardJump": true,
-                        "areaType": "RestSpace",
-                        "areaLevel": 1,
-                        "poseRotation": 139.590744,
-                        "poseParameters": [
+                          },
                           {
                             "$id": "11",
-                            "Name": "LyingSide",
-                            "Type": "Bool",
-                            "BoolValue": true,
-                            "FloatValue": 0.0,
-                            "IntValue": 0
-                          }
-                        ]
-                      },
-                      {
-                        "$id": "12",
-                        "name": "vasdv",
-                        "position": {
-                          "x": 15.088,
-                          "y": 0.0,
-                          "z": -2.937
-                        },
-                        "connectedTo": [
-                          {
-                            "$id": "13",
-                            "name": "ed3dd4ca",
+                            "name": "9f57_RestSpace_L1",
                             "position": {
-                              "x": 13.567,
+                              "x": 14.996,
                               "y": 0.0,
-                              "z": -4.63
+                              "z": -1.678
                             },
                             "connectedTo": [
                               {
-                                "$ref": "3"
-                              },
-                              {
-                                "$ref": "12"
-                              },
-                              {
-                                "$id": "14",
-                                "name": "29af1784",
+                                "$id": "12",
+                                "name": "4660_Waypoint",
                                 "position": {
-                                  "x": 13.993,
+                                  "x": 15.088,
                                   "y": 0.0,
-                                  "z": -5.261
+                                  "z": -2.937
                                 },
                                 "connectedTo": [
                                   {
-                                    "$ref": "13"
-                                  },
-                                  {
-                                    "$id": "15",
-                                    "name": "9a560e3d",
+                                    "$id": "13",
+                                    "name": "d045_Waypoint",
                                     "position": {
-                                      "x": 14.3222,
-                                      "y": 0.5158,
-                                      "z": -5.6864
+                                      "x": 14.403,
+                                      "y": 0.0,
+                                      "z": -3.951
                                     },
                                     "connectedTo": [
                                       {
-                                        "$ref": "14"
-                                      }
-                                    ],
-                                    "forwardJump": false,
-                                    "areaType": "Heating",
-                                    "areaLevel": 1,
-                                    "poseRotation": 41.2075348,
-                                    "poseParameters": [
+                                        "$ref": "3"
+                                      },
                                       {
-                                        "$id": "16",
-                                        "Name": "LyingBelly",
-                                        "Type": "Bool",
-                                        "BoolValue": true,
-                                        "FloatValue": 0.0,
-                                        "IntValue": 0
-                                      }
-                                    ]
-                                  }
-                                ],
-                                "forwardJump": false,
-                                "areaType": "Heating",
-                                "areaLevel": 1,
-                                "poseRotation": 0.0,
-                                "poseParameters": []
-                              },
-                              {
-                                "$id": "17",
-                                "name": "cba7491b",
-                                "position": {
-                                  "x": 13.775,
-                                  "y": 0.0,
-                                  "z": -5.037
-                                },
-                                "connectedTo": [
-                                  {
-                                    "$ref": "13"
-                                  },
-                                  {
-                                    "$id": "18",
-                                    "name": "2d4aa1b3",
-                                    "position": {
-                                      "x": 14.195,
-                                      "y": 0.5142,
-                                      "z": -5.423
-                                    },
-                                    "connectedTo": [
+                                        "$ref": "12"
+                                      },
                                       {
-                                        "$ref": "17"
-                                      }
-                                    ],
-                                    "forwardJump": false,
-                                    "areaType": "Heating",
-                                    "areaLevel": 2,
-                                    "poseRotation": 83.11946,
-                                    "poseParameters": [
-                                      {
-                                        "$id": "19",
-                                        "Name": "LyingSide",
-                                        "Type": "Bool",
-                                        "BoolValue": true,
-                                        "FloatValue": 0.0,
-                                        "IntValue": 0
-                                      }
-                                    ]
-                                  }
-                                ],
-                                "forwardJump": false,
-                                "areaType": "Heating",
-                                "areaLevel": 2,
-                                "poseRotation": 0.0,
-                                "poseParameters": []
-                              },
-                              {
-                                "$id": "20",
-                                "name": "69805519",
-                                "position": {
-                                  "x": 15.617,
-                                  "y": 0.0,
-                                  "z": -4.363
-                                },
-                                "connectedTo": [
-                                  {
-                                    "$ref": "13"
-                                  },
-                                  {
-                                    "$id": "21",
-                                    "name": "3afb9a18",
-                                    "position": {
-                                      "x": 15.955,
-                                      "y": 0.5157,
-                                      "z": -4.905
-                                    },
-                                    "connectedTo": [
-                                      {
-                                        "$ref": "20"
-                                      }
-                                    ],
-                                    "forwardJump": false,
-                                    "areaType": "Heating",
-                                    "areaLevel": 3,
-                                    "poseRotation": 223.098648,
-                                    "poseParameters": [
-                                      {
-                                        "$id": "22",
-                                        "Name": "LyingSide",
-                                        "Type": "Bool",
-                                        "BoolValue": true,
-                                        "FloatValue": 0.0,
-                                        "IntValue": 0
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "$ref": "12"
-                                  }
-                                ],
-                                "forwardJump": false,
-                                "areaType": "Heating",
-                                "areaLevel": 3,
-                                "poseRotation": 0.0,
-                                "poseParameters": []
-                              }
-                            ],
-                            "forwardJump": false,
-                            "areaType": "NotSet",
-                            "areaLevel": -1,
-                            "poseRotation": 0.0,
-                            "poseParameters": []
-                          },
-                          {
-                            "$ref": "3"
-                          },
-                          {
-                            "$id": "23",
-                            "name": "0f10ac8f",
-                            "position": {
-                              "x": 15.797,
-                              "y": 0.0,
-                              "z": -2.943
-                            },
-                            "connectedTo": [
-                              {
-                                "$ref": "12"
-                              },
-                              {
-                                "$id": "24",
-                                "name": "5fe0a39a",
-                                "position": {
-                                  "x": 16.101,
-                                  "y": 0.4227,
-                                  "z": -3.487
-                                },
-                                "connectedTo": [
-                                  {
-                                    "$ref": "23"
-                                  }
-                                ],
-                                "forwardJump": false,
-                                "areaType": "Library",
-                                "areaLevel": 1,
-                                "poseRotation": 312.68866,
-                                "poseParameters": [
-                                  {
-                                    "$id": "25",
-                                    "Name": "LyingSide",
-                                    "Type": "Bool",
-                                    "BoolValue": true,
-                                    "FloatValue": 0.0,
-                                    "IntValue": 0
-                                  }
-                                ]
-                              },
-                              {
-                                "$id": "26",
-                                "name": "caasdv (2)",
-                                "position": {
-                                  "x": 15.669,
-                                  "y": 0.0,
-                                  "z": -1.343
-                                },
-                                "connectedTo": [
-                                  {
-                                    "$id": "27",
-                                    "name": "restspace3_bed",
-                                    "position": {
-                                      "x": 15.67,
-                                      "y": 0.667,
-                                      "z": -0.744
-                                    },
-                                    "connectedTo": [
-                                      {
-                                        "$id": "28",
-                                        "name": "restspace3_bed_center",
+                                        "$id": "14",
+                                        "name": "0e35_Heating_L1",
                                         "position": {
-                                          "x": 16.0603,
-                                          "y": 0.667,
-                                          "z": -0.5576
+                                          "x": 14.389,
+                                          "y": 0.0,
+                                          "z": -4.969
                                         },
                                         "connectedTo": [
                                           {
-                                            "$ref": "27"
+                                            "$ref": "13"
+                                          },
+                                          {
+                                            "$id": "15",
+                                            "name": "7b0e_Heating_L1_POSE",
+                                            "position": {
+                                              "x": 14.3222,
+                                              "y": 0.5158,
+                                              "z": -5.6864
+                                            },
+                                            "connectedTo": [
+                                              {
+                                                "$ref": "14"
+                                              }
+                                            ],
+                                            "forwardJump": false,
+                                            "areaType": "Heating",
+                                            "areaLevel": 1,
+                                            "poseRotation": 41.2075348,
+                                            "poseParameters": [
+                                              {
+                                                "$id": "16",
+                                                "Name": "LyingBelly",
+                                                "Type": "Bool",
+                                                "BoolValue": true,
+                                                "FloatValue": 0.0,
+                                                "IntValue": 0
+                                              }
+                                            ]
                                           }
                                         ],
                                         "forwardJump": false,
-                                        "areaType": "RestSpace",
+                                        "areaType": "Heating",
+                                        "areaLevel": 1,
+                                        "poseRotation": 0.0,
+                                        "poseParameters": []
+                                      },
+                                      {
+                                        "$id": "17",
+                                        "name": "faae_Heating_L2",
+                                        "position": {
+                                          "x": 14.254,
+                                          "y": 0.0,
+                                          "z": -4.908
+                                        },
+                                        "connectedTo": [
+                                          {
+                                            "$ref": "13"
+                                          },
+                                          {
+                                            "$id": "18",
+                                            "name": "e6f3_Heating_L2_POSE",
+                                            "position": {
+                                              "x": 14.195,
+                                              "y": 0.5142,
+                                              "z": -5.423
+                                            },
+                                            "connectedTo": [
+                                              {
+                                                "$ref": "17"
+                                              }
+                                            ],
+                                            "forwardJump": false,
+                                            "areaType": "Heating",
+                                            "areaLevel": 2,
+                                            "poseRotation": 83.11946,
+                                            "poseParameters": [
+                                              {
+                                                "$id": "19",
+                                                "Name": "LyingSide",
+                                                "Type": "Bool",
+                                                "BoolValue": true,
+                                                "FloatValue": 0.0,
+                                                "IntValue": 0
+                                              }
+                                            ]
+                                          }
+                                        ],
+                                        "forwardJump": false,
+                                        "areaType": "Heating",
+                                        "areaLevel": 2,
+                                        "poseRotation": 0.0,
+                                        "poseParameters": []
+                                      },
+                                      {
+                                        "$id": "20",
+                                        "name": "f001_Heating_L3",
+                                        "position": {
+                                          "x": 15.617,
+                                          "y": 0.0,
+                                          "z": -4.363
+                                        },
+                                        "connectedTo": [
+                                          {
+                                            "$ref": "13"
+                                          },
+                                          {
+                                            "$id": "21",
+                                            "name": "af18_Heating_L3_POSE",
+                                            "position": {
+                                              "x": 15.955,
+                                              "y": 0.5157,
+                                              "z": -4.905
+                                            },
+                                            "connectedTo": [
+                                              {
+                                                "$ref": "20"
+                                              }
+                                            ],
+                                            "forwardJump": false,
+                                            "areaType": "Heating",
+                                            "areaLevel": 3,
+                                            "poseRotation": 223.098648,
+                                            "poseParameters": [
+                                              {
+                                                "$id": "22",
+                                                "Name": "LyingSide",
+                                                "Type": "Bool",
+                                                "BoolValue": true,
+                                                "FloatValue": 0.0,
+                                                "IntValue": 0
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "$ref": "12"
+                                          }
+                                        ],
+                                        "forwardJump": false,
+                                        "areaType": "Heating",
                                         "areaLevel": 3,
-                                        "poseRotation": 173.629562,
+                                        "poseRotation": 0.0,
+                                        "poseParameters": []
+                                      }
+                                    ],
+                                    "forwardJump": false,
+                                    "areaType": "NotSet",
+                                    "areaLevel": -1,
+                                    "poseRotation": 161.044632,
+                                    "poseParameters": []
+                                  },
+                                  {
+                                    "$ref": "3"
+                                  },
+                                  {
+                                    "$id": "23",
+                                    "name": "fe02_Library_L1",
+                                    "position": {
+                                      "x": 15.797,
+                                      "y": 0.0,
+                                      "z": -2.943
+                                    },
+                                    "connectedTo": [
+                                      {
+                                        "$ref": "12"
+                                      },
+                                      {
+                                        "$id": "24",
+                                        "name": "f3d0_Library_L1_POSE",
+                                        "position": {
+                                          "x": 16.101,
+                                          "y": 0.4227,
+                                          "z": -3.487
+                                        },
+                                        "connectedTo": [
+                                          {
+                                            "$ref": "23"
+                                          }
+                                        ],
+                                        "forwardJump": false,
+                                        "areaType": "Library",
+                                        "areaLevel": 1,
+                                        "poseRotation": 312.68866,
                                         "poseParameters": [
                                           {
-                                            "$id": "29",
+                                            "$id": "25",
                                             "Name": "LyingSide",
                                             "Type": "Bool",
                                             "BoolValue": true,
@@ -399,51 +346,126 @@
                                         ]
                                       },
                                       {
-                                        "$ref": "26"
+                                        "$id": "26",
+                                        "name": "1e83_Waypoint",
+                                        "position": {
+                                          "x": 15.684,
+                                          "y": 0.0,
+                                          "z": -1.168
+                                        },
+                                        "connectedTo": [
+                                          {
+                                            "$id": "27",
+                                            "name": "c595_RestSpace_L3",
+                                            "position": {
+                                              "x": 15.67,
+                                              "y": 0.667,
+                                              "z": -0.744
+                                            },
+                                            "connectedTo": [
+                                              {
+                                                "$id": "28",
+                                                "name": "f07b_RestSpace_L3_POSE",
+                                                "position": {
+                                                  "x": 16.0603,
+                                                  "y": 0.667,
+                                                  "z": -0.5576
+                                                },
+                                                "connectedTo": [
+                                                  {
+                                                    "$ref": "27"
+                                                  }
+                                                ],
+                                                "forwardJump": false,
+                                                "areaType": "RestSpace",
+                                                "areaLevel": 3,
+                                                "poseRotation": 173.629562,
+                                                "poseParameters": [
+                                                  {
+                                                    "$id": "29",
+                                                    "Name": "LyingSide",
+                                                    "Type": "Bool",
+                                                    "BoolValue": true,
+                                                    "FloatValue": 0.0,
+                                                    "IntValue": 0
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "$ref": "26"
+                                              }
+                                            ],
+                                            "forwardJump": false,
+                                            "areaType": "RestSpace",
+                                            "areaLevel": 3,
+                                            "poseRotation": 0.0,
+                                            "poseParameters": []
+                                          },
+                                          {
+                                            "$id": "30",
+                                            "name": "a57a_RestSpace_L2_POSE",
+                                            "position": {
+                                              "x": 15.7150927,
+                                              "y": 0.596,
+                                              "z": -0.6032072
+                                            },
+                                            "connectedTo": [
+                                              {
+                                                "$ref": "26"
+                                              }
+                                            ],
+                                            "forwardJump": false,
+                                            "areaType": "RestSpace",
+                                            "areaLevel": 2,
+                                            "poseRotation": 180.907837,
+                                            "poseParameters": [
+                                              {
+                                                "$id": "31",
+                                                "Name": "LyingSide",
+                                                "Type": "Bool",
+                                                "BoolValue": true,
+                                                "FloatValue": 0.0,
+                                                "IntValue": 0
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "$ref": "5"
+                                          },
+                                          {
+                                            "$ref": "12"
+                                          },
+                                          {
+                                            "$ref": "23"
+                                          }
+                                        ],
+                                        "forwardJump": false,
+                                        "areaType": "NotSet",
+                                        "areaLevel": -1,
+                                        "poseRotation": 0.0,
+                                        "poseParameters": []
+                                      },
+                                      {
+                                        "$ref": "5"
                                       }
                                     ],
                                     "forwardJump": false,
-                                    "areaType": "RestSpace",
-                                    "areaLevel": 3,
+                                    "areaType": "Library",
+                                    "areaLevel": 1,
                                     "poseRotation": 0.0,
                                     "poseParameters": []
-                                  },
-                                  {
-                                    "$id": "30",
-                                    "name": "restspace2_bed",
-                                    "position": {
-                                      "x": 15.7150927,
-                                      "y": 0.596,
-                                      "z": -0.6032072
-                                    },
-                                    "connectedTo": [
-                                      {
-                                        "$ref": "26"
-                                      }
-                                    ],
-                                    "forwardJump": false,
-                                    "areaType": "RestSpace",
-                                    "areaLevel": 2,
-                                    "poseRotation": 180.907837,
-                                    "poseParameters": [
-                                      {
-                                        "$id": "31",
-                                        "Name": "LyingSide",
-                                        "Type": "Bool",
-                                        "BoolValue": true,
-                                        "FloatValue": 0.0,
-                                        "IntValue": 0
-                                      }
-                                    ]
                                   },
                                   {
                                     "$ref": "5"
                                   },
                                   {
-                                    "$ref": "12"
+                                    "$ref": "20"
                                   },
                                   {
-                                    "$ref": "23"
+                                    "$ref": "26"
+                                  },
+                                  {
+                                    "$ref": "11"
                                   }
                                 ],
                                 "forwardJump": false,
@@ -453,36 +475,48 @@
                                 "poseParameters": []
                               },
                               {
+                                "$ref": "10"
+                              },
+                              {
                                 "$ref": "5"
+                              },
+                              {
+                                "$ref": "3"
                               }
                             ],
                             "forwardJump": false,
-                            "areaType": "Library",
+                            "areaType": "RestSpace",
                             "areaLevel": 1,
                             "poseRotation": 0.0,
                             "poseParameters": []
-                          },
-                          {
-                            "$ref": "5"
-                          },
-                          {
-                            "$ref": "20"
-                          },
-                          {
-                            "$ref": "26"
                           }
                         ],
-                        "forwardJump": false,
-                        "areaType": "NotSet",
-                        "areaLevel": -1,
-                        "poseRotation": 0.0,
-                        "poseParameters": []
+                        "forwardJump": true,
+                        "areaType": "RestSpace",
+                        "areaLevel": 1,
+                        "poseRotation": 139.590744,
+                        "poseParameters": [
+                          {
+                            "$id": "32",
+                            "Name": "LyingSide",
+                            "Type": "Bool",
+                            "BoolValue": true,
+                            "FloatValue": 0.0,
+                            "IntValue": 0
+                          }
+                        ]
+                      },
+                      {
+                        "$ref": "12"
                       },
                       {
                         "$ref": "26"
                       },
                       {
                         "$ref": "23"
+                      },
+                      {
+                        "$ref": "11"
                       }
                     ],
                     "forwardJump": false,
@@ -508,8 +542,8 @@
                 "$ref": "12"
               },
               {
-                "$id": "32",
-                "name": "ea87b525",
+                "$id": "33",
+                "name": "8e0f_MedStation_L2",
                 "position": {
                   "x": 11.672,
                   "y": 0.0,
@@ -520,38 +554,47 @@
                     "$ref": "1"
                   },
                   {
-                    "$id": "33",
-                    "name": "d790e074",
+                    "$id": "34",
+                    "name": "9142_MedStation_L2",
                     "position": {
-                      "x": 11.421,
+                      "x": 11.415,
                       "y": 0.0,
-                      "z": -0.899
+                      "z": -1.004
                     },
                     "connectedTo": [
                       {
                         "$ref": "1"
                       },
                       {
-                        "$id": "34",
-                        "name": "medstation2_chair",
+                        "$id": "35",
+                        "name": "9da9_MedStation_L2_POSE",
                         "position": {
-                          "x": 11.4281,
+                          "x": 11.484,
                           "y": 0.5793,
-                          "z": -0.4393
+                          "z": -0.417
                         },
                         "connectedTo": [
                           {
-                            "$ref": "33"
+                            "$ref": "34"
                           }
                         ],
                         "forwardJump": false,
                         "areaType": "MedStation",
                         "areaLevel": 2,
-                        "poseRotation": 0.0,
-                        "poseParameters": []
+                        "poseRotation": 267.247131,
+                        "poseParameters": [
+                          {
+                            "$id": "36",
+                            "Name": "LyingBelly",
+                            "Type": "Bool",
+                            "BoolValue": true,
+                            "FloatValue": 0.0,
+                            "IntValue": 0
+                          }
+                        ]
                       },
                       {
-                        "$ref": "32"
+                        "$ref": "33"
                       }
                     ],
                     "forwardJump": false,
@@ -574,8 +617,8 @@
                 "poseParameters": []
               },
               {
-                "$id": "35",
-                "name": "f134b50f",
+                "$id": "37",
+                "name": "209a_MedStation_L1",
                 "position": {
                   "x": 11.135,
                   "y": 0.0,
@@ -586,8 +629,8 @@
                     "$ref": "1"
                   },
                   {
-                    "$id": "36",
-                    "name": "6787bbb1",
+                    "$id": "38",
+                    "name": "3ac6_MedStation_L1_POSE",
                     "position": {
                       "x": 11.267,
                       "y": 0.172,
@@ -595,14 +638,23 @@
                     },
                     "connectedTo": [
                       {
-                        "$ref": "35"
+                        "$ref": "37"
                       }
                     ],
                     "forwardJump": true,
-                    "areaType": "NotSet",
-                    "areaLevel": -1,
-                    "poseRotation": 0.0,
-                    "poseParameters": []
+                    "areaType": "MedStation",
+                    "areaLevel": 1,
+                    "poseRotation": 232.468079,
+                    "poseParameters": [
+                      {
+                        "$id": "39",
+                        "Name": "Sitting",
+                        "Type": "Bool",
+                        "BoolValue": true,
+                        "FloatValue": 0.0,
+                        "IntValue": 0
+                      }
+                    ]
                   },
                   {
                     "$ref": "3"
@@ -613,6 +665,9 @@
                 "areaLevel": 1,
                 "poseRotation": 0.0,
                 "poseParameters": []
+              },
+              {
+                "$ref": "11"
               }
             ],
             "forwardJump": false,
@@ -625,8 +680,8 @@
             "$ref": "1"
           },
           {
-            "$id": "37",
-            "name": "350e620c",
+            "$id": "40",
+            "name": "b203_Waypoint",
             "position": {
               "x": 8.589,
               "y": 0.0,
@@ -640,8 +695,8 @@
                 "$ref": "2"
               },
               {
-                "$id": "38",
-                "name": "e364807a",
+                "$id": "41",
+                "name": "3fca_Waypoint",
                 "position": {
                   "x": 7.135,
                   "y": 0.0,
@@ -649,8 +704,8 @@
                 },
                 "connectedTo": [
                   {
-                    "$id": "39",
-                    "name": "69775fbe",
+                    "$id": "42",
+                    "name": "3f27_Waypoint",
                     "position": {
                       "x": 4.707,
                       "y": 0.0,
@@ -658,11 +713,11 @@
                     },
                     "connectedTo": [
                       {
-                        "$ref": "38"
+                        "$ref": "41"
                       },
                       {
-                        "$id": "40",
-                        "name": "b1c08b33",
+                        "$id": "43",
+                        "name": "c4b8_Waypoint",
                         "position": {
                           "x": 2.595,
                           "y": 0.0,
@@ -670,11 +725,11 @@
                         },
                         "connectedTo": [
                           {
-                            "$ref": "39"
+                            "$ref": "42"
                           },
                           {
-                            "$id": "41",
-                            "name": "cc64b8d7",
+                            "$id": "44",
+                            "name": "1ea8_WaterCollector_L3",
                             "position": {
                               "x": 2.108,
                               "y": 0.0,
@@ -682,11 +737,11 @@
                             },
                             "connectedTo": [
                               {
-                                "$ref": "40"
+                                "$ref": "43"
                               },
                               {
-                                "$id": "42",
-                                "name": "20cd6246",
+                                "$id": "45",
+                                "name": "2b63_WaterCollector_L3",
                                 "position": {
                                   "x": 2.765,
                                   "y": 0.846,
@@ -694,8 +749,8 @@
                                 },
                                 "connectedTo": [
                                   {
-                                    "$id": "43",
-                                    "name": "73354087",
+                                    "$id": "46",
+                                    "name": "e107_WaterCollector_L3",
                                     "position": {
                                       "x": 3.234,
                                       "y": 1.411,
@@ -703,8 +758,8 @@
                                     },
                                     "connectedTo": [
                                       {
-                                        "$id": "44",
-                                        "name": "watercol3_top",
+                                        "$id": "47",
+                                        "name": "6e07_WaterCollector_L3",
                                         "position": {
                                           "x": 4.082,
                                           "y": 1.666,
@@ -712,11 +767,11 @@
                                         },
                                         "connectedTo": [
                                           {
-                                            "$ref": "43"
+                                            "$ref": "46"
                                           },
                                           {
-                                            "$id": "45",
-                                            "name": "bd5db8e4",
+                                            "$id": "48",
+                                            "name": "a16b_WaterCollector_L3",
                                             "position": {
                                               "x": 4.521,
                                               "y": 1.709,
@@ -724,8 +779,8 @@
                                             },
                                             "connectedTo": [
                                               {
-                                                "$id": "46",
-                                                "name": "5f5f3c05",
+                                                "$id": "49",
+                                                "name": "0d5b_WaterCollector_L3",
                                                 "position": {
                                                   "x": 4.669,
                                                   "y": 1.671,
@@ -733,7 +788,7 @@
                                                 },
                                                 "connectedTo": [
                                                   {
-                                                    "$ref": "39"
+                                                    "$ref": "42"
                                                   }
                                                 ],
                                                 "forwardJump": false,
@@ -764,12 +819,1391 @@
                                     "poseParameters": []
                                   },
                                   {
-                                    "$ref": "41"
+                                    "$ref": "44"
                                   }
                                 ],
                                 "forwardJump": false,
                                 "areaType": "WaterCollector",
                                 "areaLevel": 3,
+                                "poseRotation": 0.0,
+                                "poseParameters": []
+                              },
+                              {
+                                "$id": "50",
+                                "name": "c1fb_BitcoinFarm_AL",
+                                "position": {
+                                  "x": 1.147,
+                                  "y": 0.011,
+                                  "z": -0.263
+                                },
+                                "connectedTo": [
+                                  {
+                                    "$id": "51",
+                                    "name": "42c5_Waypoint",
+                                    "position": {
+                                      "x": -0.376,
+                                      "y": 0.0,
+                                      "z": -0.859
+                                    },
+                                    "connectedTo": [
+                                      {
+                                        "$id": "52",
+                                        "name": "fbb8_Waypoint",
+                                        "position": {
+                                          "x": -1.148,
+                                          "y": 0.0,
+                                          "z": -2.119
+                                        },
+                                        "connectedTo": [
+                                          {
+                                            "$id": "53",
+                                            "name": "21bc_Waypoint",
+                                            "position": {
+                                              "x": -2.43457222,
+                                              "y": 0.0,
+                                              "z": -0.1754334
+                                            },
+                                            "connectedTo": [
+                                              {
+                                                "$id": "54",
+                                                "name": "4b86_Waypoint",
+                                                "position": {
+                                                  "x": -3.62791324,
+                                                  "y": 2.38418579E-07,
+                                                  "z": 1.84881091
+                                                },
+                                                "connectedTo": [
+                                                  {
+                                                    "$id": "55",
+                                                    "name": "5dd0_Waypoint",
+                                                    "position": {
+                                                      "x": -4.467532,
+                                                      "y": 4.76837158E-07,
+                                                      "z": 3.53140783
+                                                    },
+                                                    "connectedTo": [
+                                                      {
+                                                        "$ref": "54"
+                                                      },
+                                                      {
+                                                        "$id": "56",
+                                                        "name": "5aa9_Waypoint",
+                                                        "position": {
+                                                          "x": -4.60407925,
+                                                          "y": 2.38418579E-07,
+                                                          "z": 4.872308
+                                                        },
+                                                        "connectedTo": [
+                                                          {
+                                                            "$id": "57",
+                                                            "name": "2166_Waypoint",
+                                                            "position": {
+                                                              "x": -4.414,
+                                                              "y": 2.38418579E-07,
+                                                              "z": 6.292
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$id": "58",
+                                                                "name": "146e_Waypoint",
+                                                                "position": {
+                                                                  "x": -4.889,
+                                                                  "y": 4.76837158E-07,
+                                                                  "z": 7.225
+                                                                },
+                                                                "connectedTo": [
+                                                                  {
+                                                                    "$ref": "57"
+                                                                  },
+                                                                  {
+                                                                    "$id": "59",
+                                                                    "name": "c3b4_WaterCloset_L3",
+                                                                    "position": {
+                                                                      "x": -6.06,
+                                                                      "y": 0.0,
+                                                                      "z": 6.341
+                                                                    },
+                                                                    "connectedTo": [
+                                                                      {
+                                                                        "$id": "60",
+                                                                        "name": "3618_WaterCloset_L3",
+                                                                        "position": {
+                                                                          "x": -6.371,
+                                                                          "y": 0.163,
+                                                                          "z": 6.197
+                                                                        },
+                                                                        "connectedTo": [
+                                                                          {
+                                                                            "$id": "61",
+                                                                            "name": "2806_WaterCloset_L3_POSE",
+                                                                            "position": {
+                                                                              "x": -6.8583,
+                                                                              "y": 0.6057,
+                                                                              "z": 6.2044
+                                                                            },
+                                                                            "connectedTo": [
+                                                                              {
+                                                                                "$ref": "60"
+                                                                              }
+                                                                            ],
+                                                                            "forwardJump": false,
+                                                                            "areaType": "WaterCloset",
+                                                                            "areaLevel": 3,
+                                                                            "poseRotation": 91.2597656,
+                                                                            "poseParameters": [
+                                                                              {
+                                                                                "$id": "62",
+                                                                                "Name": "Defecating",
+                                                                                "Type": "Bool",
+                                                                                "BoolValue": true,
+                                                                                "FloatValue": 0.0,
+                                                                                "IntValue": 0
+                                                                              }
+                                                                            ]
+                                                                          },
+                                                                          {
+                                                                            "$ref": "59"
+                                                                          }
+                                                                        ],
+                                                                        "forwardJump": false,
+                                                                        "areaType": "WaterCloset",
+                                                                        "areaLevel": 3,
+                                                                        "poseRotation": 0.0,
+                                                                        "poseParameters": []
+                                                                      },
+                                                                      {
+                                                                        "$ref": "58"
+                                                                      }
+                                                                    ],
+                                                                    "forwardJump": false,
+                                                                    "areaType": "WaterCloset",
+                                                                    "areaLevel": 3,
+                                                                    "poseRotation": 0.0,
+                                                                    "poseParameters": []
+                                                                  }
+                                                                ],
+                                                                "forwardJump": false,
+                                                                "areaType": "NotSet",
+                                                                "areaLevel": -1,
+                                                                "poseRotation": 0.0,
+                                                                "poseParameters": []
+                                                              },
+                                                              {
+                                                                "$ref": "56"
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "NotSet",
+                                                            "areaLevel": -1,
+                                                            "poseRotation": 0.0,
+                                                            "poseParameters": []
+                                                          },
+                                                          {
+                                                            "$ref": "55"
+                                                          },
+                                                          {
+                                                            "$id": "63",
+                                                            "name": "ed1f_WaterCloset_L2",
+                                                            "position": {
+                                                              "x": -5.729,
+                                                              "y": 0.0,
+                                                              "z": 4.388
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$ref": "55"
+                                                              },
+                                                              {
+                                                                "$ref": "56"
+                                                              },
+                                                              {
+                                                                "$id": "64",
+                                                                "name": "aa3f_WaterCloset_L2",
+                                                                "position": {
+                                                                  "x": -6.259,
+                                                                  "y": 0.1237,
+                                                                  "z": 4.44
+                                                                },
+                                                                "connectedTo": [
+                                                                  {
+                                                                    "$id": "65",
+                                                                    "name": "e96e_WaterCloset_L2_POSE",
+                                                                    "position": {
+                                                                      "x": -6.8735,
+                                                                      "y": 0.527,
+                                                                      "z": 4.3927
+                                                                    },
+                                                                    "connectedTo": [
+                                                                      {
+                                                                        "$ref": "64"
+                                                                      }
+                                                                    ],
+                                                                    "forwardJump": false,
+                                                                    "areaType": "WaterCloset",
+                                                                    "areaLevel": 2,
+                                                                    "poseRotation": 90.41485,
+                                                                    "poseParameters": [
+                                                                      {
+                                                                        "$id": "66",
+                                                                        "Name": "Defecating",
+                                                                        "Type": "Bool",
+                                                                        "BoolValue": true,
+                                                                        "FloatValue": 0.0,
+                                                                        "IntValue": 0
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  {
+                                                                    "$ref": "63"
+                                                                  }
+                                                                ],
+                                                                "forwardJump": false,
+                                                                "areaType": "WaterCloset",
+                                                                "areaLevel": 2,
+                                                                "poseRotation": 271.734436,
+                                                                "poseParameters": []
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "WaterCloset",
+                                                            "areaLevel": 2,
+                                                            "poseRotation": 0.0,
+                                                            "poseParameters": []
+                                                          }
+                                                        ],
+                                                        "forwardJump": false,
+                                                        "areaType": "NotSet",
+                                                        "areaLevel": -1,
+                                                        "poseRotation": 0.0,
+                                                        "poseParameters": []
+                                                      },
+                                                      {
+                                                        "$ref": "63"
+                                                      }
+                                                    ],
+                                                    "forwardJump": false,
+                                                    "areaType": "NotSet",
+                                                    "areaLevel": -1,
+                                                    "poseRotation": 0.0,
+                                                    "poseParameters": []
+                                                  },
+                                                  {
+                                                    "$ref": "53"
+                                                  }
+                                                ],
+                                                "forwardJump": false,
+                                                "areaType": "NotSet",
+                                                "areaLevel": -1,
+                                                "poseRotation": 0.0,
+                                                "poseParameters": []
+                                              },
+                                              {
+                                                "$ref": "52"
+                                              },
+                                              {
+                                                "$id": "67",
+                                                "name": "5ca5_Waypoint",
+                                                "position": {
+                                                  "x": -1.585,
+                                                  "y": 0.0,
+                                                  "z": 2.137
+                                                },
+                                                "connectedTo": [
+                                                  {
+                                                    "$id": "68",
+                                                    "name": "9296_Waypoint",
+                                                    "position": {
+                                                      "x": -0.902,
+                                                      "y": 0.0,
+                                                      "z": 5.601
+                                                    },
+                                                    "connectedTo": [
+                                                      {
+                                                        "$ref": "67"
+                                                      },
+                                                      {
+                                                        "$id": "69",
+                                                        "name": "9e74_Workbench_L1",
+                                                        "position": {
+                                                          "x": 0.263,
+                                                          "y": 0.0,
+                                                          "z": 5.894
+                                                        },
+                                                        "connectedTo": [
+                                                          {
+                                                            "$id": "70",
+                                                            "name": "9a45_Workbench_L1_POSE",
+                                                            "position": {
+                                                              "x": 0.804,
+                                                              "y": 0.891,
+                                                              "z": 5.945
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$ref": "69"
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "Workbench",
+                                                            "areaLevel": 1,
+                                                            "poseRotation": 354.120331,
+                                                            "poseParameters": [
+                                                              {
+                                                                "$id": "71",
+                                                                "Name": "LyingBelly",
+                                                                "Type": "Bool",
+                                                                "BoolValue": true,
+                                                                "FloatValue": 0.0,
+                                                                "IntValue": 0
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "$ref": "68"
+                                                          }
+                                                        ],
+                                                        "forwardJump": false,
+                                                        "areaType": "Workbench",
+                                                        "areaLevel": 1,
+                                                        "poseRotation": 0.0,
+                                                        "poseParameters": []
+                                                      },
+                                                      {
+                                                        "$id": "72",
+                                                        "name": "6e42_Workbench_L2",
+                                                        "position": {
+                                                          "x": 0.336,
+                                                          "y": 0.0,
+                                                          "z": 5.797
+                                                        },
+                                                        "connectedTo": [
+                                                          {
+                                                            "$id": "73",
+                                                            "name": "f494_Workbench_L2_POSE",
+                                                            "position": {
+                                                              "x": 0.773,
+                                                              "y": 0.893,
+                                                              "z": 5.893
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$ref": "72"
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "Workbench",
+                                                            "areaLevel": 2,
+                                                            "poseRotation": 1.16966879,
+                                                            "poseParameters": [
+                                                              {
+                                                                "$id": "74",
+                                                                "Name": "LyingBelly",
+                                                                "Type": "Bool",
+                                                                "BoolValue": true,
+                                                                "FloatValue": 0.0,
+                                                                "IntValue": 0
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "$ref": "68"
+                                                          }
+                                                        ],
+                                                        "forwardJump": false,
+                                                        "areaType": "Workbench",
+                                                        "areaLevel": 2,
+                                                        "poseRotation": 0.0,
+                                                        "poseParameters": []
+                                                      },
+                                                      {
+                                                        "$id": "75",
+                                                        "name": "243b_Workbench_L3",
+                                                        "position": {
+                                                          "x": 0.019,
+                                                          "y": 0.0,
+                                                          "z": 5.522
+                                                        },
+                                                        "connectedTo": [
+                                                          {
+                                                            "$id": "76",
+                                                            "name": "20ab_Workbench_L3_POSE",
+                                                            "position": {
+                                                              "x": 0.58,
+                                                              "y": 0.891,
+                                                              "z": 5.632
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$ref": "75"
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "Workbench",
+                                                            "areaLevel": 3,
+                                                            "poseRotation": 343.864075,
+                                                            "poseParameters": [
+                                                              {
+                                                                "$id": "77",
+                                                                "Name": "LyingBelly",
+                                                                "Type": "Bool",
+                                                                "BoolValue": true,
+                                                                "FloatValue": 0.0,
+                                                                "IntValue": 0
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "$ref": "68"
+                                                          }
+                                                        ],
+                                                        "forwardJump": false,
+                                                        "areaType": "Workbench",
+                                                        "areaLevel": 3,
+                                                        "poseRotation": 0.0,
+                                                        "poseParameters": []
+                                                      }
+                                                    ],
+                                                    "forwardJump": false,
+                                                    "areaType": "NotSet",
+                                                    "areaLevel": -1,
+                                                    "poseRotation": 0.0,
+                                                    "poseParameters": []
+                                                  },
+                                                  {
+                                                    "$ref": "53"
+                                                  },
+                                                  {
+                                                    "$id": "78",
+                                                    "name": "9d16_IntelligenceCenter_L1",
+                                                    "position": {
+                                                      "x": 0.242,
+                                                      "y": 0.0,
+                                                      "z": 2.083
+                                                    },
+                                                    "connectedTo": [
+                                                      {
+                                                        "$id": "79",
+                                                        "name": "3751_IntelligenceCenter_L1_POSE",
+                                                        "position": {
+                                                          "x": 0.695,
+                                                          "y": 0.85,
+                                                          "z": 2.119
+                                                        },
+                                                        "connectedTo": [
+                                                          {
+                                                            "$ref": "67"
+                                                          }
+                                                        ],
+                                                        "forwardJump": false,
+                                                        "areaType": "IntelligenceCenter",
+                                                        "areaLevel": 1,
+                                                        "poseRotation": 354.9018,
+                                                        "poseParameters": [
+                                                          {
+                                                            "$id": "80",
+                                                            "Name": "LyingBelly",
+                                                            "Type": "Bool",
+                                                            "BoolValue": true,
+                                                            "FloatValue": 0.0,
+                                                            "IntValue": 0
+                                                          }
+                                                        ]
+                                                      }
+                                                    ],
+                                                    "forwardJump": false,
+                                                    "areaType": "IntelligenceCenter",
+                                                    "areaLevel": 1,
+                                                    "poseRotation": 0.0,
+                                                    "poseParameters": []
+                                                  },
+                                                  {
+                                                    "$id": "81",
+                                                    "name": "117c_Waypoint",
+                                                    "position": {
+                                                      "x": 0.288,
+                                                      "y": 0.0,
+                                                      "z": 1.312
+                                                    },
+                                                    "connectedTo": [
+                                                      {
+                                                        "$id": "82",
+                                                        "name": "2b7e_BitcoinFarm_AL",
+                                                        "position": {
+                                                          "x": 0.734,
+                                                          "y": 0.858,
+                                                          "z": 0.96
+                                                        },
+                                                        "connectedTo": [
+                                                          {
+                                                            "$id": "83",
+                                                            "name": "666b_BitcoinFarm_AL",
+                                                            "position": {
+                                                              "x": 0.935,
+                                                              "y": 0.858,
+                                                              "z": 0.709
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$id": "84",
+                                                                "name": "10de_BitcoinFarm_L1_POSE",
+                                                                "position": {
+                                                                  "x": 1.17,
+                                                                  "y": 0.466,
+                                                                  "z": 0.219
+                                                                },
+                                                                "connectedTo": [
+                                                                  {
+                                                                    "$ref": "50"
+                                                                  }
+                                                                ],
+                                                                "forwardJump": false,
+                                                                "areaType": "BitcoinFarm",
+                                                                "areaLevel": 1,
+                                                                "poseRotation": 179.969986,
+                                                                "poseParameters": [
+                                                                  {
+                                                                    "$id": "85",
+                                                                    "Name": "LyingBelly",
+                                                                    "Type": "Bool",
+                                                                    "BoolValue": true,
+                                                                    "FloatValue": 0.0,
+                                                                    "IntValue": 0
+                                                                  }
+                                                                ]
+                                                              },
+                                                              {
+                                                                "$id": "86",
+                                                                "name": "6780_BitcoinFarm_AL",
+                                                                "position": {
+                                                                  "x": 1.149,
+                                                                  "y": 0.938,
+                                                                  "z": 0.469
+                                                                },
+                                                                "connectedTo": [
+                                                                  {
+                                                                    "$id": "87",
+                                                                    "name": "0337_BitcoinFarm_L2_POSE",
+                                                                    "position": {
+                                                                      "x": 1.156,
+                                                                      "y": 0.937999964,
+                                                                      "z": 0.276
+                                                                    },
+                                                                    "connectedTo": [
+                                                                      {
+                                                                        "$ref": "50"
+                                                                      }
+                                                                    ],
+                                                                    "forwardJump": false,
+                                                                    "areaType": "BitcoinFarm",
+                                                                    "areaLevel": 2,
+                                                                    "poseRotation": 180.0,
+                                                                    "poseParameters": [
+                                                                      {
+                                                                        "$id": "88",
+                                                                        "Name": "LyingBelly",
+                                                                        "Type": "Bool",
+                                                                        "BoolValue": true,
+                                                                        "FloatValue": 0.0,
+                                                                        "IntValue": 0
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  {
+                                                                    "$id": "89",
+                                                                    "name": "113e_BitcoinFarm_L3_POSE",
+                                                                    "position": {
+                                                                      "x": 1.157,
+                                                                      "y": 0.938,
+                                                                      "z": 0.2
+                                                                    },
+                                                                    "connectedTo": [
+                                                                      {
+                                                                        "$ref": "50"
+                                                                      }
+                                                                    ],
+                                                                    "forwardJump": false,
+                                                                    "areaType": "BitcoinFarm",
+                                                                    "areaLevel": 3,
+                                                                    "poseRotation": 180.0,
+                                                                    "poseParameters": [
+                                                                      {
+                                                                        "$id": "90",
+                                                                        "Name": "LyingBelly",
+                                                                        "Type": "Bool",
+                                                                        "BoolValue": true,
+                                                                        "FloatValue": 0.0,
+                                                                        "IntValue": 0
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ],
+                                                                "forwardJump": false,
+                                                                "areaType": "BitcoinFarm",
+                                                                "areaLevel": -1,
+                                                                "poseRotation": 0.0,
+                                                                "poseParameters": []
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "BitcoinFarm",
+                                                            "areaLevel": -1,
+                                                            "poseRotation": 0.0,
+                                                            "poseParameters": []
+                                                          },
+                                                          {
+                                                            "$id": "91",
+                                                            "name": "7ed2_IntelligenceCenter_L3_POSE",
+                                                            "position": {
+                                                              "x": 0.757,
+                                                              "y": 0.85800004,
+                                                              "z": 2.01
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$ref": "81"
+                                                              },
+                                                              {
+                                                                "$ref": "82"
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "IntelligenceCenter",
+                                                            "areaLevel": 3,
+                                                            "poseRotation": 202.501053,
+                                                            "poseParameters": [
+                                                              {
+                                                                "$id": "92",
+                                                                "Name": "LyingSide",
+                                                                "Type": "Bool",
+                                                                "BoolValue": true,
+                                                                "FloatValue": 0.0,
+                                                                "IntValue": 0
+                                                              }
+                                                            ]
+                                                          }
+                                                        ],
+                                                        "forwardJump": false,
+                                                        "areaType": "BitcoinFarm",
+                                                        "areaLevel": -1,
+                                                        "poseRotation": 0.0,
+                                                        "poseParameters": []
+                                                      },
+                                                      {
+                                                        "$id": "93",
+                                                        "name": "6b25_IntelligenceCenter_L2_POSE",
+                                                        "position": {
+                                                          "x": 0.7264,
+                                                          "y": 0.856,
+                                                          "z": 1.115
+                                                        },
+                                                        "connectedTo": [
+                                                          {
+                                                            "$id": "94",
+                                                            "name": "109f_IntelligenceCenter_L2_POSE",
+                                                            "position": {
+                                                              "x": 0.7057,
+                                                              "y": 0.855999947,
+                                                              "z": 2.1877
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$ref": "93"
+                                                              },
+                                                              {
+                                                                "$id": "95",
+                                                                "name": "50bb_IntelligenceCenter_L2",
+                                                                "position": {
+                                                                  "x": 0.153,
+                                                                  "y": 0.0,
+                                                                  "z": 2.126
+                                                                },
+                                                                "connectedTo": [
+                                                                  {
+                                                                    "$ref": "94"
+                                                                  },
+                                                                  {
+                                                                    "$ref": "81"
+                                                                  }
+                                                                ],
+                                                                "forwardJump": false,
+                                                                "areaType": "IntelligenceCenter",
+                                                                "areaLevel": 2,
+                                                                "poseRotation": 0.0,
+                                                                "poseParameters": []
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "IntelligenceCenter",
+                                                            "areaLevel": 2,
+                                                            "poseRotation": 192.29274,
+                                                            "poseParameters": [
+                                                              {
+                                                                "$id": "96",
+                                                                "Name": "LyingSide",
+                                                                "Type": "Bool",
+                                                                "BoolValue": true,
+                                                                "FloatValue": 0.0,
+                                                                "IntValue": 0
+                                                              }
+                                                            ]
+                                                          }
+                                                        ],
+                                                        "forwardJump": false,
+                                                        "areaType": "IntelligenceCenter",
+                                                        "areaLevel": 2,
+                                                        "poseRotation": 309.6646,
+                                                        "poseParameters": [
+                                                          {
+                                                            "$id": "97",
+                                                            "Name": "Sitting",
+                                                            "Type": "Bool",
+                                                            "BoolValue": true,
+                                                            "FloatValue": 0.0,
+                                                            "IntValue": 0
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "$ref": "95"
+                                                      },
+                                                      {
+                                                        "$ref": "67"
+                                                      },
+                                                      {
+                                                        "$ref": "53"
+                                                      },
+                                                      {
+                                                        "$ref": "91"
+                                                      }
+                                                    ],
+                                                    "forwardJump": false,
+                                                    "areaType": "NotSet",
+                                                    "areaLevel": -1,
+                                                    "poseRotation": 0.0,
+                                                    "poseParameters": []
+                                                  },
+                                                  {
+                                                    "$ref": "95"
+                                                  },
+                                                  {
+                                                    "$ref": "51"
+                                                  }
+                                                ],
+                                                "forwardJump": false,
+                                                "areaType": "NotSet",
+                                                "areaLevel": -1,
+                                                "poseRotation": 0.0,
+                                                "poseParameters": []
+                                              },
+                                              {
+                                                "$ref": "81"
+                                              },
+                                              {
+                                                "$ref": "51"
+                                              },
+                                              {
+                                                "$id": "98",
+                                                "name": "2be7_Waypoint",
+                                                "position": {
+                                                  "x": -2.876,
+                                                  "y": 0.0,
+                                                  "z": -2.717
+                                                },
+                                                "connectedTo": [
+                                                  {
+                                                    "$id": "99",
+                                                    "name": "668c_Waypoint",
+                                                    "position": {
+                                                      "x": -4.486,
+                                                      "y": 0.0,
+                                                      "z": -4.186
+                                                    },
+                                                    "connectedTo": [
+                                                      {
+                                                        "$id": "100",
+                                                        "name": "7022_Waypoint",
+                                                        "position": {
+                                                          "x": -6.122,
+                                                          "y": 0.0,
+                                                          "z": -5.779
+                                                        },
+                                                        "connectedTo": [
+                                                          {
+                                                            "$id": "101",
+                                                            "name": "b41d_Security_L0_POSE",
+                                                            "position": {
+                                                              "x": -8.824,
+                                                              "y": 0.0309,
+                                                              "z": -7.168
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$ref": "100"
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "Security",
+                                                            "areaLevel": 0,
+                                                            "poseRotation": 37.94974,
+                                                            "poseParameters": [
+                                                              {
+                                                                "$id": "102",
+                                                                "Name": "Defecating",
+                                                                "Type": "Bool",
+                                                                "BoolValue": true,
+                                                                "FloatValue": 0.0,
+                                                                "IntValue": 0
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "$id": "103",
+                                                            "name": "a168_Security_L1_POSE",
+                                                            "position": {
+                                                              "x": -7.741,
+                                                              "y": 0.0,
+                                                              "z": -8.661
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$ref": "100"
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "Security",
+                                                            "areaLevel": 1,
+                                                            "poseRotation": 0.0,
+                                                            "poseParameters": [
+                                                              {
+                                                                "$id": "104",
+                                                                "Name": "Defecating",
+                                                                "Type": "Bool",
+                                                                "BoolValue": true,
+                                                                "FloatValue": 0.0,
+                                                                "IntValue": 0
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "$id": "105",
+                                                            "name": "60f9_Security_L2_POSE",
+                                                            "position": {
+                                                              "x": -7.476,
+                                                              "y": 0.0,
+                                                              "z": -8.233
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$ref": "100"
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "Security",
+                                                            "areaLevel": 2,
+                                                            "poseRotation": 0.0,
+                                                            "poseParameters": [
+                                                              {
+                                                                "$id": "106",
+                                                                "Name": "Defecating",
+                                                                "Type": "Bool",
+                                                                "BoolValue": true,
+                                                                "FloatValue": 0.0,
+                                                                "IntValue": 0
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "$ref": "99"
+                                                          }
+                                                        ],
+                                                        "forwardJump": false,
+                                                        "areaType": "NotSet",
+                                                        "areaLevel": -1,
+                                                        "poseRotation": 0.0,
+                                                        "poseParameters": []
+                                                      },
+                                                      {
+                                                        "$ref": "98"
+                                                      }
+                                                    ],
+                                                    "forwardJump": false,
+                                                    "areaType": "NotSet",
+                                                    "areaLevel": -1,
+                                                    "poseRotation": 0.0,
+                                                    "poseParameters": []
+                                                  },
+                                                  {
+                                                    "$ref": "52"
+                                                  },
+                                                  {
+                                                    "$ref": "53"
+                                                  },
+                                                  {
+                                                    "$id": "107",
+                                                    "name": "5912_SolarPower_L1",
+                                                    "position": {
+                                                      "x": -2.56,
+                                                      "y": 0.0139,
+                                                      "z": -4.797
+                                                    },
+                                                    "connectedTo": [
+                                                      {
+                                                        "$id": "108",
+                                                        "name": "0864_SolarPower_L1_POSE",
+                                                        "position": {
+                                                          "x": -2.229,
+                                                          "y": 0.7307,
+                                                          "z": -5.173
+                                                        },
+                                                        "connectedTo": [
+                                                          {
+                                                            "$ref": "107"
+                                                          }
+                                                        ],
+                                                        "forwardJump": false,
+                                                        "areaType": "SolarPower",
+                                                        "areaLevel": 1,
+                                                        "poseRotation": 342.003021,
+                                                        "poseParameters": [
+                                                          {
+                                                            "$id": "109",
+                                                            "Name": "Sitting",
+                                                            "Type": "Bool",
+                                                            "BoolValue": true,
+                                                            "FloatValue": 0.0,
+                                                            "IntValue": 0
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "$id": "110",
+                                                        "name": "25a2_Waypoint",
+                                                        "position": {
+                                                          "x": 0.534,
+                                                          "y": 0.0,
+                                                          "z": -3.108
+                                                        },
+                                                        "connectedTo": [
+                                                          {
+                                                            "$id": "111",
+                                                            "name": "f5ae_Generator_L3",
+                                                            "position": {
+                                                              "x": 0.666,
+                                                              "y": 0.0,
+                                                              "z": -3.945
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$id": "112",
+                                                                "name": "69ab_Generator_L3",
+                                                                "position": {
+                                                                  "x": 0.669,
+                                                                  "y": 1.112,
+                                                                  "z": -4.64
+                                                                },
+                                                                "connectedTo": [
+                                                                  {
+                                                                    "$id": "113",
+                                                                    "name": "2504_Generator_L3",
+                                                                    "position": {
+                                                                      "x": 0.183,
+                                                                      "y": 1.6487,
+                                                                      "z": -5.255
+                                                                    },
+                                                                    "connectedTo": [
+                                                                      {
+                                                                        "$id": "114",
+                                                                        "name": "f0c9_Generator_L3_POSE",
+                                                                        "position": {
+                                                                          "x": -1.113,
+                                                                          "y": 1.6487,
+                                                                          "z": -5.39
+                                                                        },
+                                                                        "connectedTo": [
+                                                                          {
+                                                                            "$id": "115",
+                                                                            "name": "f88b_Generator_L3",
+                                                                            "position": {
+                                                                              "x": -0.386,
+                                                                              "y": 1.673,
+                                                                              "z": -5.173
+                                                                            },
+                                                                            "connectedTo": [
+                                                                              {
+                                                                                "$id": "116",
+                                                                                "name": "b341_Generator_L3",
+                                                                                "position": {
+                                                                                  "x": -0.304,
+                                                                                  "y": 0.034,
+                                                                                  "z": -4.23
+                                                                                },
+                                                                                "connectedTo": [
+                                                                                  {
+                                                                                    "$ref": "111"
+                                                                                  },
+                                                                                  {
+                                                                                    "$ref": "52"
+                                                                                  },
+                                                                                  {
+                                                                                    "$ref": "110"
+                                                                                  },
+                                                                                  {
+                                                                                    "$ref": "99"
+                                                                                  },
+                                                                                  {
+                                                                                    "$ref": "107"
+                                                                                  }
+                                                                                ],
+                                                                                "forwardJump": false,
+                                                                                "areaType": "Generator",
+                                                                                "areaLevel": 3,
+                                                                                "poseRotation": 0.0,
+                                                                                "poseParameters": []
+                                                                              },
+                                                                              {
+                                                                                "$ref": "113"
+                                                                              }
+                                                                            ],
+                                                                            "forwardJump": false,
+                                                                            "areaType": "Generator",
+                                                                            "areaLevel": 3,
+                                                                            "poseRotation": 0.0,
+                                                                            "poseParameters": []
+                                                                          }
+                                                                        ],
+                                                                        "forwardJump": false,
+                                                                        "areaType": "Generator",
+                                                                        "areaLevel": 3,
+                                                                        "poseRotation": 19.14253,
+                                                                        "poseParameters": [
+                                                                          {
+                                                                            "$id": "117",
+                                                                            "Name": "LyingSide",
+                                                                            "Type": "Bool",
+                                                                            "BoolValue": true,
+                                                                            "FloatValue": 0.0,
+                                                                            "IntValue": 0
+                                                                          }
+                                                                        ]
+                                                                      },
+                                                                      {
+                                                                        "$ref": "115"
+                                                                      }
+                                                                    ],
+                                                                    "forwardJump": false,
+                                                                    "areaType": "Generator",
+                                                                    "areaLevel": 3,
+                                                                    "poseRotation": 0.0,
+                                                                    "poseParameters": []
+                                                                  }
+                                                                ],
+                                                                "forwardJump": false,
+                                                                "areaType": "Generator",
+                                                                "areaLevel": 3,
+                                                                "poseRotation": 0.0,
+                                                                "poseParameters": []
+                                                              },
+                                                              {
+                                                                "$ref": "116"
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "Generator",
+                                                            "areaLevel": 3,
+                                                            "poseRotation": 0.0,
+                                                            "poseParameters": []
+                                                          },
+                                                          {
+                                                            "$ref": "43"
+                                                          },
+                                                          {
+                                                            "$ref": "52"
+                                                          },
+                                                          {
+                                                            "$id": "118",
+                                                            "name": "b36c_Waypoint",
+                                                            "position": {
+                                                              "x": 5.623,
+                                                              "y": 0.0,
+                                                              "z": -4.17
+                                                            },
+                                                            "connectedTo": [
+                                                              {
+                                                                "$ref": "41"
+                                                              },
+                                                              {
+                                                                "$id": "119",
+                                                                "name": "33f8_Kitchen_L3_POSE",
+                                                                "position": {
+                                                                  "x": 5.604,
+                                                                  "y": 0.753,
+                                                                  "z": -4.77
+                                                                },
+                                                                "connectedTo": [
+                                                                  {
+                                                                    "$ref": "118"
+                                                                  }
+                                                                ],
+                                                                "forwardJump": false,
+                                                                "areaType": "Kitchen",
+                                                                "areaLevel": 3,
+                                                                "poseRotation": 198.506958,
+                                                                "poseParameters": [
+                                                                  {
+                                                                    "$id": "120",
+                                                                    "Name": "Eating",
+                                                                    "Type": "Bool",
+                                                                    "BoolValue": true,
+                                                                    "FloatValue": 0.0,
+                                                                    "IntValue": 0
+                                                                  }
+                                                                ]
+                                                              },
+                                                              {
+                                                                "$id": "121",
+                                                                "name": "2b03_Kitchen_L1",
+                                                                "position": {
+                                                                  "x": 5.814,
+                                                                  "y": 0.0,
+                                                                  "z": -4.983
+                                                                },
+                                                                "connectedTo": [
+                                                                  {
+                                                                    "$ref": "118"
+                                                                  },
+                                                                  {
+                                                                    "$id": "122",
+                                                                    "name": "08ee_Kitchen_L1_POSE",
+                                                                    "position": {
+                                                                      "x": 5.837,
+                                                                      "y": 0.849,
+                                                                      "z": -5.591
+                                                                    },
+                                                                    "connectedTo": [
+                                                                      {
+                                                                        "$ref": "121"
+                                                                      }
+                                                                    ],
+                                                                    "forwardJump": false,
+                                                                    "areaType": "Kitchen",
+                                                                    "areaLevel": 1,
+                                                                    "poseRotation": 247.737686,
+                                                                    "poseParameters": [
+                                                                      {
+                                                                        "$id": "123",
+                                                                        "Name": "Eating",
+                                                                        "Type": "Bool",
+                                                                        "BoolValue": true,
+                                                                        "FloatValue": 0.0,
+                                                                        "IntValue": 0
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ],
+                                                                "forwardJump": false,
+                                                                "areaType": "Kitchen",
+                                                                "areaLevel": 1,
+                                                                "poseRotation": 0.0,
+                                                                "poseParameters": []
+                                                              },
+                                                              {
+                                                                "$ref": "42"
+                                                              },
+                                                              {
+                                                                "$id": "124",
+                                                                "name": "822b_Kitchen_L2_POSE",
+                                                                "position": {
+                                                                  "x": 5.553,
+                                                                  "y": 0.759,
+                                                                  "z": -4.738
+                                                                },
+                                                                "connectedTo": [
+                                                                  {
+                                                                    "$ref": "118"
+                                                                  },
+                                                                  {
+                                                                    "$id": "125",
+                                                                    "name": "4c17_Kitchen_L2",
+                                                                    "position": {
+                                                                      "x": 5.907,
+                                                                      "y": 0.76,
+                                                                      "z": -5.195
+                                                                    },
+                                                                    "connectedTo": [
+                                                                      {
+                                                                        "$ref": "124"
+                                                                      },
+                                                                      {
+                                                                        "$id": "126",
+                                                                        "name": "574c_Kitchen_L2",
+                                                                        "position": {
+                                                                          "x": 6.519,
+                                                                          "y": 0.0,
+                                                                          "z": -5.1
+                                                                        },
+                                                                        "connectedTo": [
+                                                                          {
+                                                                            "$ref": "41"
+                                                                          },
+                                                                          {
+                                                                            "$ref": "125"
+                                                                          }
+                                                                        ],
+                                                                        "forwardJump": false,
+                                                                        "areaType": "Kitchen",
+                                                                        "areaLevel": 2,
+                                                                        "poseRotation": 0.0,
+                                                                        "poseParameters": []
+                                                                      }
+                                                                    ],
+                                                                    "forwardJump": false,
+                                                                    "areaType": "Kitchen",
+                                                                    "areaLevel": 2,
+                                                                    "poseRotation": 0.0,
+                                                                    "poseParameters": []
+                                                                  }
+                                                                ],
+                                                                "forwardJump": false,
+                                                                "areaType": "Kitchen",
+                                                                "areaLevel": 2,
+                                                                "poseRotation": 188.3781,
+                                                                "poseParameters": [
+                                                                  {
+                                                                    "$id": "127",
+                                                                    "Name": "Eating",
+                                                                    "Type": "Bool",
+                                                                    "BoolValue": true,
+                                                                    "FloatValue": 0.0,
+                                                                    "IntValue": 0
+                                                                  }
+                                                                ]
+                                                              },
+                                                              {
+                                                                "$ref": "110"
+                                                              }
+                                                            ],
+                                                            "forwardJump": false,
+                                                            "areaType": "NotSet",
+                                                            "areaLevel": -1,
+                                                            "poseRotation": 0.0,
+                                                            "poseParameters": []
+                                                          },
+                                                          {
+                                                            "$ref": "51"
+                                                          },
+                                                          {
+                                                            "$ref": "107"
+                                                          }
+                                                        ],
+                                                        "forwardJump": false,
+                                                        "areaType": "NotSet",
+                                                        "areaLevel": -1,
+                                                        "poseRotation": 0.0,
+                                                        "poseParameters": []
+                                                      },
+                                                      {
+                                                        "$ref": "98"
+                                                      }
+                                                    ],
+                                                    "forwardJump": false,
+                                                    "areaType": "SolarPower",
+                                                    "areaLevel": 1,
+                                                    "poseRotation": 0.0,
+                                                    "poseParameters": []
+                                                  }
+                                                ],
+                                                "forwardJump": false,
+                                                "areaType": "NotSet",
+                                                "areaLevel": -1,
+                                                "poseRotation": 0.0,
+                                                "poseParameters": []
+                                              }
+                                            ],
+                                            "forwardJump": false,
+                                            "areaType": "NotSet",
+                                            "areaLevel": -1,
+                                            "poseRotation": 0.0,
+                                            "poseParameters": []
+                                          },
+                                          {
+                                            "$ref": "110"
+                                          },
+                                          {
+                                            "$ref": "51"
+                                          },
+                                          {
+                                            "$ref": "98"
+                                          }
+                                        ],
+                                        "forwardJump": false,
+                                        "areaType": "NotSet",
+                                        "areaLevel": -1,
+                                        "poseRotation": 0.0,
+                                        "poseParameters": []
+                                      },
+                                      {
+                                        "$ref": "53"
+                                      },
+                                      {
+                                        "$ref": "110"
+                                      },
+                                      {
+                                        "$ref": "50"
+                                      },
+                                      {
+                                        "$ref": "67"
+                                      },
+                                      {
+                                        "$id": "128",
+                                        "name": "512f_ShootingRange_L1_POSE",
+                                        "position": {
+                                          "x": 1.632,
+                                          "y": 0.010999918,
+                                          "z": -0.416
+                                        },
+                                        "connectedTo": [
+                                          {
+                                            "$ref": "44"
+                                          },
+                                          {
+                                            "$ref": "43"
+                                          },
+                                          {
+                                            "$ref": "51"
+                                          }
+                                        ],
+                                        "forwardJump": false,
+                                        "areaType": "ShootingRange",
+                                        "areaLevel": 1,
+                                        "poseRotation": 265.190918,
+                                        "poseParameters": [
+                                          {
+                                            "$id": "129",
+                                            "Name": "",
+                                            "Type": "Trigger",
+                                            "BoolValue": true,
+                                            "FloatValue": 0.0,
+                                            "IntValue": 0
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "forwardJump": false,
+                                    "areaType": "NotSet",
+                                    "areaLevel": -1,
+                                    "poseRotation": 0.0,
+                                    "poseParameters": []
+                                  },
+                                  {
+                                    "$ref": "44"
+                                  },
+                                  {
+                                    "$ref": "128"
+                                  }
+                                ],
+                                "forwardJump": false,
+                                "areaType": "BitcoinFarm",
+                                "areaLevel": -1,
                                 "poseRotation": 0.0,
                                 "poseParameters": []
                               }
@@ -781,97 +2215,65 @@
                             "poseParameters": []
                           },
                           {
-                            "$id": "47",
-                            "name": "352452e7",
+                            "$ref": "110"
+                          },
+                          {
+                            "$id": "130",
+                            "name": "e508_WaterCollector_L2",
                             "position": {
-                              "x": 0.534,
+                              "x": 2.401,
                               "y": 0.0,
-                              "z": -3.108
+                              "z": -1.179
                             },
                             "connectedTo": [
                               {
-                                "$id": "48",
-                                "name": "af4ac092",
+                                "$id": "131",
+                                "name": "de45_WaterCollector_L2",
                                 "position": {
-                                  "x": 0.625,
-                                  "y": 0.0,
-                                  "z": -3.813
+                                  "x": 2.737,
+                                  "y": 0.818,
+                                  "z": -0.535
                                 },
                                 "connectedTo": [
                                   {
-                                    "$id": "49",
-                                    "name": "c7b1ad12",
+                                    "$id": "132",
+                                    "name": "c249_WaterCollector_L2",
                                     "position": {
-                                      "x": 0.669,
-                                      "y": 1.112,
-                                      "z": -4.64
+                                      "x": 3.268,
+                                      "y": 1.39,
+                                      "z": -0.333
                                     },
                                     "connectedTo": [
                                       {
-                                        "$id": "50",
-                                        "name": "552b152a",
+                                        "$id": "133",
+                                        "name": "f7cd_WaterCollector_L2",
                                         "position": {
-                                          "x": 0.183,
-                                          "y": 1.6487,
-                                          "z": -5.255
+                                          "x": 3.876,
+                                          "y": 1.649,
+                                          "z": -0.53
                                         },
                                         "connectedTo": [
                                           {
-                                            "$id": "51",
-                                            "name": "fc59284d",
+                                            "$id": "134",
+                                            "name": "068e_WaterCollector_L2_POSE",
                                             "position": {
-                                              "x": -0.057,
-                                              "y": 1.6487,
-                                              "z": -5.659
+                                              "x": 4.215,
+                                              "y": 1.719,
+                                              "z": -0.616
                                             },
                                             "connectedTo": [
                                               {
-                                                "$id": "52",
-                                                "name": "56622c6a",
-                                                "position": {
-                                                  "x": -0.386,
-                                                  "y": 1.673,
-                                                  "z": -5.173
-                                                },
-                                                "connectedTo": [
-                                                  {
-                                                    "$id": "53",
-                                                    "name": "153d5217",
-                                                    "position": {
-                                                      "x": -0.304,
-                                                      "y": 0.034,
-                                                      "z": -4.23
-                                                    },
-                                                    "connectedTo": [
-                                                      {
-                                                        "$ref": "48"
-                                                      },
-                                                      {
-                                                        "$ref": "47"
-                                                      }
-                                                    ],
-                                                    "forwardJump": false,
-                                                    "areaType": "Generator",
-                                                    "areaLevel": 3,
-                                                    "poseRotation": 0.0,
-                                                    "poseParameters": []
-                                                  }
-                                                ],
-                                                "forwardJump": false,
-                                                "areaType": "Generator",
-                                                "areaLevel": 3,
-                                                "poseRotation": 0.0,
-                                                "poseParameters": []
+                                                "$ref": "42"
                                               }
                                             ],
                                             "forwardJump": false,
-                                            "areaType": "Generator",
-                                            "areaLevel": 3,
-                                            "poseRotation": 19.14253,
+                                            "areaType": "WaterCollector",
+                                            "areaLevel": 2,
+                                            "poseRotation": 240.857391,
                                             "poseParameters": [
                                               {
-                                                "$id": "54",
-                                                "Name": "LyingBelly",
+                                                "$id": "135",
+                                                "Name": "Sitting",
                                                 "Type": "Bool",
                                                 "BoolValue": true,
                                                 "FloatValue": 0.0,
@@ -880,41 +2282,35 @@
                                             ]
                                           }
                                         ],
-                                        "forwardJump": false,
-                                        "areaType": "Generator",
-                                        "areaLevel": 3,
+                                        "forwardJump": true,
+                                        "areaType": "WaterCollector",
+                                        "areaLevel": 2,
                                         "poseRotation": 0.0,
                                         "poseParameters": []
                                       }
                                     ],
                                     "forwardJump": false,
-                                    "areaType": "Generator",
-                                    "areaLevel": 3,
+                                    "areaType": "WaterCollector",
+                                    "areaLevel": 2,
                                     "poseRotation": 0.0,
                                     "poseParameters": []
-                                  },
-                                  {
-                                    "$ref": "53"
                                   }
                                 ],
                                 "forwardJump": false,
-                                "areaType": "Generator",
-                                "areaLevel": 3,
+                                "areaType": "WaterCollector",
+                                "areaLevel": 2,
                                 "poseRotation": 0.0,
                                 "poseParameters": []
-                              },
-                              {
-                                "$ref": "53"
-                              },
-                              {
-                                "$ref": "40"
                               }
                             ],
                             "forwardJump": false,
-                            "areaType": "NotSet",
-                            "areaLevel": -1,
+                            "areaType": "WaterCollector",
+                            "areaLevel": 2,
                             "poseRotation": 0.0,
                             "poseParameters": []
+                          },
+                          {
+                            "$ref": "128"
                           }
                         ],
                         "forwardJump": false,
@@ -924,101 +2320,7 @@
                         "poseParameters": []
                       },
                       {
-                        "$id": "55",
-                        "name": "kitchen",
-                        "position": {
-                          "x": 5.603,
-                          "y": 0.0,
-                          "z": -4.023
-                        },
-                        "connectedTo": [
-                          {
-                            "$ref": "38"
-                          },
-                          {
-                            "$id": "56",
-                            "name": "kitchen3_eat",
-                            "position": {
-                              "x": 5.604,
-                              "y": 0.753,
-                              "z": -4.77
-                            },
-                            "connectedTo": [
-                              {
-                                "$ref": "55"
-                              }
-                            ],
-                            "forwardJump": false,
-                            "areaType": "Kitchen",
-                            "areaLevel": 3,
-                            "poseRotation": 198.506958,
-                            "poseParameters": [
-                              {
-                                "$id": "57",
-                                "Name": "Eating",
-                                "Type": "Bool",
-                                "BoolValue": true,
-                                "FloatValue": 0.0,
-                                "IntValue": 0
-                              }
-                            ]
-                          },
-                          {
-                            "$id": "58",
-                            "name": "14f72f9d",
-                            "position": {
-                              "x": 5.852,
-                              "y": 0.0,
-                              "z": -4.883
-                            },
-                            "connectedTo": [
-                              {
-                                "$ref": "55"
-                              },
-                              {
-                                "$id": "59",
-                                "name": "kitchen1_eat",
-                                "position": {
-                                  "x": 5.837,
-                                  "y": 0.849,
-                                  "z": -5.591
-                                },
-                                "connectedTo": [
-                                  {
-                                    "$ref": "58"
-                                  }
-                                ],
-                                "forwardJump": false,
-                                "areaType": "Kitchen",
-                                "areaLevel": 1,
-                                "poseRotation": 247.737686,
-                                "poseParameters": [
-                                  {
-                                    "$id": "60",
-                                    "Name": "Eating",
-                                    "Type": "Bool",
-                                    "BoolValue": true,
-                                    "FloatValue": 0.0,
-                                    "IntValue": 0
-                                  }
-                                ]
-                              }
-                            ],
-                            "forwardJump": false,
-                            "areaType": "Kitchen",
-                            "areaLevel": 1,
-                            "poseRotation": 0.0,
-                            "poseParameters": []
-                          },
-                          {
-                            "$ref": "39"
-                          }
-                        ],
-                        "forwardJump": false,
-                        "areaType": "NotSet",
-                        "areaLevel": -1,
-                        "poseRotation": 0.0,
-                        "poseParameters": []
+                        "$ref": "118"
                       }
                     ],
                     "forwardJump": false,
@@ -1028,10 +2330,13 @@
                     "poseParameters": []
                   },
                   {
-                    "$ref": "37"
+                    "$ref": "40"
                   },
                   {
-                    "$ref": "55"
+                    "$ref": "118"
+                  },
+                  {
+                    "$ref": "126"
                   }
                 ],
                 "forwardJump": false,
@@ -1041,8 +2346,8 @@
                 "poseParameters": []
               },
               {
-                "$id": "61",
-                "name": "f3d374bd",
+                "$id": "136",
+                "name": "be9a_MedStation_L3",
                 "position": {
                   "x": 8.815,
                   "y": 0.0,
@@ -1050,11 +2355,11 @@
                 },
                 "connectedTo": [
                   {
-                    "$ref": "37"
+                    "$ref": "40"
                   },
                   {
-                    "$id": "62",
-                    "name": "medstation3_chair",
+                    "$id": "137",
+                    "name": "ba57_MedStation_L3_POSE",
                     "position": {
                       "x": 9.308,
                       "y": 0.583,
@@ -1062,7 +2367,7 @@
                     },
                     "connectedTo": [
                       {
-                        "$ref": "61"
+                        "$ref": "136"
                       }
                     ],
                     "forwardJump": false,
@@ -1071,7 +2376,7 @@
                     "poseRotation": 153.145432,
                     "poseParameters": [
                       {
-                        "$id": "63",
+                        "$id": "138",
                         "Name": "LyingBelly",
                         "Type": "Bool",
                         "BoolValue": true,
@@ -1079,6 +2384,9 @@
                         "IntValue": 0
                       }
                     ]
+                  },
+                  {
+                    "$ref": "1"
                   }
                 ],
                 "forwardJump": false,
@@ -1088,8 +2396,8 @@
                 "poseParameters": []
               },
               {
-                "$id": "64",
-                "name": "fa27ee57",
+                "$id": "139",
+                "name": "2d28_MedStation_L2",
                 "position": {
                   "x": 9.667,
                   "y": 0.0,
@@ -1100,8 +2408,8 @@
                     "$ref": "1"
                   },
                   {
-                    "$id": "65",
-                    "name": "medstation2_underdesk",
+                    "$id": "140",
+                    "name": "b442_MedStation_L2_POSE",
                     "position": {
                       "x": 10.433,
                       "y": 0.0,
@@ -1109,7 +2417,7 @@
                     },
                     "connectedTo": [
                       {
-                        "$ref": "64"
+                        "$ref": "139"
                       }
                     ],
                     "forwardJump": false,
@@ -1118,7 +2426,7 @@
                     "poseRotation": 232.56134,
                     "poseParameters": [
                       {
-                        "$id": "66",
+                        "$id": "141",
                         "Name": "Sitting",
                         "Type": "Bool",
                         "BoolValue": true,
@@ -1128,7 +2436,7 @@
                     ]
                   },
                   {
-                    "$ref": "37"
+                    "$ref": "40"
                   }
                 ],
                 "forwardJump": false,
@@ -1145,7 +2453,7 @@
             "poseParameters": []
           },
           {
-            "$ref": "32"
+            "$ref": "33"
           }
         ],
         "forwardJump": false,
@@ -1155,23 +2463,23 @@
         "poseParameters": []
       },
       {
-        "$ref": "37"
+        "$ref": "40"
       },
       {
-        "$id": "67",
-        "name": "a6ac3c51",
+        "$id": "142",
+        "name": "4810_MedStation_L3",
         "position": {
-          "x": 10.822,
+          "x": 10.863,
           "y": 0.0,
-          "z": -1.344
+          "z": -1.304
         },
         "connectedTo": [
           {
             "$ref": "1"
           },
           {
-            "$id": "68",
-            "name": "medstation3_desk",
+            "$id": "143",
+            "name": "8a65_MedStation_L3_POSE",
             "position": {
               "x": 11.293,
               "y": 0.8567,
@@ -1179,7 +2487,7 @@
             },
             "connectedTo": [
               {
-                "$ref": "67"
+                "$ref": "142"
               }
             ],
             "forwardJump": false,
@@ -1188,7 +2496,7 @@
             "poseRotation": 139.427979,
             "poseParameters": [
               {
-                "$id": "69",
+                "$id": "144",
                 "Name": "LyingSide",
                 "Type": "Bool",
                 "BoolValue": true,
@@ -1205,16 +2513,19 @@
         "poseParameters": []
       },
       {
+        "$ref": "34"
+      },
+      {
+        "$ref": "139"
+      },
+      {
         "$ref": "33"
       },
       {
-        "$ref": "64"
+        "$ref": "37"
       },
       {
-        "$ref": "32"
-      },
-      {
-        "$ref": "35"
+        "$ref": "136"
       }
     ],
     "forwardJump": false,
@@ -1245,40 +2556,109 @@
     "$ref": "13"
   },
   {
-    "$ref": "37"
-  },
-  {
-    "$ref": "39"
-  },
-  {
-    "$ref": "38"
-  },
-  {
     "$ref": "40"
   },
   {
-    "$ref": "47"
+    "$ref": "42"
   },
   {
-    "$ref": "55"
+    "$ref": "41"
   },
   {
-    "$ref": "48"
+    "$ref": "43"
   },
   {
-    "$ref": "49"
+    "$ref": "110"
   },
   {
-    "$ref": "50"
-  },
-  {
-    "$ref": "51"
+    "$ref": "118"
   },
   {
     "$ref": "52"
   },
   {
     "$ref": "53"
+  },
+  {
+    "$ref": "54"
+  },
+  {
+    "$ref": "56"
+  },
+  {
+    "$ref": "58"
+  },
+  {
+    "$ref": "57"
+  },
+  {
+    "$ref": "55"
+  },
+  {
+    "$ref": "67"
+  },
+  {
+    "$ref": "68"
+  },
+  {
+    "$ref": "51"
+  },
+  {
+    "$ref": "81"
+  },
+  {
+    "$ref": "98"
+  },
+  {
+    "$ref": "99"
+  },
+  {
+    "$ref": "100"
+  },
+  {
+    "$ref": "101"
+  },
+  {
+    "$ref": "103"
+  },
+  {
+    "$ref": "105"
+  },
+  {
+    "$ref": "59"
+  },
+  {
+    "$ref": "60"
+  },
+  {
+    "$ref": "61"
+  },
+  {
+    "$ref": "63"
+  },
+  {
+    "$ref": "64"
+  },
+  {
+    "$ref": "65"
+  },
+  {
+    "$ref": "111"
+  },
+  {
+    "$ref": "112"
+  },
+  {
+    "$ref": "113"
+  },
+  {
+    "$ref": "114"
+  },
+  {
+    "$ref": "115"
+  },
+  {
+    "$ref": "116"
   },
   {
     "$ref": "14"
@@ -1299,37 +2679,49 @@
     "$ref": "21"
   },
   {
-    "$ref": "43"
-  },
-  {
-    "$ref": "44"
-  },
-  {
-    "$ref": "42"
-  },
-  {
-    "$ref": "41"
-  },
-  {
     "$ref": "46"
+  },
+  {
+    "$ref": "47"
   },
   {
     "$ref": "45"
   },
   {
-    "$ref": "68"
+    "$ref": "44"
   },
   {
-    "$ref": "67"
+    "$ref": "49"
   },
   {
-    "$ref": "62"
+    "$ref": "48"
   },
   {
-    "$ref": "61"
+    "$ref": "130"
   },
   {
-    "$ref": "32"
+    "$ref": "131"
+  },
+  {
+    "$ref": "132"
+  },
+  {
+    "$ref": "133"
+  },
+  {
+    "$ref": "134"
+  },
+  {
+    "$ref": "143"
+  },
+  {
+    "$ref": "142"
+  },
+  {
+    "$ref": "137"
+  },
+  {
+    "$ref": "136"
   },
   {
     "$ref": "33"
@@ -1338,69 +2730,43 @@
     "$ref": "34"
   },
   {
-    "$ref": "64"
-  },
-  {
-    "$ref": "65"
-  },
-  {
     "$ref": "35"
   },
   {
-    "$ref": "36"
+    "$ref": "139"
   },
   {
-    "$ref": "58"
+    "$ref": "140"
   },
   {
-    "$ref": "59"
+    "$ref": "37"
   },
   {
-    "$id": "70",
-    "name": "kitchen2_eat",
-    "position": {
-      "x": 5.553,
-      "y": 0.753,
-      "z": -4.738
-    },
-    "connectedTo": [
-      {
-        "$ref": "55"
-      },
-      {
-        "$id": "71",
-        "name": "kitchen2_table",
-        "position": {
-          "x": 5.6,
-          "y": 0.753,
-          "z": -5.407
-        },
-        "connectedTo": [
-          {
-            "$ref": "70"
-          }
-        ],
-        "forwardJump": false,
-        "areaType": "Kitchen",
-        "areaLevel": 2,
-        "poseRotation": 0.0,
-        "poseParameters": []
-      }
-    ],
-    "forwardJump": false,
-    "areaType": "Kitchen",
-    "areaLevel": 2,
-    "poseRotation": 0.0,
-    "poseParameters": []
+    "$ref": "38"
   },
   {
-    "$ref": "71"
+    "$ref": "121"
   },
   {
-    "$ref": "56"
+    "$ref": "122"
+  },
+  {
+    "$ref": "126"
+  },
+  {
+    "$ref": "124"
+  },
+  {
+    "$ref": "125"
+  },
+  {
+    "$ref": "119"
   },
   {
     "$ref": "10"
+  },
+  {
+    "$ref": "11"
   },
   {
     "$ref": "30"
@@ -1418,9 +2784,143 @@
     "$ref": "8"
   },
   {
+    "$ref": "75"
+  },
+  {
+    "$ref": "76"
+  },
+  {
+    "$ref": "72"
+  },
+  {
+    "$ref": "73"
+  },
+  {
+    "$ref": "69"
+  },
+  {
+    "$ref": "70"
+  },
+  {
+    "$ref": "78"
+  },
+  {
+    "$ref": "79"
+  },
+  {
+    "$ref": "95"
+  },
+  {
+    "$ref": "93"
+  },
+  {
+    "$ref": "94"
+  },
+  {
+    "$ref": "91"
+  },
+  {
+    "$ref": "128"
+  },
+  {
+    "$id": "145",
+    "name": "1062_ShootingRange_L2_POSE",
+    "position": {
+      "x": 1.743,
+      "y": 0.010999918,
+      "z": -0.523
+    },
+    "connectedTo": [
+      {
+        "$ref": "44"
+      },
+      {
+        "$ref": "43"
+      },
+      {
+        "$ref": "51"
+      }
+    ],
+    "forwardJump": false,
+    "areaType": "ShootingRange",
+    "areaLevel": 2,
+    "poseRotation": 265.190918,
+    "poseParameters": [
+      {
+        "$id": "146",
+        "Name": "",
+        "Type": "Trigger",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "$id": "147",
+    "name": "13ff_ShootingRange_L3_POSE",
+    "position": {
+      "x": 1.761,
+      "y": 0.010999918,
+      "z": -0.46
+    },
+    "connectedTo": [
+      {
+        "$ref": "44"
+      },
+      {
+        "$ref": "43"
+      },
+      {
+        "$ref": "51"
+      }
+    ],
+    "forwardJump": false,
+    "areaType": "ShootingRange",
+    "areaLevel": 3,
+    "poseRotation": 265.190918,
+    "poseParameters": [
+      {
+        "$id": "148",
+        "Name": "",
+        "Type": "Trigger",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
     "$ref": "23"
   },
   {
     "$ref": "24"
+  },
+  {
+    "$ref": "107"
+  },
+  {
+    "$ref": "108"
+  },
+  {
+    "$ref": "83"
+  },
+  {
+    "$ref": "82"
+  },
+  {
+    "$ref": "50"
+  },
+  {
+    "$ref": "86"
+  },
+  {
+    "$ref": "84"
+  },
+  {
+    "$ref": "87"
+  },
+  {
+    "$ref": "89"
   }
 ]
