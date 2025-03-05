@@ -116,7 +116,7 @@ namespace hideoutcat
         {
             if (!OnAreaUpgradeInstalledUnsubscribeActions.ContainsKey(area))
                 // could not find a better place to hook into the area upgrade install event, seems it's individual area based, it'd be simpler if there was a hideout-wide event 
-                OnAreaUpgradeInstalledUnsubscribeActions[area] = area.LevelUpdated.Subscribe(new System.Action(OnAreaUpdated)); // I'm 90% sure this is a valid way to use BindableEvent
+                OnAreaUpgradeInstalledUnsubscribeActions[area] = area.AreaUpgraded.Subscribe(new System.Action(OnAreaUpdated)); // I'm 90% sure this is a valid way to use BindableEvent
 
             if (!force && area == currentArea)
             {

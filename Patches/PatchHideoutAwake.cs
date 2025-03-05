@@ -19,11 +19,11 @@ namespace hideoutcat
     {
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.Method(typeof(AreasController), nameof(AreasController.HideoutAwake));
+            return AccessTools.Method(typeof(HideoutController), nameof(HideoutController.HideoutAwake));
         }
 
         [PatchPostfix]
-        private static void Postfix(AreasController __instance)
+        private static void Postfix(HideoutController __instance)
         {
             GameObject catObject = GameObject.Instantiate(BundleLoader.Load("hideoutcat").LoadAsset<GameObject>("hideoutcat"));
             ReplaceShadersToNative(catObject);
