@@ -177,7 +177,8 @@
       "b749_Waypoint",
       "3fca_Waypoint",
       "be9a_MedStation_L3",
-      "2d28_MedStation_L2"
+      "2d28_MedStation_L2",
+      "bb04_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -195,7 +196,8 @@
     "connectedTo": [
       "3fca_Waypoint",
       "c4b8_Waypoint",
-      "b36c_Waypoint"
+      "b36c_Waypoint",
+      "bb04_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -214,7 +216,8 @@
       "3f27_Waypoint",
       "b203_Waypoint",
       "b36c_Waypoint",
-      "574c_Kitchen_L2"
+      "574c_Kitchen_L2",
+      "bb04_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -581,6 +584,167 @@
     "connectedTo": [
       "5fbb_Waypoint",
       "9296_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "NotSet",
+    "areaLevel": -1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "bb04_Waypoint",
+    "position": {
+      "x": 6.809,
+      "y": 0.0,
+      "z": -0.612
+    },
+    "connectedTo": [
+      "3fca_Waypoint",
+      "3f27_Waypoint",
+      "be9a_MedStation_L3",
+      "b203_Waypoint",
+      "0ce0_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "NotSet",
+    "areaLevel": -1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "0ce0_Waypoint",
+    "position": {
+      "x": 6.87,
+      "y": 0.0,
+      "z": 1.839
+    },
+    "connectedTo": [
+      "61ef_EquipmentPresetsStand_L1",
+      "bb04_Waypoint",
+      "2b42_Waypoint",
+      "2be6_Waypoint",
+      "190f_EquipmentPresetsStand_L2",
+      "a11d_EquipmentPresetsStand_L3"
+    ],
+    "forwardJump": false,
+    "areaType": "NotSet",
+    "areaLevel": -1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "2be6_Waypoint",
+    "position": {
+      "x": 9.012,
+      "y": 0.0,
+      "z": 6.248
+    },
+    "connectedTo": [
+      "0ce0_Waypoint",
+      "c0b5_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "NotSet",
+    "areaLevel": -1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "b93f_Waypoint",
+    "position": {
+      "x": 8.482,
+      "y": 0.01,
+      "z": 10.354
+    },
+    "connectedTo": [
+      "710d_Waypoint",
+      "fd8e_Gym_L1",
+      "9ca2_Waypoint",
+      "c0b5_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "NotSet",
+    "areaLevel": -1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "710d_Waypoint",
+    "position": {
+      "x": 4.771,
+      "y": 0.0096,
+      "z": 10.3
+    },
+    "connectedTo": [
+      "b93f_Waypoint",
+      "2b42_Waypoint",
+      "8cbe_Gym_L1",
+      "899e_PlaceOfFame_L2",
+      "5a5c_PlaceOfFame_L2",
+      "cd90_PlaceOfFame_L1",
+      "fcd0_PlaceOfFame_L3_POSE"
+    ],
+    "forwardJump": false,
+    "areaType": "NotSet",
+    "areaLevel": -1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "2b42_Waypoint",
+    "position": {
+      "x": 4.098,
+      "y": 0.007999897,
+      "z": 7.285
+    },
+    "connectedTo": [
+      "0ce0_Waypoint",
+      "61ef_EquipmentPresetsStand_L1",
+      "671d_EquipmentPresetsStand_L1_POSE",
+      "710d_Waypoint",
+      "899e_PlaceOfFame_L2",
+      "5a5c_PlaceOfFame_L2",
+      "cd90_PlaceOfFame_L1",
+      "fcd0_PlaceOfFame_L3_POSE",
+      "3ef9_EquipmentPresetsStand_L1_POSE",
+      "7c88_EquipmentPresetsStand_L2",
+      "ce91_EquipmentPresetsStand_L3"
+    ],
+    "forwardJump": false,
+    "areaType": "NotSet",
+    "areaLevel": -1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "9ca2_Waypoint",
+    "position": {
+      "x": 7.121,
+      "y": 0.015,
+      "z": 9.034
+    },
+    "connectedTo": [
+      "899e_PlaceOfFame_L2",
+      "b93f_Waypoint",
+      "c0b5_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "NotSet",
+    "areaLevel": -1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "c0b5_Waypoint",
+    "position": {
+      "x": 8.726,
+      "y": 0.00999999,
+      "z": 8.872
+    },
+    "connectedTo": [
+      "9ca2_Waypoint",
+      "b93f_Waypoint",
+      "2be6_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -1275,7 +1439,8 @@
     "connectedTo": [
       "b203_Waypoint",
       "ba57_MedStation_L3_POSE",
-      "171c_Waypoint"
+      "171c_Waypoint",
+      "bb04_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "MedStation",
@@ -2085,6 +2250,160 @@
     ]
   },
   {
+    "name": "cd90_PlaceOfFame_L1",
+    "position": {
+      "x": 2.822,
+      "y": 0.009600043,
+      "z": 10.618
+    },
+    "connectedTo": [
+      "4f41_PlaceOfFame_L1_POSE",
+      "710d_Waypoint",
+      "2b42_Waypoint",
+      "8cbe_Gym_L1"
+    ],
+    "forwardJump": false,
+    "areaType": "PlaceOfFame",
+    "areaLevel": 1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "4f41_PlaceOfFame_L1_POSE",
+    "position": {
+      "x": 2.263,
+      "y": 0.467,
+      "z": 10.529
+    },
+    "connectedTo": [
+      "cd90_PlaceOfFame_L1"
+    ],
+    "forwardJump": false,
+    "areaType": "PlaceOfFame",
+    "areaLevel": 1,
+    "poseRotation": 93.17244,
+    "poseParameters": [
+      {
+        "Name": "LyingSide",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "name": "899e_PlaceOfFame_L2",
+    "position": {
+      "x": 5.373,
+      "y": 0.009599924,
+      "z": 8.478
+    },
+    "connectedTo": [
+      "b9b3_PlaceOfFame_L2_POSE",
+      "710d_Waypoint",
+      "2b42_Waypoint",
+      "9ca2_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "PlaceOfFame",
+    "areaLevel": 2,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "b9b3_PlaceOfFame_L2_POSE",
+    "position": {
+      "x": 5.79,
+      "y": 0.477,
+      "z": 8.0
+    },
+    "connectedTo": [
+      "899e_PlaceOfFame_L2"
+    ],
+    "forwardJump": false,
+    "areaType": "PlaceOfFame",
+    "areaLevel": 2,
+    "poseRotation": 0.0,
+    "poseParameters": [
+      {
+        "Name": "LyingSide",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "name": "5a5c_PlaceOfFame_L2",
+    "position": {
+      "x": 2.401,
+      "y": 0.009600043,
+      "z": 10.302
+    },
+    "connectedTo": [
+      "3be1_PlaceOfFame_L2_POSE",
+      "710d_Waypoint",
+      "2b42_Waypoint",
+      "8cbe_Gym_L1"
+    ],
+    "forwardJump": false,
+    "areaType": "PlaceOfFame",
+    "areaLevel": 2,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "3be1_PlaceOfFame_L2_POSE",
+    "position": {
+      "x": 1.999,
+      "y": 0.459,
+      "z": 10.447
+    },
+    "connectedTo": [
+      "5a5c_PlaceOfFame_L2"
+    ],
+    "forwardJump": false,
+    "areaType": "PlaceOfFame",
+    "areaLevel": 2,
+    "poseRotation": 182.096542,
+    "poseParameters": [
+      {
+        "Name": "LyingBelly",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "name": "fcd0_PlaceOfFame_L3_POSE",
+    "position": {
+      "x": 4.116,
+      "y": 0.009600043,
+      "z": 8.577
+    },
+    "connectedTo": [
+      "2b42_Waypoint",
+      "710d_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "PlaceOfFame",
+    "areaLevel": 3,
+    "poseRotation": 287.1828,
+    "poseParameters": [
+      {
+        "Name": "LyingSide",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
     "name": "5912_SolarPower_L1",
     "position": {
       "x": -2.56,
@@ -2266,5 +2585,341 @@
         "IntValue": 0
       }
     ]
+  },
+  {
+    "name": "671d_EquipmentPresetsStand_L1_POSE",
+    "position": {
+      "x": 3.176,
+      "y": 0.004,
+      "z": 4.491
+    },
+    "connectedTo": [
+      "61ef_EquipmentPresetsStand_L1",
+      "2b42_Waypoint",
+      "3ef9_EquipmentPresetsStand_L1_POSE"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 1,
+    "poseRotation": 91.39798,
+    "poseParameters": [
+      {
+        "Name": "Sitting",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "name": "61ef_EquipmentPresetsStand_L1",
+    "position": {
+      "x": 3.954,
+      "y": 0.008,
+      "z": 4.458
+    },
+    "connectedTo": [
+      "671d_EquipmentPresetsStand_L1_POSE",
+      "0ce0_Waypoint",
+      "2b42_Waypoint",
+      "3ef9_EquipmentPresetsStand_L1_POSE"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "3ef9_EquipmentPresetsStand_L1_POSE",
+    "position": {
+      "x": 2.802,
+      "y": 0.007999897,
+      "z": 6.35
+    },
+    "connectedTo": [
+      "2b42_Waypoint",
+      "671d_EquipmentPresetsStand_L1_POSE",
+      "61ef_EquipmentPresetsStand_L1"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 1,
+    "poseRotation": 263.262573,
+    "poseParameters": [
+      {
+        "Name": "SharpenVertical",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "name": "190f_EquipmentPresetsStand_L2",
+    "position": {
+      "x": 5.33,
+      "y": 0.0,
+      "z": 3.119
+    },
+    "connectedTo": [
+      "aaa3_EquipmentPresetsStand_L2",
+      "0ce0_Waypoint",
+      "dcc3_EquipmentPresetsStand_L2"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 2,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "dcc3_EquipmentPresetsStand_L2",
+    "position": {
+      "x": 5.039,
+      "y": 0.033,
+      "z": 3.649
+    },
+    "connectedTo": [
+      "7c88_EquipmentPresetsStand_L2",
+      "190f_EquipmentPresetsStand_L2"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 2,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "aaa3_EquipmentPresetsStand_L2",
+    "position": {
+      "x": 4.805,
+      "y": 0.035,
+      "z": 3.086
+    },
+    "connectedTo": [
+      "b8af_EquipmentPresetsStand_L2_POSE",
+      "190f_EquipmentPresetsStand_L2"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 2,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "b8af_EquipmentPresetsStand_L2_POSE",
+    "position": {
+      "x": 2.987,
+      "y": 0.0349999666,
+      "z": 3.34
+    },
+    "connectedTo": [
+      "8c19_EquipmentPresetsStand_L2",
+      "aaa3_EquipmentPresetsStand_L2"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 2,
+    "poseRotation": 84.3693,
+    "poseParameters": [
+      {
+        "Name": "Sitting",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "name": "8c19_EquipmentPresetsStand_L2",
+    "position": {
+      "x": 4.067,
+      "y": 0.0350000858,
+      "z": 4.32
+    },
+    "connectedTo": [
+      "7c88_EquipmentPresetsStand_L2",
+      "b8af_EquipmentPresetsStand_L2_POSE"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 2,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "7c88_EquipmentPresetsStand_L2",
+    "position": {
+      "x": 4.31,
+      "y": 0.0,
+      "z": 4.694
+    },
+    "connectedTo": [
+      "2b42_Waypoint",
+      "8c19_EquipmentPresetsStand_L2",
+      "dcc3_EquipmentPresetsStand_L2"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 2,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "a11d_EquipmentPresetsStand_L3",
+    "position": {
+      "x": 6.207,
+      "y": 0.0,
+      "z": 2.445
+    },
+    "connectedTo": [
+      "a911_EquipmentPresetsStand_L3"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 3,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "a911_EquipmentPresetsStand_L3",
+    "position": {
+      "x": 5.736,
+      "y": 0.034,
+      "z": 2.435
+    },
+    "connectedTo": [
+      "ce91_EquipmentPresetsStand_L3",
+      "a11d_EquipmentPresetsStand_L3"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 3,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "ce91_EquipmentPresetsStand_L3",
+    "position": {
+      "x": 4.531,
+      "y": 0.03399992,
+      "z": 2.215
+    },
+    "connectedTo": [
+      "734d_EquipmentPresetsStand_L3_POSE",
+      "2b42_Waypoint",
+      "a911_EquipmentPresetsStand_L3"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 3,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "734d_EquipmentPresetsStand_L3_POSE",
+    "position": {
+      "x": 4.331,
+      "y": 0.03399968,
+      "z": 1.69
+    },
+    "connectedTo": [
+      "ce91_EquipmentPresetsStand_L3"
+    ],
+    "forwardJump": false,
+    "areaType": "EquipmentPresetsStand",
+    "areaLevel": 3,
+    "poseRotation": 20.13704,
+    "poseParameters": [
+      {
+        "Name": "Sitting",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "name": "fd8e_Gym_L1",
+    "position": {
+      "x": 8.401,
+      "y": 0.0123,
+      "z": 11.489
+    },
+    "connectedTo": [
+      "76e7_Gym_L1_POSE",
+      "b93f_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "Gym",
+    "areaLevel": 1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "76e7_Gym_L1_POSE",
+    "position": {
+      "x": 8.342,
+      "y": 0.084,
+      "z": 12.106
+    },
+    "connectedTo": [
+      "fd8e_Gym_L1",
+      "e70e_Gym_L1"
+    ],
+    "forwardJump": false,
+    "areaType": "Gym",
+    "areaLevel": 1,
+    "poseRotation": 182.3337,
+    "poseParameters": [
+      {
+        "Name": "LyingSide",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "name": "e70e_Gym_L1",
+    "position": {
+      "x": 6.889,
+      "y": 0.08400011,
+      "z": 11.807
+    },
+    "connectedTo": [
+      "76e7_Gym_L1_POSE",
+      "8cbe_Gym_L1"
+    ],
+    "forwardJump": false,
+    "areaType": "Gym",
+    "areaLevel": 1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "8cbe_Gym_L1",
+    "position": {
+      "x": 6.392,
+      "y": 0.019,
+      "z": 11.556
+    },
+    "connectedTo": [
+      "710d_Waypoint",
+      "e70e_Gym_L1",
+      "5a5c_PlaceOfFame_L2",
+      "cd90_PlaceOfFame_L1"
+    ],
+    "forwardJump": false,
+    "areaType": "Gym",
+    "areaLevel": 1,
+    "poseRotation": 0.0,
+    "poseParameters": []
   }
 ]
