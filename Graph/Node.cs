@@ -1,4 +1,5 @@
 ﻿using EFT;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,12 @@ namespace hideoutcat.Pathfinding
     {
         public string name;
         public Vector3 position;
+
+        [JsonProperty("connectedTo")]
+        public List<string> connectedToNamesForSerialization;
+        [JsonIgnore]
         public List<Node> connectedTo = new List<Node>();
+
         public bool forwardJump;
 
         public EAreaType areaType; // if NotSet, it's a waypoint

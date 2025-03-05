@@ -10,6 +10,7 @@ using Newtonsoft.Json.UnityConverters.Math;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 [BepInPlugin("com.tarkin.hideoutcat", "hideoutcat", "1.0.0.0")]
@@ -39,19 +40,32 @@ public class Plugin : BaseUnityPlugin
             string filePath = Path.Combine(Path.GetDirectoryName(Application.dataPath), "BepInEx", "plugins", "tarkin", "bundles", fileName);
             JsonSerializerSettings settings = new JsonSerializerSettings
             {
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
                 Converters = { new Vector3Converter() }
             };
-            List<Node> nodeGraph = JsonConvert.DeserializeObject<List<Node>>(File.ReadAllText(filePath));
-            CatGraph = new Graph(nodeGraph);
+            List<Node> nodes = JsonConvert.DeserializeObject<List<Node>>(File.ReadAllText(filePath));
 
+            // resolve connections from string to class references
+            foreach (var node in nodes)
+            {
+                foreach (var connectedName in node.connectedToNamesForSerialization)
+                {
+                    Node target = nodes.FirstOrDefault(n => n.name == connectedName);
+                    if (target != null)
+                        node.connectedTo.Add(target);
+                    else
+                        Plugin.Log.LogWarning($"Node '{node.name}': Connected node name '{connectedName}' not found in deserialized nodes.");
+                }
+                node.connectedToNamesForSerialization = null;
+            }
+
+            // we done
+            CatGraph = new Graph(nodes);
 
             return true;
         }
         catch (Exception ex)
         {
-            Plugin.Log.LogError("error loading cat config file");
+            Plugin.Log.LogError("error loading cat config file: " + ex);
             return false;
         }
     }
