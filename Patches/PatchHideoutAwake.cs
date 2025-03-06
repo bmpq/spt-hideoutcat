@@ -38,14 +38,16 @@ namespace hideoutcat
             }
             if (availableArea.Count > 0)
             {
-                UnityExtensions.Shuffle(availableArea);
+                Plugin.Log.LogDebug($"{availableArea.Count} avaiable areas");
+
+                availableArea.OrderBy(_ => System.Guid.NewGuid()).ToList();
                 foreach (var spawnArea in availableArea)
                 {
                     var nodes = Plugin.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(spawnArea.AreaTemplate.Type, spawnArea.Data.CurrentLevel);
                     if (nodes.Count > 0)
                     {
                         Node target = nodes[Random.Range(0, nodes.Count)];
-                        cat.transform.position = target.position;
+                        cat.transform.position = Plugin.CatGraph.GetNodeClosestWaypoint(target.position).position;
                         cat.SetTargetNode(target);
                         return;
                     }

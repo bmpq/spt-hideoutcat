@@ -55,5 +55,19 @@ namespace tarkin
                 ts[r] = tmp;
             }
         }
+
+        /// <summary>
+        /// Checks if an event should occur based on its average interval and the elapsed time.
+        /// </summary>
+        /// <param name="avgIntervalSeconds">The average time between event occurrences.</param>
+        /// <param name="deltaTime">The time elapsed since the last check.</param>
+        public static bool RandomShouldOccur(float avgIntervalSeconds, float deltaTime)
+        {
+            if (avgIntervalSeconds <= 0f)
+                return true; // edge case
+
+            float probability = deltaTime / avgIntervalSeconds;
+            return Random.value < probability;
+        }
     }
 }

@@ -21,12 +21,16 @@ namespace hideoutcat
 
         CatGraphTraverser catGraphTraverser;
 
+        float timeLying;
+        float timeSleeping;
+
         void Start()
         {
             animator = GetComponent<Animator>();
             lookAt = gameObject.GetOrAddComponent<CatLookAt>();
             catGraphTraverser = gameObject.GetOrAddComponent<CatGraphTraverser>();
             catGraphTraverser.OnDestinationReached += CatGraphTraverser_OnDestinationReached;
+            catGraphTraverser.OnNodeReached += CatGraphTraverser_OnNodeReached;
 
             HideUnwantedSceneObjects();
         }
@@ -36,7 +40,17 @@ namespace hideoutcat
             if (catGraphTraverser == null)
                 catGraphTraverser = gameObject.GetOrAddComponent<CatGraphTraverser>();
 
+            Plugin.Log.LogDebug($"Set destination node to: {node.name}");
+
             catGraphTraverser.LayNewPath(node);
+        }
+
+        private void CatGraphTraverser_OnNodeReached(List<Node> nodesLeft)
+        {
+            if (nodesLeft.Count > 0)
+            {
+                lookAt.LookAt(nodesLeft[Mathf.Min(1, nodesLeft.Count - 1)].position + new Vector3(0, 0.3f, 0));
+            }
         }
 
         private void CatGraphTraverser_OnDestinationReached(Node node)
@@ -45,6 +59,8 @@ namespace hideoutcat
             {
                 parameter.Apply(animator);
             }
+
+            lookAt.SetLookTarget(null);
         }
 
         public override void OnDestroy()
@@ -89,11 +105,46 @@ namespace hideoutcat
         {
             animator.SetFloat("Random", Random.value); // used for different variants of fidgeting
 
-            if (catGraphTraverser.Velocity.magnitude < 0.1f)
+            bool stationary = catGraphTraverser.Velocity.magnitude < 0.1f;
+
+            if (stationary)
             {
-                if (Random.value < 0.00166f) // on avg every 10 seconds @ 60 calls per sec (1/600)
+                if (UnityExtensions.RandomShouldOccur(10f, Time.fixedDeltaTime))
                 {
                     animator.SetTrigger("Fidget");
+                }
+
+                if (animator.GetBool("LyingSide") || animator.GetBool("LyingBelly"))
+                {
+                    timeLying += Time.fixedDeltaTime;
+
+                    if (animator.GetBool("Sleeping"))
+                    {
+                        timeSleeping += Time.fixedDeltaTime;
+                        if (UnityExtensions.RandomShouldOccur(50f, Time.fixedDeltaTime))
+                        {
+                            animator.SetBool("Sleeping", false);
+                            animator.SetTrigger("Fidget");
+                        }
+                    }
+                    else if (UnityExtensions.RandomShouldOccur(20f, Time.fixedDeltaTime))
+                    {
+                        animator.SetBool("Sleeping", true);
+                        timeSleeping = 0;
+                    }
+
+                    AnimatorStateInfo curState = animator.GetCurrentAnimatorStateInfo(0);
+                    if (curState.IsName("LieBelly") || curState.IsName("LieSide")) // not fidgeting
+                    {
+                        if (UnityExtensions.RandomShouldOccur(5f, Time.fixedDeltaTime))
+                        {
+                            lookAt.SetLookAtPlayer();
+                        }
+                    }
+                }
+                else
+                {
+                    timeLying = 0f;
                 }
             }
         }

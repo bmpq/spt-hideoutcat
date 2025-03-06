@@ -18,19 +18,18 @@ namespace hideoutcat.Pathfinding
 
         Animator animator;
 
-        CatLookAt catLookAt;
-
         public event Action<Node> OnDestinationReached;
+        public event Action<List<Node>> OnNodeReached; // the parameter is the list of nodes that are left to traverse
 
         void Start()
         {
-            catLookAt = GetComponent<CatLookAt>();
             animator = GetComponent<Animator>();
         }
 
         public void LayNewPath(Node targetNode)
         {
-            currentNode = pathfindingGraph.GetNodeClosestAny(transform.position);
+            if (currentNode == null)
+                currentNode = pathfindingGraph.GetNodeClosestWaypoint(transform.position);
 
             currentPath = pathfindingGraph.FindPathBFS(currentNode, targetNode);
             currentPathIndex = 0;
@@ -64,37 +63,37 @@ namespace hideoutcat.Pathfinding
                         if (currentNode.poseParameters.Count > 0 && Mathf.Abs(angleDifference) > 10f) // if no pose needed, skip turning, consider reached
                         {
                             float turn = -Mathf.Sign(angleDifference);
-                            SetMovement(0, turn);
+                            TickMovement(0, turn);
                         }
                         else
                         {
-                            SetMovement(0, 0);
+                            TickMovement(0, 0);
 
                             currentPathIndex++;
                             Plugin.Log.LogInfo("Reached final destination!");
                             OnDestinationReached?.Invoke(currentPath[currentPath.Count - 1]);
-
-                            catLookAt.SetLookTarget(null);
                         }
                     }
                     else
                     {
                         currentPathIndex++;
                         Plugin.Log.LogInfo($"Set next node to: {currentPath[currentPathIndex].name}");
-
-                        catLookAt.SetLookTarget(currentPath[Mathf.Min(currentPath.Count - 1, currentPathIndex + 1)].position + new Vector3(0, 0.3f, 0));
+                        
+                        // broadcast nodes left to traverse
+                        OnNodeReached?.Invoke(currentPath.Skip(currentPathIndex).ToList());
                     }
                 }
             }
             else
             {
-                SetMovement(0, 0);
+                TickMovement(0, 0);
             }
         }
 
         void LateUpdate()
         {
             Velocity = transform.position - prevPos;
+            prevPos = transform.position;
 
             if (currentPath == null || currentPath.Count == 0)
                 return;
@@ -115,7 +114,7 @@ namespace hideoutcat.Pathfinding
         float smoothTimeTurn = 0.2f;
         float smoothTimeThrust = 0.3f;
 
-        public void SetMovement(float thrust, float turn)
+        void TickMovement(float thrust, float turn)
         {
             float smoothedThrust = Mathf.SmoothDamp(animator.GetFloat("Thrust"), thrust, ref currentThrustVelocity, smoothTimeThrust);
             float smoothedTurn = Mathf.SmoothDamp(animator.GetFloat("Turn"), turn, ref currentTurnVelocity, smoothTimeTurn);
@@ -228,7 +227,7 @@ namespace hideoutcat.Pathfinding
                     Debug.Log(angleToTarget);
                 }
 
-                SetMovement(targetThrust, targetTurn);
+                TickMovement(targetThrust, targetTurn);
                 prevDistToDest = distToTarget;
             }
         }

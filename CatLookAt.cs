@@ -10,6 +10,10 @@ namespace hideoutcat
         Transform targetLookAt;
         Transform targetLookAtDummy;
 
+        Camera cameraMain;
+
+        public bool tracking => constraintNeck != null && constraintNeck.targetLookAt != null;
+
         void Init()
         {
             Transform boneHead = transform.Find("Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08");
@@ -35,6 +39,14 @@ namespace hideoutcat
             constraintHead.minAngleLimits = new Vector3(-30, -30, -40);
         }
 
+        public void SetLookAtPlayer()
+        {
+            if (cameraMain == null)
+                cameraMain = Camera.main;
+
+            SetLookTarget(cameraMain.transform);
+        }
+
         public void SetLookTarget(Transform targetLookAt)
         {
             if (constraintNeck == null)
@@ -44,7 +56,7 @@ namespace hideoutcat
             constraintHead.targetLookAt = targetLookAt;
         }
 
-        public void SetLookTarget(Vector3 worldPos)
+        public void LookAt(Vector3 worldPos)
         {
             if (constraintNeck == null)
                 Init();
