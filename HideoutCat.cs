@@ -35,6 +35,16 @@ namespace hideoutcat
             HideUnwantedSceneObjects();
         }
 
+        Camera playerCam;
+
+        Transform GetPlayer()
+        {
+            if (playerCam == null)
+                playerCam = Camera.main;
+
+            return playerCam.transform;
+        }
+
         public void SetTargetNode(Node node)
         {
             if (catGraphTraverser == null)
@@ -105,13 +115,33 @@ namespace hideoutcat
         {
             animator.SetFloat("Random", Random.value); // used for different variants of fidgeting
 
-            bool stationary = catGraphTraverser.Velocity.magnitude < 0.1f;
+            bool hasDestination = catGraphTraverser.currentPath != null;
 
-            if (stationary)
+            bool playerInTheWay = IsPlayerInTheWay();
+            catGraphTraverser.pathBlocked = playerInTheWay;
+
+            // velocity is calculated in LateUpdate() there, so we divide by deltaTime
+            bool stationary = catGraphTraverser.Velocity.magnitude / Time.deltaTime < 0.1f;
+
+            if (hasDestination)
             {
-                if (UnityExtensions.RandomShouldOccur(10f, Time.fixedDeltaTime))
+                if (playerInTheWay)
+                {
+                    lookAt.SetLookAtPlayer();
+                    if (UnityExtensions.RandomShouldOccur(4f, Time.fixedDeltaTime))
+                        animator.SetBool("Sitting", true);
+                }
+                else
+                {
+                    animator.SetBool("Sitting", false);
+                }
+            }
+            else if (stationary)
+            {
+                if (UnityExtensions.RandomShouldOccur(20f, Time.fixedDeltaTime))
                 {
                     animator.SetTrigger("Fidget");
+                    lookAt.SetLookTarget(null);
                 }
 
                 if (animator.GetBool("LyingSide") || animator.GetBool("LyingBelly"))
@@ -121,32 +151,45 @@ namespace hideoutcat
                     if (animator.GetBool("Sleeping"))
                     {
                         timeSleeping += Time.fixedDeltaTime;
-                        if (UnityExtensions.RandomShouldOccur(50f, Time.fixedDeltaTime))
+                        if (UnityExtensions.RandomShouldOccur(60f, Time.fixedDeltaTime))
                         {
                             animator.SetBool("Sleeping", false);
                             animator.SetTrigger("Fidget");
                         }
                     }
-                    else if (UnityExtensions.RandomShouldOccur(20f, Time.fixedDeltaTime))
+                    else if (UnityExtensions.RandomShouldOccur(30f, Time.fixedDeltaTime))
                     {
                         animator.SetBool("Sleeping", true);
                         timeSleeping = 0;
-                    }
-
-                    AnimatorStateInfo curState = animator.GetCurrentAnimatorStateInfo(0);
-                    if (curState.IsName("LieBelly") || curState.IsName("LieSide")) // not fidgeting
-                    {
-                        if (UnityExtensions.RandomShouldOccur(5f, Time.fixedDeltaTime))
-                        {
-                            lookAt.SetLookAtPlayer();
-                        }
+                        lookAt.SetLookTarget(null);
                     }
                 }
                 else
                 {
                     timeLying = 0f;
                 }
+
+                AnimatorStateInfo curState = animator.GetCurrentAnimatorStateInfo(0);
+                if (curState.IsName("LieBelly") || curState.IsName("LieSide") || curState.IsName("Sit")) // not fidgeting
+                {
+                    if (UnityExtensions.RandomShouldOccur(5f, Time.fixedDeltaTime))
+                    {
+                        lookAt.SetLookAtPlayer();
+                    }
+                }
             }
+        }
+
+        bool IsPlayerInTheWay()
+        {
+            float distToPlayer = Vector3.Distance(GetPlayer().position, transform.position);
+            Vector3 directionToTarget = (GetPlayer().position - transform.position).normalized;
+            directionToTarget.y = 0f;
+            float angleToPlayer = Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up);
+
+            bool playerInTheWay = distToPlayer < 2f && Mathf.Abs(angleToPlayer) < 40f;
+
+            return playerInTheWay;
         }
 
         void ResetAnimatorParameters()

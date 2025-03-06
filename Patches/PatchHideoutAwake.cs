@@ -38,9 +38,9 @@ namespace hideoutcat
             }
             if (availableArea.Count > 0)
             {
-                Plugin.Log.LogDebug($"{availableArea.Count} avaiable areas");
+                Plugin.Log.LogInfo($"{availableArea.Count} avaiable areas");
 
-                availableArea.OrderBy(_ => System.Guid.NewGuid()).ToList();
+                availableArea = availableArea.OrderBy(_ => Random.value).ToList();
                 foreach (var spawnArea in availableArea)
                 {
                     var nodes = Plugin.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(spawnArea.AreaTemplate.Type, spawnArea.Data.CurrentLevel);
@@ -54,7 +54,7 @@ namespace hideoutcat
                 }
             }
 
-            Plugin.Log.LogDebug("no available areas, defaulting to a random waypoint node");
+            Plugin.Log.LogInfo("no available areas, defaulting to a random waypoint node");
             Node waypointNode = Plugin.CatGraph.GetNodeClosestWaypoint(new Vector3(Random.value * 16f, 0, 0));
             cat.transform.position = waypointNode.position;
             cat.SetTargetNode(waypointNode);

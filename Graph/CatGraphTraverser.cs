@@ -13,13 +13,15 @@ namespace hideoutcat.Pathfinding
 
         private Graph pathfindingGraph => Plugin.CatGraph;
         private Node currentNode;
-        private List<Node> currentPath;
+        public List<Node> currentPath;
         private int currentPathIndex;
 
         Animator animator;
 
         public event Action<Node> OnDestinationReached;
         public event Action<List<Node>> OnNodeReached; // the parameter is the list of nodes that are left to traverse
+
+        public bool pathBlocked;
 
         void Start()
         {
@@ -44,6 +46,7 @@ namespace hideoutcat.Pathfinding
         {
             if (currentPath == null)
             {
+                TickMovement(0, 0);
                 return;
             }
 
@@ -67,11 +70,13 @@ namespace hideoutcat.Pathfinding
                         }
                         else
                         {
-                            TickMovement(0, 0);
-
                             currentPathIndex++;
+
+                            Node destinationNode = currentPath[currentPath.Count - 1];
+                            currentPath = null;
+
                             Plugin.Log.LogInfo("Reached final destination!");
-                            OnDestinationReached?.Invoke(currentPath[currentPath.Count - 1]);
+                            OnDestinationReached?.Invoke(destinationNode);
                         }
                     }
                     else
@@ -128,6 +133,12 @@ namespace hideoutcat.Pathfinding
 
         void Locomotion()
         {
+            if (pathBlocked)
+            {
+                TickMovement(0f, 0f);
+                return;
+            }
+
             Node targetNode = currentPath[currentPathIndex];
             Vector3 targetPosition = targetNode.position;
 
