@@ -12,11 +12,14 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using tarkin;
+using Comfort.Common;
 
 namespace hideoutcat
 {
     internal class PatchHideoutAwake : ModulePatch
     {
+        public static event System.Action OnHideoutAwake;
+
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.Method(typeof(HideoutController), nameof(HideoutController.HideoutAwake));
@@ -25,6 +28,8 @@ namespace hideoutcat
         [PatchPostfix]
         private static void Postfix(HideoutController __instance)
         {
+            OnHideoutAwake?.Invoke();
+
             GameObject catObject = GameObject.Instantiate(BundleLoader.Load("hideoutcat").LoadAsset<GameObject>("hideoutcat"));
             ReplaceShadersToNative(catObject);
 

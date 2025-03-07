@@ -2,6 +2,7 @@
 using Comfort.Common;
 using EFT;
 using EFT.Hideout;
+using EFT.Interactive;
 using hideoutcat.Pathfinding;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,10 @@ using UnityEngine;
 
 namespace hideoutcat
 {
-    public class HideoutCat : MonoBehaviourSingleton<HideoutCat>
+    public class HideoutCat : InteractableObject
     {
         Animator animator;
         AreaData currentArea;
-
-        Dictionary<AreaData, System.Action> OnAreaUpgradeInstalledUnsubscribeActions = new Dictionary<AreaData, System.Action>();
 
         CatLookAt lookAt;
 
@@ -23,6 +22,20 @@ namespace hideoutcat
 
         float timeLying;
         float timeSleeping;
+
+        public bool pettable { get; private set; }
+
+        void OnEnable()
+        {
+            Singleton<HideoutClass>.Instance.OnAreaUpdated += OnAreaUpdated;
+            PatchAreaSelected.OnAreaSelected += SetCurrentSelectedArea;
+        }
+
+        void OnDisable()
+        {
+            Singleton<HideoutClass>.Instance.OnAreaUpdated -= OnAreaUpdated;
+            PatchAreaSelected.OnAreaSelected -= SetCurrentSelectedArea;
+        }
 
         void Start()
         {
@@ -32,12 +45,16 @@ namespace hideoutcat
             catGraphTraverser.OnDestinationReached += CatGraphTraverser_OnDestinationReached;
             catGraphTraverser.OnNodeReached += CatGraphTraverser_OnNodeReached;
 
-            HideUnwantedSceneObjects();
+            SphereCollider interactiveCollider = new GameObject("InteractiveCollider").AddComponent<SphereCollider>();
+            interactiveCollider.radius = 0.3f;
+            interactiveCollider.center = new Vector3(0, 0.15f, 0);
+            interactiveCollider.gameObject.layer = 22; // Interactive
+            interactiveCollider.transform.SetParent(transform, false);
         }
 
         Camera playerCam;
 
-        Transform GetPlayer()
+        Transform GetPlayerCam()
         {
             if (playerCam == null)
                 playerCam = Camera.main;
@@ -73,37 +90,13 @@ namespace hideoutcat
             lookAt.SetLookTarget(null);
         }
 
-        public override void OnDestroy()
-        {
-            base.OnDestroy();
-
-            // half the time BSG doesn't bother with unsubscribing from BindableEvent? or maybe I'm looking wrong and they unsubscribe somewhere sneaky
-            foreach (var kvp in OnAreaUpgradeInstalledUnsubscribeActions)
-            {
-                kvp.Value.Invoke();
-            }
-        }
-
-        void HideUnwantedSceneObjects()
-        {
-            // heating 1
-            UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(14.38238f, 0.5160349f, -5.618773f))?.SetActive(false); // books_01 (1)
-
-            // heating 2
-            UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(14.20716f, 0.5158756f, -5.420396f))?.SetActive(false); // books_01 (2)
-
-            // heating 3
-            UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(15.85126f, 0.5397013f, -4.845883f))?.SetActive(false); // paper3 (1)
-            UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(15.84810f, 0.5374010f, -5.039324f))?.SetActive(false); // paper3 (2)
-            UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(15.97384f, 0.5497416f, -4.821522f))?.SetActive(false); // Firewood_4 (7)
-            UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(16.07953f, 0.5244959f, -4.975954f))?.SetActive(false); // Firewood_4 (6)
-        }
-
         private void OnAreaUpdated()
         {
-            HideUnwantedSceneObjects();
             ResetPositionToClosestWaypoint();
-            SetCurrentSelectedArea(currentArea, true);
+
+            AreaData areaData = currentArea;
+            currentArea = null; // force update
+            SetCurrentSelectedArea(areaData);
         }
 
         void ResetPositionToClosestWaypoint()
@@ -111,8 +104,15 @@ namespace hideoutcat
             transform.position = Plugin.CatGraph.GetNodeClosestWaypoint(transform.position).position;
         }
 
+        public void Pet()
+        {
+            animator.SetTrigger("Caress");
+        }
+
         void FixedUpdate()
         {
+            pettable = false;
+
             animator.SetFloat("Random", Random.value); // used for different variants of fidgeting
 
             bool hasDestination = catGraphTraverser.currentPath != null;
@@ -130,21 +130,33 @@ namespace hideoutcat
                     lookAt.SetLookAtPlayer();
                     if (UnityExtensions.RandomShouldOccur(4f, Time.fixedDeltaTime))
                         animator.SetBool("Sitting", true);
+
+                    if (stationary && animator.GetBool("Sitting"))
+                        pettable = true;
                 }
                 else
                 {
                     animator.SetBool("Sitting", false);
+
+                    if (stationary && animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                    {
+                        pettable = true;
+                    }
                 }
             }
             else if (stationary)
             {
+                AnimatorStateInfo curState = animator.GetCurrentAnimatorStateInfo(0);
+
                 if (UnityExtensions.RandomShouldOccur(20f, Time.fixedDeltaTime))
                 {
                     animator.SetTrigger("Fidget");
                     lookAt.SetLookTarget(null);
                 }
 
-                if (animator.GetBool("LyingSide") || animator.GetBool("LyingBelly"))
+                bool lyingSide = animator.GetBool("LyingSide");
+                bool lyingBelly = animator.GetBool("LyingBelly");
+                if (lyingSide || lyingBelly)
                 {
                     timeLying += Time.fixedDeltaTime;
 
@@ -163,27 +175,36 @@ namespace hideoutcat
                         timeSleeping = 0;
                         lookAt.SetLookTarget(null);
                     }
+                    else if (lyingBelly && !curState.IsTag("Caress"))
+                    {
+                        pettable = true;
+                    }
                 }
                 else
                 {
                     timeLying = 0f;
                 }
 
-                AnimatorStateInfo curState = animator.GetCurrentAnimatorStateInfo(0);
-                if (curState.IsName("LieBelly") || curState.IsName("LieSide") || curState.IsName("Sit")) // not fidgeting
+                if (!curState.IsTag("Fidget"))
                 {
                     if (UnityExtensions.RandomShouldOccur(5f, Time.fixedDeltaTime))
                     {
                         lookAt.SetLookAtPlayer();
                     }
+
+                    pettable = true;
+                }
+                else
+                {
+                    pettable = false;
                 }
             }
         }
 
         bool IsPlayerInTheWay()
         {
-            float distToPlayer = Vector3.Distance(GetPlayer().position, transform.position);
-            Vector3 directionToTarget = (GetPlayer().position - transform.position).normalized;
+            float distToPlayer = Vector3.Distance(GetPlayerCam().position, transform.position);
+            Vector3 directionToTarget = (GetPlayerCam().position - transform.position).normalized;
             directionToTarget.y = 0f;
             float angleToPlayer = Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up);
 
@@ -206,13 +227,9 @@ namespace hideoutcat
             animator.ResetTrigger("Jump");
         }
 
-        public void SetCurrentSelectedArea(AreaData area, bool force = false)
+        public void SetCurrentSelectedArea(AreaData area)
         {
-            if (!OnAreaUpgradeInstalledUnsubscribeActions.ContainsKey(area))
-                // could not find a better place to hook into the area upgrade install event, seems it's individual area based, it'd be simpler if there was a hideout-wide event 
-                OnAreaUpgradeInstalledUnsubscribeActions[area] = area.AreaUpgraded.Subscribe(new System.Action(OnAreaUpdated)); // I'm 90% sure this is a valid way to use BindableEvent
-
-            if (!force && area == currentArea)
+            if (area == currentArea)
             {
                 return;
             }
