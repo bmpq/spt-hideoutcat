@@ -20,6 +20,21 @@ namespace hideoutcat
 
         CatGraphTraverser catGraphTraverser;
 
+        private CatState _currentState = CatState.Idle;
+
+        private enum CatState
+        {
+            Idle,
+            Moving,
+            Sitting,
+            LyingSide,
+            LyingBelly,
+            Sleeping,
+            Eating,
+            Defecating,
+            Scratching
+        }
+
         void OnEnable()
         {
             Singleton<HideoutClass>.Instance.OnAreaUpdated += OnAreaUpdated;
@@ -37,8 +52,8 @@ namespace hideoutcat
             animator = GetComponent<Animator>();
             lookAt = gameObject.GetOrAddComponent<CatLookAt>();
             catGraphTraverser = gameObject.GetOrAddComponent<CatGraphTraverser>();
-            catGraphTraverser.OnDestinationReached += CatGraphTraverser_OnDestinationReached;
-            catGraphTraverser.OnNodeReached += CatGraphTraverser_OnNodeReached;
+            catGraphTraverser.OnDestinationReached += OnDestinationReached;
+            catGraphTraverser.OnNodeReached += OnNodeReached;
 
             SphereCollider interactiveCollider = new GameObject("InteractiveCollider").AddComponent<SphereCollider>();
             interactiveCollider.radius = 0.4f;
@@ -56,7 +71,6 @@ namespace hideoutcat
 
             return playerCam.transform;
         }
-
         public void SetTargetNode(Node node)
         {
             if (catGraphTraverser == null)
@@ -67,7 +81,7 @@ namespace hideoutcat
             catGraphTraverser.LayNewPath(node);
         }
 
-        private void CatGraphTraverser_OnNodeReached(List<Node> nodesLeft)
+        private void OnNodeReached(List<Node> nodesLeft)
         {
             if (nodesLeft.Count > 0)
             {
@@ -75,7 +89,7 @@ namespace hideoutcat
             }
         }
 
-        private void CatGraphTraverser_OnDestinationReached(Node node)
+        private void OnDestinationReached(Node node)
         {
             foreach (var parameter in node.poseParameters)
             {
@@ -105,7 +119,7 @@ namespace hideoutcat
 
         public bool IsSleeping()
         {
-            return animator.GetBool("Sleeping");
+            return _currentState == CatState.Sleeping;
         }
 
         public void WakeUp()
@@ -141,99 +155,136 @@ namespace hideoutcat
             return false;
         }
 
+        public bool IsFidgeting()
+        {
+            return animator.GetCurrentAnimatorStateInfo(0).IsTag("Fidget");
+        }
+
         void FixedUpdate()
         {
             animator.SetFloat("Random", Random.value); // used for different variants of fidgeting
 
-            HandlePlayerInteraction();
+            UpdateState(); // Update the _currentState based on the Animator (mirror)
+            HandleBehavior(); // Handle behavior based on _currentState
 
-            if (!catGraphTraverser.HasDestination)
+            HandlePlayerInteraction();
+        }
+
+        private void UpdateState()
+        {
+            AnimatorStateInfo curState = animator.GetCurrentAnimatorStateInfo(0);
+
+            if (catGraphTraverser.HasDestination)
             {
-                HandleIdleBehavior();
+                _currentState = CatState.Moving;
+                return;
+            }
+            if (animator.GetBool("Sleeping"))
+            {
+                _currentState = CatState.Sleeping;
+                return;
+            }
+            if (animator.GetBool("Eating"))
+            {
+                _currentState = CatState.Eating;
+                return;
+            }
+            if (animator.GetBool("Defecating"))
+            {
+                _currentState = CatState.Defecating;
+                return;
+            }
+            if (animator.GetBool("LyingSide"))
+            {
+                _currentState = CatState.LyingSide;
+                return;
+            }
+            if (animator.GetBool("LyingBelly"))
+            {
+                _currentState = CatState.LyingBelly;
+                return;
+            }
+            if (animator.GetBool("Sitting"))
+            {
+                _currentState = CatState.Sitting;
+                return;
+            }
+            if (animator.GetBool("ScratchingHorizontal") || animator.GetBool("ScratchingVertical"))
+            {
+                _currentState = CatState.Scratching;
+                return;
+            }
+
+            _currentState = CatState.Idle;
+        }
+
+        private void HandleBehavior()
+        {
+            switch (_currentState)
+            {
+                case CatState.Idle:
+                    HandleIdleState();
+                    break;
+                case CatState.Moving:
+                    HandleMovingState();
+                    break;
+                case CatState.Sitting:
+                    HandleSittingState();
+                    break;
+                case CatState.LyingSide:
+                case CatState.LyingBelly:
+                    HandleLyingState();
+                    break;
+                case CatState.Sleeping:
+                    HandleSleepingState();
+                    break;
+                case CatState.Eating:
+                    HandleEatingState();
+                    break;
+                case CatState.Defecating:
+                    HandleDefecatingState();
+                    break;
+                case CatState.Scratching:
+                    HandleScratchingState();
+                    break;
             }
         }
 
-        private enum CatState
+        private void HandleMovingState()
         {
-            Idle,
-            Sitting,
-            LyingSide,
-            LyingBelly,
-            Sleeping,
-            Eating,
-            Defecating,
-            Scratching
+
         }
 
-        private void HandleIdleBehavior()
+        private void HandleIdleState()
         {
             if (UnityExtensions.RandomShouldOccur(20f))
             {
                 animator.SetTrigger("Fidget");
                 lookAt.SetLookTarget(null);
             }
-            CatState currentState = GetCurrentCatState();
-            switch (currentState)
+
+            if (UnityExtensions.RandomShouldOccur(3f))
             {
-                case CatState.LyingBelly:
-                case CatState.LyingSide:
-                    HandleLyingBehavior();
-                    break;
-                case CatState.Idle:
-                    if (UnityExtensions.RandomShouldOccur(3f))
-                    {
-                        animator.SetBool("Sitting", true);
-                    }
-                    break;
-                case CatState.Eating:
-                    HandleEatingBehavior();
-                    break;
-                case CatState.Sitting:
-                    HandleSittingBehavior();
-                    break;
-                case CatState.Defecating:
-                    HandleDefecatingBehavior();
-                    break;
-                default:
-                    break;
+                animator.SetBool("Sitting", true);
             }
         }
 
-        private CatState GetCurrentCatState()
+        private void HandleSittingState()
         {
-            AnimatorStateInfo curState = animator.GetCurrentAnimatorStateInfo(0);
-
-            if (animator.GetBool("Sleeping"))
-                return CatState.Sleeping;
-            if (animator.GetBool("Eating"))
-                return CatState.Eating;
-            if (animator.GetBool("Defecating"))
-                return CatState.Defecating;
-            if (animator.GetBool("LyingSide"))
-                return CatState.LyingSide;
-            if (animator.GetBool("LyingBelly"))
-                return CatState.LyingBelly;
-            if (animator.GetBool("ScratchingHorizontal") || animator.GetBool("ScratchingVertical"))
-                return CatState.Scratching;
-            if (animator.GetBool("Sitting"))
-                return CatState.Sitting;
-            if (curState.IsName("Idle"))
-                return CatState.Idle;
-
-            return CatState.Idle;
+            if (UnityExtensions.RandomShouldOccur(20f))
+            {
+                animator.SetTrigger("Fidget");
+                lookAt.SetLookTarget(null);
+            }
+            else if (UnityExtensions.RandomShouldOccur(3f) && !IsFidgeting())
+                lookAt.SetLookAtPlayer();
+            else if (UnityExtensions.RandomShouldOccur(20f))
+                GoToRandomArea();
         }
 
-        private void HandleLyingBehavior()
+        private void HandleLyingState()
         {
-            if (GetCurrentCatState() == CatState.Sleeping)
-            {
-                if (UnityExtensions.RandomShouldOccur(40f))
-                {
-                    animator.SetBool("Sleeping", false);
-                    animator.SetTrigger("Fidget");
-                }
-            }
-            else if (UnityExtensions.RandomShouldOccur(60f))
+            if (UnityExtensions.RandomShouldOccur(60f))
             {
                 animator.SetBool("Sleeping", true);
                 lookAt.SetLookTarget(null);
@@ -242,33 +293,49 @@ namespace hideoutcat
             {
                 GoToRandomArea();
             }
+            else if (UnityExtensions.RandomShouldOccur(20f))
+            {
+                animator.SetTrigger("Fidget");
+                lookAt.SetLookTarget(null);
+            }
+            else if (UnityExtensions.RandomShouldOccur(5f) && !IsFidgeting())
+            {
+                lookAt.SetLookAtPlayer();
+            }
         }
 
-        private void HandleEatingBehavior()
+        private void HandleSleepingState()
+        {
+            if (UnityExtensions.RandomShouldOccur(40f))
+            {
+                animator.SetBool("Sleeping", false);
+                animator.SetTrigger("Fidget");
+                lookAt.SetLookTarget(null);
+            }
+        }
+
+        private void HandleEatingState()
         {
             if (UnityExtensions.RandomShouldOccur(15f))
                 GoToClosestWaypoint();
         }
 
-        private void HandleSittingBehavior()
+        private void HandleDefecatingState()
         {
-            if (UnityExtensions.RandomShouldOccur(3f))
-                lookAt.SetLookAtPlayer();
-            if (UnityExtensions.RandomShouldOccur(30f))
-                GoToRandomArea();
+            if (UnityExtensions.RandomShouldOccur(15f))
+                GoToClosestWaypoint();
         }
 
-        private void HandleDefecatingBehavior()
+        private void HandleScratchingState()
         {
-            if (UnityExtensions.RandomShouldOccur(20f))
+            if (UnityExtensions.RandomShouldOccur(15f))
                 GoToClosestWaypoint();
         }
 
         void HandlePlayerInteraction()
         {
-            bool hasDestination = catGraphTraverser.currentPath != null;
             bool playerInTheWay = IsPlayerInTheWay();
-            if (playerInTheWay && hasDestination)
+            if (playerInTheWay && catGraphTraverser.HasDestination)
             {
                 catGraphTraverser.ForgetDestination();
                 lookAt.SetLookAtPlayer();
@@ -306,16 +373,10 @@ namespace hideoutcat
 
         bool IsBusy()
         {
-            if (animator.GetBool("Sleeping"))
-                return true;
-
-            if (animator.GetBool("Eating"))
-                return true;
-
-            if (animator.GetBool("Defecating"))
-                return true;
-
-            return false;
+            return 
+                _currentState == CatState.Sleeping || 
+                _currentState == CatState.Eating || 
+                _currentState == CatState.Defecating;
         }
 
         void GoToRandomArea()

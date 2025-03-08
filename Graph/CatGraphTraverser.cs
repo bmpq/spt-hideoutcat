@@ -44,7 +44,7 @@ namespace hideoutcat.Pathfinding
 
             if (currentPath == null)
             {
-                Plugin.Log.LogError("No Path Found");
+                Plugin.Log.LogError($"No Path Found from {currentNode} to {targetNode}");
             }
         }
 

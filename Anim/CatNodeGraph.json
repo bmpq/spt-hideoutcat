@@ -105,9 +105,9 @@
   {
     "name": "1e83_Waypoint",
     "position": {
-      "x": 15.684,
+      "x": 15.663,
       "y": 0.0,
-      "z": -1.168
+      "z": -1.296
     },
     "connectedTo": [
       "c595_RestSpace_L3",
@@ -178,7 +178,8 @@
       "3fca_Waypoint",
       "be9a_MedStation_L3",
       "2d28_MedStation_L2",
-      "bb04_Waypoint"
+      "bb04_Waypoint",
+      "b36c_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -238,7 +239,9 @@
       "25a2_Waypoint",
       "e508_WaterCollector_L2",
       "512f_ShootingRange_L1_POSE",
-      "b36c_Waypoint"
+      "b36c_Waypoint",
+      "13ff_ShootingRange_L3_POSE",
+      "1062_ShootingRange_L2_POSE"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -281,7 +284,8 @@
       "3f27_Waypoint",
       "822b_Kitchen_L2_POSE",
       "25a2_Waypoint",
-      "c4b8_Waypoint"
+      "c4b8_Waypoint",
+      "b203_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -482,7 +486,9 @@
       "25a2_Waypoint",
       "c1fb_BitcoinFarm_AL",
       "5ca5_Waypoint",
-      "512f_ShootingRange_L1_POSE"
+      "512f_ShootingRange_L1_POSE",
+      "13ff_ShootingRange_L3_POSE",
+      "1062_ShootingRange_L2_POSE"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -1335,9 +1341,9 @@
   {
     "name": "af18_Heating_L3_POSE",
     "position": {
-      "x": 15.955,
+      "x": 15.975,
       "y": 0.5157,
-      "z": -4.905
+      "z": -4.94
     },
     "connectedTo": [
       "f001_Heating_L3"
@@ -1416,7 +1422,9 @@
     "connectedTo": [
       "c4b8_Waypoint",
       "2b63_WaterCollector_L3",
-      "c1fb_BitcoinFarm_AL"
+      "c1fb_BitcoinFarm_AL",
+      "13ff_ShootingRange_L3_POSE",
+      "1062_ShootingRange_L2_POSE"
     ],
     "forwardJump": false,
     "areaType": "WaterCollector",
@@ -2345,7 +2353,8 @@
     "connectedTo": [
       "1ea8_WaterCollector_L3",
       "c4b8_Waypoint",
-      "42c5_Waypoint"
+      "42c5_Waypoint",
+      "c1fb_BitcoinFarm_AL"
     ],
     "forwardJump": false,
     "areaType": "ShootingRange",
@@ -2644,7 +2653,9 @@
     "connectedTo": [
       "42c5_Waypoint",
       "1ea8_WaterCollector_L3",
-      "512f_ShootingRange_L1_POSE"
+      "512f_ShootingRange_L1_POSE",
+      "13ff_ShootingRange_L3_POSE",
+      "1062_ShootingRange_L2_POSE"
     ],
     "forwardJump": false,
     "areaType": "BitcoinFarm",
