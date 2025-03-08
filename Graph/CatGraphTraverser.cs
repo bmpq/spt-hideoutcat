@@ -28,6 +28,11 @@ namespace hideoutcat.Pathfinding
             animator = GetComponent<Animator>();
         }
 
+        public void ForgetDestination()
+        {
+            currentPath = null;
+        }
+
         public void LayNewPath(Node targetNode)
         {
             if (currentNode == null)

@@ -237,7 +237,8 @@
       "1ea8_WaterCollector_L3",
       "25a2_Waypoint",
       "e508_WaterCollector_L2",
-      "512f_ShootingRange_L1_POSE"
+      "512f_ShootingRange_L1_POSE",
+      "b36c_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -279,7 +280,8 @@
       "2b03_Kitchen_L1",
       "3f27_Waypoint",
       "822b_Kitchen_L2_POSE",
-      "25a2_Waypoint"
+      "25a2_Waypoint",
+      "c4b8_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",

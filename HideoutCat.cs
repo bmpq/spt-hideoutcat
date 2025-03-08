@@ -14,27 +14,24 @@ namespace hideoutcat
     public class HideoutCat : InteractableObject
     {
         Animator animator;
-        AreaData currentArea;
+        AreaData currentTargetArea;
 
         CatLookAt lookAt;
 
         CatGraphTraverser catGraphTraverser;
-
-        float timeLying;
-        float timeSleeping;
 
         public bool pettable { get; private set; }
 
         void OnEnable()
         {
             Singleton<HideoutClass>.Instance.OnAreaUpdated += OnAreaUpdated;
-            PatchAreaSelected.OnAreaSelected += SetCurrentSelectedArea;
+            PatchAreaSelected.OnAreaSelected += SetTargetArea;
         }
 
         void OnDisable()
         {
             Singleton<HideoutClass>.Instance.OnAreaUpdated -= OnAreaUpdated;
-            PatchAreaSelected.OnAreaSelected -= SetCurrentSelectedArea;
+            PatchAreaSelected.OnAreaSelected -= SetTargetArea;
         }
 
         void Start()
@@ -92,16 +89,20 @@ namespace hideoutcat
 
         private void OnAreaUpdated()
         {
-            ResetPositionToClosestWaypoint();
-
-            AreaData areaData = currentArea;
-            currentArea = null; // force update
-            SetCurrentSelectedArea(areaData);
+            TeleportToClosestWaypoint();
+            StartTraversingToArea(currentTargetArea);
         }
 
-        void ResetPositionToClosestWaypoint()
+        void TeleportToClosestWaypoint()
         {
+            ResetAnimatorParameters();
             transform.position = Plugin.CatGraph.GetNodeClosestWaypoint(transform.position).position;
+        }
+
+        void GoToClosestWaypoint()
+        {
+            ResetAnimatorParameters();
+            catGraphTraverser.LayNewPath(Plugin.CatGraph.GetNodeClosestWaypoint(transform.position));
         }
 
         public void Pet()
@@ -119,6 +120,12 @@ namespace hideoutcat
 
             bool playerInTheWay = IsPlayerInTheWay();
             catGraphTraverser.pathBlocked = playerInTheWay;
+
+            if (playerInTheWay && hasDestination)
+            {
+                catGraphTraverser.ForgetDestination();
+                lookAt.SetLookAtPlayer();
+            }
 
             // velocity is calculated in LateUpdate() there, so we divide by deltaTime
             bool stationary = catGraphTraverser.Velocity.magnitude / Time.deltaTime < 0.1f;
@@ -158,11 +165,8 @@ namespace hideoutcat
                 bool lyingBelly = animator.GetBool("LyingBelly");
                 if (lyingSide || lyingBelly)
                 {
-                    timeLying += Time.fixedDeltaTime;
-
                     if (animator.GetBool("Sleeping"))
                     {
-                        timeSleeping += Time.fixedDeltaTime;
                         if (UnityExtensions.RandomShouldOccur(60f, Time.fixedDeltaTime))
                         {
                             animator.SetBool("Sleeping", false);
@@ -172,27 +176,52 @@ namespace hideoutcat
                     else if (UnityExtensions.RandomShouldOccur(30f, Time.fixedDeltaTime))
                     {
                         animator.SetBool("Sleeping", true);
-                        timeSleeping = 0;
                         lookAt.SetLookTarget(null);
                     }
-                    else if (lyingBelly && !curState.IsTag("Caress"))
+                    else if (lyingBelly)
                     {
-                        pettable = true;
+                        pettable = !curState.IsTag("Caress");
                     }
                 }
-                else
+                else if (curState.IsName("Idle"))
                 {
-                    timeLying = 0f;
+                    if (UnityExtensions.RandomShouldOccur(3f, Time.fixedDeltaTime))
+                    {
+                        animator.SetBool("Sitting", true);
+                    }
                 }
-
-                if (!curState.IsTag("Fidget"))
+                else if (curState.IsName("Eating"))
                 {
+                    if (UnityExtensions.RandomShouldOccur(15f, Time.fixedDeltaTime))
+                    {
+                        GoToClosestWaypoint();
+                    }
+                }
+                else if (animator.GetBool("Sitting"))
+                {
+                    if (UnityExtensions.RandomShouldOccur(30f, Time.fixedDeltaTime))
+                    {
+                        GoToRandomArea();
+                    }
+
                     if (UnityExtensions.RandomShouldOccur(5f, Time.fixedDeltaTime))
                     {
                         lookAt.SetLookAtPlayer();
                     }
 
-                    pettable = true;
+                    pettable = !curState.IsTag("Caress");
+                }
+                else if (animator.GetBool("Defecating"))
+                {
+                    if (UnityExtensions.RandomShouldOccur(20f, Time.fixedDeltaTime))
+                    {
+                        animator.SetBool("Defecating", false);
+                        GoToClosestWaypoint();
+                    }
+                }
+
+                if (!curState.IsTag("Fidget"))
+                {
                 }
                 else
                 {
@@ -223,17 +252,52 @@ namespace hideoutcat
             animator.SetBool("Crouching", false);
             animator.SetBool("Eating", false);
             animator.ResetTrigger("Fidget");
-
-            animator.ResetTrigger("Jump");
         }
 
-        public void SetCurrentSelectedArea(AreaData area)
+        bool IsBusy()
         {
-            if (area == currentArea)
+            if (animator.GetBool("Sleeping"))
+                return true;
+
+            if (animator.GetBool("Eating"))
+                return true;
+
+            if (animator.GetBool("Defecating"))
+                return true;
+
+            return false;
+        }
+
+        void GoToRandomArea()
+        {
+            List<AreaData> areas = Singleton<HideoutClass>.Instance.AreaDatas;
+
+            foreach (var area in areas)
             {
-                return;
+                var nodes = Plugin.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(area.Template.Type, area.CurrentLevel);
+                if (nodes.Count == 0)
+                    continue;
+
+                SetTargetArea(area);
+
+                break;
             }
-            currentArea = area;
+        }
+
+        public void SetTargetArea(AreaData area)
+        {
+            if (area == currentTargetArea)
+                return;
+
+            if (IsBusy())
+                return;
+
+            StartTraversingToArea(area);
+        }
+
+        void StartTraversingToArea(AreaData area)
+        {
+            currentTargetArea = area;
 
             List<Node> targetNodes = Plugin.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(area.Template.Type, area.CurrentLevel);
             if (targetNodes.Count == 0)

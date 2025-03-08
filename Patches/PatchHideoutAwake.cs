@@ -45,7 +45,9 @@ namespace hideoutcat
             {
                 Plugin.Log.LogInfo($"{availableArea.Count} avaiable areas");
 
+                Random.InitState((int)System.DateTime.Now.Ticks); // apparently tarkov sets the seed somewhere, need to overwrite
                 availableArea = availableArea.OrderBy(_ => Random.value).ToList();
+
                 foreach (var spawnArea in availableArea)
                 {
                     var nodes = Plugin.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(spawnArea.AreaTemplate.Type, spawnArea.Data.CurrentLevel);
