@@ -69,5 +69,10 @@ namespace tarkin
             float probability = deltaTime / avgIntervalSeconds;
             return Random.value < probability;
         }
+
+        public static bool RandomShouldOccur(float avgIntervalSeconds)
+        {
+            return RandomShouldOccur(avgIntervalSeconds, Time.fixedDeltaTime);
+        }
     }
 }

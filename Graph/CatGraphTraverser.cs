@@ -9,6 +9,7 @@ namespace hideoutcat.Pathfinding
     public class CatGraphTraverser : MonoBehaviour
     {
         public Vector3 Velocity { get; private set; }
+        public float VelocityMagnitude => Velocity.magnitude / Time.deltaTime;
         private Vector3 prevPos;
 
         private Graph pathfindingGraph => Plugin.CatGraph;
@@ -16,12 +17,12 @@ namespace hideoutcat.Pathfinding
         public List<Node> currentPath;
         private int currentPathIndex;
 
+        public bool HasDestination => currentPath != null;
+
         Animator animator;
 
         public event Action<Node> OnDestinationReached;
         public event Action<List<Node>> OnNodeReached; // the parameter is the list of nodes that are left to traverse
-
-        public bool pathBlocked;
 
         void Start()
         {
@@ -138,12 +139,6 @@ namespace hideoutcat.Pathfinding
 
         void Locomotion()
         {
-            if (pathBlocked)
-            {
-                TickMovement(0f, 0f);
-                return;
-            }
-
             Node targetNode = currentPath[currentPathIndex];
             Vector3 targetPosition = targetNode.position;
 

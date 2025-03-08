@@ -321,7 +321,9 @@
       "5ca5_Waypoint",
       "117c_Waypoint",
       "42c5_Waypoint",
-      "2be7_Waypoint"
+      "2be7_Waypoint",
+      "c15b_Waypoint",
+      "4cd9_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -339,7 +341,11 @@
     "connectedTo": [
       "5dd0_Waypoint",
       "21bc_Waypoint",
-      "5ca5_Waypoint"
+      "5ca5_Waypoint",
+      "4cd9_Waypoint",
+      "4e81_Stash_L4_POSE",
+      "c639_Stash_L3_POSE",
+      "ab5e_Stash_L2"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -411,7 +417,9 @@
     "connectedTo": [
       "4b86_Waypoint",
       "5aa9_Waypoint",
-      "ed1f_WaterCloset_L2"
+      "ed1f_WaterCloset_L2",
+      "c639_Stash_L3_POSE",
+      "ab5e_Stash_L2"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -514,7 +522,8 @@
       "668c_Waypoint",
       "fbb8_Waypoint",
       "21bc_Waypoint",
-      "5912_SolarPower_L1"
+      "5912_SolarPower_L1",
+      "c15b_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -755,6 +764,46 @@
     "poseParameters": []
   },
   {
+    "name": "c15b_Waypoint",
+    "position": {
+      "x": -4.285,
+      "y": -2.38418579E-07,
+      "z": -1.45
+    },
+    "connectedTo": [
+      "4cd9_Waypoint",
+      "21bc_Waypoint",
+      "2be7_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "NotSet",
+    "areaLevel": -1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "4cd9_Waypoint",
+    "position": {
+      "x": -4.671,
+      "y": -2.38418579E-07,
+      "z": 0.132
+    },
+    "connectedTo": [
+      "4b86_Waypoint",
+      "c15b_Waypoint",
+      "21bc_Waypoint",
+      "4e81_Stash_L4_POSE",
+      "c639_Stash_L3_POSE",
+      "ab5e_Stash_L2",
+      "79fc_Stash_L2"
+    ],
+    "forwardJump": false,
+    "areaType": "NotSet",
+    "areaLevel": -1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
     "name": "b41d_Security_L0_POSE",
     "position": {
       "x": -8.824,
@@ -944,6 +993,135 @@
     ]
   },
   {
+    "name": "4e81_Stash_L4_POSE",
+    "position": {
+      "x": -5.528,
+      "y": 0.0,
+      "z": 0.792
+    },
+    "connectedTo": [
+      "4b86_Waypoint",
+      "4cd9_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "Stash",
+    "areaLevel": 4,
+    "poseRotation": 126.067039,
+    "poseParameters": [
+      {
+        "Name": "Sitting",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "name": "c639_Stash_L3_POSE",
+    "position": {
+      "x": -5.653,
+      "y": 0.0,
+      "z": 1.97
+    },
+    "connectedTo": [
+      "4cd9_Waypoint",
+      "4b86_Waypoint",
+      "5dd0_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "Stash",
+    "areaLevel": 3,
+    "poseRotation": 129.27504,
+    "poseParameters": [
+      {
+        "Name": "Sitting",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "name": "4fae_Stash_L2_POSE",
+    "position": {
+      "x": -6.898,
+      "y": 1.108,
+      "z": 1.897
+    },
+    "connectedTo": [
+      "a789_Stash_L2"
+    ],
+    "forwardJump": false,
+    "areaType": "Stash",
+    "areaLevel": 2,
+    "poseRotation": 89.0439453,
+    "poseParameters": [
+      {
+        "Name": "LyingBelly",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "name": "a789_Stash_L2",
+    "position": {
+      "x": -7.041,
+      "y": 0.555,
+      "z": 1.261
+    },
+    "connectedTo": [
+      "79fc_Stash_L2",
+      "4fae_Stash_L2_POSE"
+    ],
+    "forwardJump": false,
+    "areaType": "Stash",
+    "areaLevel": 2,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "79fc_Stash_L2",
+    "position": {
+      "x": -6.467,
+      "y": 0.032,
+      "z": 0.915
+    },
+    "connectedTo": [
+      "a789_Stash_L2",
+      "ab5e_Stash_L2",
+      "4cd9_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "Stash",
+    "areaLevel": 2,
+    "poseRotation": 357.56076,
+    "poseParameters": []
+  },
+  {
+    "name": "ab5e_Stash_L2",
+    "position": {
+      "x": -4.979,
+      "y": 0.0,
+      "z": 1.658
+    },
+    "connectedTo": [
+      "4b86_Waypoint",
+      "4cd9_Waypoint",
+      "5dd0_Waypoint",
+      "79fc_Stash_L2"
+    ],
+    "forwardJump": false,
+    "areaType": "Stash",
+    "areaLevel": 2,
+    "poseRotation": 133.903854,
+    "poseParameters": []
+  },
+  {
     "name": "f5ae_Generator_L3",
     "position": {
       "x": 0.666,
@@ -1021,7 +1199,7 @@
     "name": "f88b_Generator_L3",
     "position": {
       "x": -0.386,
-      "y": 1.673,
+      "y": 1.656,
       "z": -5.173
     },
     "connectedTo": [
@@ -1408,30 +1586,6 @@
     "poseParameters": []
   },
   {
-    "name": "ba57_MedStation_L3_POSE",
-    "position": {
-      "x": 9.308,
-      "y": 0.583,
-      "z": -1.0204
-    },
-    "connectedTo": [
-      "be9a_MedStation_L3"
-    ],
-    "forwardJump": false,
-    "areaType": "MedStation",
-    "areaLevel": 3,
-    "poseRotation": 153.145432,
-    "poseParameters": [
-      {
-        "Name": "LyingBelly",
-        "Type": "Bool",
-        "BoolValue": true,
-        "FloatValue": 0.0,
-        "IntValue": 0
-      }
-    ]
-  },
-  {
     "name": "be9a_MedStation_L3",
     "position": {
       "x": 8.815,
@@ -1440,7 +1594,6 @@
     },
     "connectedTo": [
       "b203_Waypoint",
-      "ba57_MedStation_L3_POSE",
       "171c_Waypoint",
       "bb04_Waypoint"
     ],
