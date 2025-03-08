@@ -20,8 +20,6 @@ namespace hideoutcat
 
         CatGraphTraverser catGraphTraverser;
 
-        public bool pettable { get; private set; }
-
         void OnEnable()
         {
             Singleton<HideoutClass>.Instance.OnAreaUpdated += OnAreaUpdated;
@@ -110,10 +108,30 @@ namespace hideoutcat
             animator.SetTrigger("Caress");
         }
 
+        public bool IsPettable()
+        {
+            AnimatorStateInfo curState = animator.GetCurrentAnimatorStateInfo(0);
+
+            // already petting
+            if (animator.GetNextAnimatorStateInfo(0).IsTag("Caress") || curState.IsTag("Caress"))
+                return false;
+
+            // the only states we have fitting animations for
+
+            if (curState.IsName("Sit"))
+                return true;
+
+            if (curState.IsName("LieBelly"))
+                return true;
+
+            if (curState.IsName("Idle"))
+                return true;
+
+            return false;
+        }
+
         void FixedUpdate()
         {
-            pettable = false;
-
             animator.SetFloat("Random", Random.value); // used for different variants of fidgeting
 
             bool hasDestination = catGraphTraverser.currentPath != null;
@@ -137,18 +155,10 @@ namespace hideoutcat
                     lookAt.SetLookAtPlayer();
                     if (UnityExtensions.RandomShouldOccur(4f, Time.fixedDeltaTime))
                         animator.SetBool("Sitting", true);
-
-                    if (stationary && animator.GetBool("Sitting"))
-                        pettable = true;
                 }
                 else
                 {
                     animator.SetBool("Sitting", false);
-
-                    if (stationary && animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-                    {
-                        pettable = true;
-                    }
                 }
             }
             else if (stationary)
@@ -178,10 +188,6 @@ namespace hideoutcat
                         animator.SetBool("Sleeping", true);
                         lookAt.SetLookTarget(null);
                     }
-                    else if (lyingBelly)
-                    {
-                        pettable = !curState.IsTag("Caress");
-                    }
                 }
                 else if (curState.IsName("Idle"))
                 {
@@ -208,8 +214,6 @@ namespace hideoutcat
                     {
                         lookAt.SetLookAtPlayer();
                     }
-
-                    pettable = !curState.IsTag("Caress");
                 }
                 else if (animator.GetBool("Defecating"))
                 {
@@ -218,14 +222,6 @@ namespace hideoutcat
                         animator.SetBool("Defecating", false);
                         GoToClosestWaypoint();
                     }
-                }
-
-                if (!curState.IsTag("Fidget"))
-                {
-                }
-                else
-                {
-                    pettable = false;
                 }
             }
         }
@@ -270,7 +266,7 @@ namespace hideoutcat
 
         void GoToRandomArea()
         {
-            List<AreaData> areas = Singleton<HideoutClass>.Instance.AreaDatas;
+            var areas = Singleton<HideoutClass>.Instance.AreaDatas.OrderBy(x => Random.value);
 
             foreach (var area in areas)
             {

@@ -38,7 +38,7 @@ namespace hideoutcat
             {
                 Name = "Pet",
                 Action = new Action(cat.Pet),
-                Disabled = !cat.pettable
+                Disabled = !cat.IsPettable()
             });
 
             return actionsReturnClass;
