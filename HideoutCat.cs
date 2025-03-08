@@ -41,7 +41,7 @@ namespace hideoutcat
             catGraphTraverser.OnNodeReached += CatGraphTraverser_OnNodeReached;
 
             SphereCollider interactiveCollider = new GameObject("InteractiveCollider").AddComponent<SphereCollider>();
-            interactiveCollider.radius = 0.3f;
+            interactiveCollider.radius = 0.4f;
             interactiveCollider.center = new Vector3(0, 0.15f, 0);
             interactiveCollider.gameObject.layer = 22; // Interactive
             interactiveCollider.transform.SetParent(transform, false);
@@ -62,7 +62,7 @@ namespace hideoutcat
             if (catGraphTraverser == null)
                 catGraphTraverser = gameObject.GetOrAddComponent<CatGraphTraverser>();
 
-            Plugin.Log.LogDebug($"Set destination node to: {node.name}");
+            Plugin.Log.LogInfo($"Set destination node to: {node.name}");
 
             catGraphTraverser.LayNewPath(node);
         }
@@ -101,6 +101,17 @@ namespace hideoutcat
         {
             ResetAnimatorParameters();
             catGraphTraverser.LayNewPath(Plugin.CatGraph.GetNodeClosestWaypoint(transform.position));
+        }
+
+        public bool IsSleeping()
+        {
+            return animator.GetBool("Sleeping");
+        }
+
+        public void WakeUp()
+        {
+            animator.SetBool("Sleeping", false);
+            animator.SetTrigger("Fidget");
         }
 
         public void Pet()

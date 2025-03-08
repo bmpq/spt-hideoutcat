@@ -22,12 +22,12 @@ namespace hideoutcat
             if (cat == null)
                 return true;
 
-            __result = GetCatAvailableActions(cat);
+            __result = GetCatAvailableActions(cat, owner);
 
             return false;
         }
 
-        public static ActionsReturnClass GetCatAvailableActions(HideoutCat cat)
+        public static ActionsReturnClass GetCatAvailableActions(HideoutCat cat, HideoutPlayerOwner owner)
         {
             ActionsReturnClass actionsReturnClass = new ActionsReturnClass
             {
@@ -37,8 +37,23 @@ namespace hideoutcat
             actionsReturnClass.Actions.Add(new ActionsTypesClass
             {
                 Name = "Pet",
-                Action = new Action(cat.Pet),
+                Action = new Action(delegate 
+                { 
+                    cat.Pet(); 
+                    owner.InteractionsChangedHandler(); 
+                }),
                 Disabled = !cat.IsPettable()
+            });
+
+            actionsReturnClass.Actions.Add(new ActionsTypesClass
+            {
+                Name = "Wake up",
+                Action = new Action(delegate 
+                { 
+                    cat.WakeUp(); 
+                    owner.InteractionsChangedHandler(); 
+                }),
+                Disabled = !cat.IsSleeping()
             });
 
             return actionsReturnClass;
