@@ -163,6 +163,11 @@ namespace hideoutcat
             return animator.GetCurrentAnimatorStateInfo(0).IsTag("Fidget");
         }
 
+        public void Meow()
+        {
+            animator.SetTrigger("Meow");
+        }
+
         void FixedUpdate()
         {
             animator.SetFloat("Random", Random.value); // used for different variants of fidgeting
@@ -172,10 +177,14 @@ namespace hideoutcat
 
             HandlePlayerInteraction();
 
-            if (_prevState != _currentState)
+            if (lookAt.IsLookingAtPlayer())
             {
-                Plugin.Log.LogInfo($"New state: {_currentState}");
+                if (UnityExtensions.RandomShouldOccur(5f))
+                    Meow();
             }
+
+            if (_prevState != _currentState)
+                Plugin.Log.LogInfo($"New state: {_currentState}");
             _prevState = _currentState;
         }
 

@@ -27,7 +27,7 @@ namespace hideoutcat
             constraintNeck.customUpVector = Vector3.up;
             constraintNeck.useAngleLimits = true;
             constraintNeck.maxAngleLimits = new Vector3(40, 40, 50);
-            constraintNeck.minAngleLimits = new Vector3(-40, -40, -50);
+            constraintNeck.minAngleLimits = new Vector3(-50, -40, -50);
 
             constraintHead = gameObject.AddComponent<BoneLookAt>();
             constraintHead.bone = boneHead;
@@ -36,7 +36,7 @@ namespace hideoutcat
             constraintHead.customUpVector = Vector3.up;
             constraintHead.useAngleLimits = true;
             constraintHead.maxAngleLimits = new Vector3(30, 30, 40);
-            constraintHead.minAngleLimits = new Vector3(-30, -30, -40);
+            constraintHead.minAngleLimits = new Vector3(-40, -30, -40);
         }
 
         public void SetLookAtPlayer()
@@ -45,6 +45,17 @@ namespace hideoutcat
                 cameraMain = Camera.main;
 
             SetLookTarget(cameraMain.transform);
+        }
+
+        public bool IsLookingAtPlayer()
+        {
+            if (constraintNeck == null)
+                return false;
+
+            if (cameraMain == null)
+                return false;
+
+            return constraintNeck.targetLookAt == cameraMain.transform;
         }
 
         public void SetLookTarget(Transform targetLookAt)
