@@ -32,8 +32,11 @@ namespace hideoutcat
             Sleeping,
             Eating,
             Defecating,
-            Scratching
+            Scratching,
+            WaitingByDoor
         }
+
+        private CatState _prevState;
 
         void OnEnable()
         {
@@ -168,6 +171,12 @@ namespace hideoutcat
             HandleBehavior(); // Handle behavior based on _currentState
 
             HandlePlayerInteraction();
+
+            if (_prevState != _currentState)
+            {
+                Plugin.Log.LogInfo($"New state: {_currentState}");
+            }
+            _prevState = _currentState;
         }
 
         private void UpdateState()
@@ -177,6 +186,15 @@ namespace hideoutcat
             if (catGraphTraverser.HasDestination)
             {
                 _currentState = CatState.Moving;
+
+                if (catGraphTraverser.doorInTheWay != null)
+                {
+                    _currentState = CatState.WaitingByDoor;
+                }
+                else
+                {
+                    ResetAnimatorParameters();
+                }
                 return;
             }
             if (animator.GetBool("Sleeping"))
@@ -228,6 +246,9 @@ namespace hideoutcat
                 case CatState.Moving:
                     HandleMovingState();
                     break;
+                case CatState.WaitingByDoor:
+                    HandleWaitingByDoor();
+                    break;
                 case CatState.Sitting:
                     HandleSittingState();
                     break;
@@ -269,6 +290,15 @@ namespace hideoutcat
             }
         }
 
+        private void HandleWaitingByDoor()
+        {
+            animator.SetBool("Sitting", true);
+            lookAt.SetLookTarget(catGraphTraverser.doorInTheWay.transform.parent);
+
+            if (UnityExtensions.RandomShouldOccur(20f))
+                GoToRandomArea();
+        }
+
         private void HandleSittingState()
         {
             if (UnityExtensions.RandomShouldOccur(20f))
@@ -280,6 +310,11 @@ namespace hideoutcat
                 lookAt.SetLookAtPlayer();
             else if (UnityExtensions.RandomShouldOccur(20f))
                 GoToRandomArea();
+        }
+
+        void OnGUI()
+        {
+            IMGUIDebugDraw.Draw.Label(GetPlayerCam().GetComponent<Camera>(), transform.position, _currentState.ToString());
         }
 
         private void HandleLyingState()
@@ -335,7 +370,7 @@ namespace hideoutcat
         void HandlePlayerInteraction()
         {
             bool playerInTheWay = IsPlayerInTheWay();
-            if (playerInTheWay && catGraphTraverser.HasDestination)
+            if (playerInTheWay && _currentState == CatState.Moving && catGraphTraverser.HasDestination)
             {
                 catGraphTraverser.ForgetDestination();
                 lookAt.SetLookAtPlayer();

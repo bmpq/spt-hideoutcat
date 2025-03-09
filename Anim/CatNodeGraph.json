@@ -33,7 +33,8 @@
       "ccb7_Waypoint",
       "171c_Waypoint",
       "b203_Waypoint",
-      "8e0f_MedStation_L2"
+      "8e0f_MedStation_L2",
+      "c7eb_Kitchen_L3"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -55,7 +56,8 @@
       "4660_Waypoint",
       "8e0f_MedStation_L2",
       "209a_MedStation_L1",
-      "9f57_RestSpace_L1"
+      "9f57_RestSpace_L1",
+      "c7eb_Kitchen_L3"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -125,9 +127,9 @@
   {
     "name": "ad37_Waypoint",
     "position": {
-      "x": 14.33,
+      "x": 14.315,
       "y": 0.0,
-      "z": -1.174
+      "z": -1.285
     },
     "connectedTo": [
       "3c5d_Waypoint",
@@ -179,7 +181,8 @@
       "be9a_MedStation_L3",
       "2d28_MedStation_L2",
       "bb04_Waypoint",
-      "b36c_Waypoint"
+      "b36c_Waypoint",
+      "c7eb_Kitchen_L3"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -565,7 +568,8 @@
       "b41d_Security_L0_POSE",
       "a168_Security_L1_POSE",
       "60f9_Security_L2_POSE",
-      "668c_Waypoint"
+      "668c_Waypoint",
+      "6e5e_ScavCase_L1"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -918,9 +922,9 @@
   {
     "name": "2806_WaterCloset_L3_POSE",
     "position": {
-      "x": -6.8583,
+      "x": -6.8652,
       "y": 0.6057,
-      "z": 6.2044
+      "z": 6.2258
     },
     "connectedTo": [
       "3618_WaterCloset_L3"
@@ -1881,6 +1885,49 @@
     ]
   },
   {
+    "name": "c7eb_Kitchen_L3",
+    "position": {
+      "x": 11.224,
+      "y": 0.0,
+      "z": -4.493
+    },
+    "connectedTo": [
+      "ccb7_Waypoint",
+      "f4d5_Kitchen_L3_POSE",
+      "b749_Waypoint",
+      "b203_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "Kitchen",
+    "areaLevel": 3,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "f4d5_Kitchen_L3_POSE",
+    "position": {
+      "x": 11.293,
+      "y": 1.003,
+      "z": -5.093
+    },
+    "connectedTo": [
+      "c7eb_Kitchen_L3"
+    ],
+    "forwardJump": false,
+    "areaType": "Kitchen",
+    "areaLevel": 3,
+    "poseRotation": 0.0,
+    "poseParameters": [
+      {
+        "Name": "LyingBelly",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
     "name": "0aef_RestSpace_L1_POSE",
     "position": {
       "x": 15.417,
@@ -2406,6 +2453,47 @@
     "poseParameters": [
       {
         "Name": "LyingSide",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
+  },
+  {
+    "name": "6e5e_ScavCase_L1",
+    "position": {
+      "x": -6.266,
+      "y": 0.0,
+      "z": -7.034
+    },
+    "connectedTo": [
+      "7022_Waypoint",
+      "bb92_ScavCase_L1_POSE"
+    ],
+    "forwardJump": false,
+    "areaType": "ScavCase",
+    "areaLevel": 1,
+    "poseRotation": 0.0,
+    "poseParameters": []
+  },
+  {
+    "name": "bb92_ScavCase_L1_POSE",
+    "position": {
+      "x": -5.89,
+      "y": 0.637,
+      "z": -7.377
+    },
+    "connectedTo": [
+      "6e5e_ScavCase_L1"
+    ],
+    "forwardJump": false,
+    "areaType": "ScavCase",
+    "areaLevel": 1,
+    "poseRotation": 0.0,
+    "poseParameters": [
+      {
+        "Name": "Sitting",
         "Type": "Bool",
         "BoolValue": true,
         "FloatValue": 0.0,

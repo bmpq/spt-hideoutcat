@@ -27,6 +27,10 @@
       <HintPath>$(SPTPath)\BepInEx\plugins\spt\spt-reflection.dll</HintPath>
     </Reference>
     
+    <Reference Include="IMGUIDebugDraw">
+      <HintPath>$(SPTPath)\BepInEx\plugins\tarkin\IMGUIDebugDraw.dll</HintPath>
+    </Reference>
+    
     <Reference Include="Assembly-CSharp">
       <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>

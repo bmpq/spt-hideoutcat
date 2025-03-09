@@ -3,6 +3,9 @@ using System.Linq;
 using UnityEngine;
 using tarkin;
 using System;
+using EFT.Interactive;
+using EFT;
+using Comfort.Common;
 
 namespace hideoutcat.Pathfinding
 {
@@ -24,9 +27,15 @@ namespace hideoutcat.Pathfinding
         public event Action<Node> OnDestinationReached;
         public event Action<List<Node>> OnNodeReached; // the parameter is the list of nodes that are left to traverse
 
+        public Door[] doors;
+
+        public Door doorInTheWay { get; private set; }
+
         void Start()
         {
             animator = GetComponent<Animator>();
+
+            doors = FindObjectsByType<Door>(FindObjectsSortMode.None);
         }
 
         public void ForgetDestination()
@@ -215,7 +224,7 @@ namespace hideoutcat.Pathfinding
                                 float distToNextNextTarget = Vector3.Distance(transform.position, positionNextNextTarget);
                                 if (distToNextNextTarget > 8f && Mathf.Abs(angleToTarget) < 5f)
                                     targetThrust = Mathf.Max(targetThrust, 3.6f);
-                                else if (distToNextNextTarget > 5f)
+                                else if (distToNextNextTarget > 6f)
                                     targetThrust = Mathf.Max(targetThrust, 2.55f);
                                 else if (distToNextNextTarget > 3f)
                                     targetThrust = Mathf.Max(targetThrust, 1.66f);
@@ -235,12 +244,42 @@ namespace hideoutcat.Pathfinding
                         }
                     }
 
-                    Debug.Log(angleToTarget);
+                    doorInTheWay = BlockedPathByDoor();
+                    if (doorInTheWay != null)
+                    {
+                        targetThrust = 0f;
+                    }
                 }
 
                 TickMovement(targetThrust, targetTurn);
                 prevDistToDest = distToTarget;
             }
+        }
+
+        Door BlockedPathByDoor()
+        {
+            for (int i = 0; i < doors.Length; i++)
+            {
+                if (doors[i] == null || !doors[i].gameObject.activeInHierarchy)
+                    continue;
+
+                if (doors[i].DoorState == EDoorState.Open)
+                    continue;
+
+                float distToDoor = Vector3.Distance(doors[i].transform.parent.position, transform.position);
+                Vector3 directionToTarget = (doors[i].transform.parent.position - transform.position).normalized;
+                directionToTarget.y = 0f;
+                float angleToDoor = Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up);
+
+                bool doorInTheWay = distToDoor < 2f && Mathf.Abs(angleToDoor) < 90f;
+
+                if (doorInTheWay)
+                {
+                    return doors[i];
+                }
+            }
+
+            return null;
         }
 
         private void HandleJumpingForward()
