@@ -232,7 +232,7 @@ namespace hideoutcat
 
             HandlePlayerInteraction();
 
-            if (lookAt.IsLookingAtPlayer())
+            if (lookAt.IsLookingAtPlayer() && Vector3.Distance(transform.position, GetPlayerCam().position) < 3f)
             {
                 if (UnityExtensions.RandomShouldOccur(5f))
                     Meow();
@@ -371,6 +371,9 @@ namespace hideoutcat
             animator.SetBool("Sitting", true);
             lookAt.SetLookTarget(catGraphTraverser.doorInTheWay.transform.parent);
 
+            if (UnityExtensions.RandomShouldOccur(3f))
+                Meow();
+
             if (UnityExtensions.RandomShouldOccur(20f))
                 GoToRandomArea();
         }
@@ -463,6 +466,9 @@ namespace hideoutcat
 
         bool IsPlayerInTheWay()
         {
+            if (Singleton<GameWorld>.Instance.MainPlayer.PointOfView != EPointOfView.FirstPerson)
+                return false;
+
             float distToPlayer = Vector3.Distance(GetPlayerCam().position, transform.position);
             Vector3 directionToTarget = (GetPlayerCam().position - transform.position).normalized;
             directionToTarget.y = 0f;
