@@ -662,7 +662,8 @@
     },
     "connectedTo": [
       "0ce0_Waypoint",
-      "c0b5_Waypoint"
+      "c0b5_Waypoint",
+      "db95_Gym_L1_POSE"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -681,7 +682,8 @@
       "710d_Waypoint",
       "fd8e_Gym_L1",
       "9ca2_Waypoint",
-      "c0b5_Waypoint"
+      "c0b5_Waypoint",
+      "db95_Gym_L1_POSE"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -765,7 +767,8 @@
     "connectedTo": [
       "9ca2_Waypoint",
       "b93f_Waypoint",
-      "2be6_Waypoint"
+      "2be6_Waypoint",
+      "db95_Gym_L1_POSE"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -1209,7 +1212,7 @@
     "name": "f88b_Generator_L3",
     "position": {
       "x": -0.386,
-      "y": 1.656,
+      "y": 1.641,
       "z": -5.173
     },
     "connectedTo": [
@@ -3175,5 +3178,31 @@
     "areaLevel": 1,
     "poseRotation": 0.0,
     "poseParameters": []
+  },
+  {
+    "name": "db95_Gym_L1_POSE",
+    "position": {
+      "x": 9.764,
+      "y": 0.0123000145,
+      "z": 10.057
+    },
+    "connectedTo": [
+      "b93f_Waypoint",
+      "2be6_Waypoint",
+      "c0b5_Waypoint"
+    ],
+    "forwardJump": false,
+    "areaType": "Gym",
+    "areaLevel": 1,
+    "poseRotation": 230.689346,
+    "poseParameters": [
+      {
+        "Name": "Grooming",
+        "Type": "Bool",
+        "BoolValue": true,
+        "FloatValue": 0.0,
+        "IntValue": 0
+      }
+    ]
   }
 ]

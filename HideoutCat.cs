@@ -33,23 +33,30 @@ namespace hideoutcat
             Eating,
             Defecating,
             Scratching,
-            WaitingByDoor
+            WaitingByDoor,
+            Grooming
         }
 
         private CatState _prevState;
 
         GamePlayerOwner owner;
 
+        Door doorGym;
+
         void OnEnable()
         {
             Singleton<HideoutClass>.Instance.OnAreaUpdated += OnAreaUpdated;
             PatchAreaSelected.OnAreaSelected += SetTargetArea;
+            PatchPlayerPrepareWorkout.OnPlayerPrepareWorkout += OnPlayerPrepareWorkout;
+            PatchPlayerStopWorkout.OnPlayerStopWorkout += GoToRandomArea;
         }
 
         void OnDisable()
         {
             Singleton<HideoutClass>.Instance.OnAreaUpdated -= OnAreaUpdated;
             PatchAreaSelected.OnAreaSelected -= SetTargetArea;
+            PatchPlayerPrepareWorkout.OnPlayerPrepareWorkout -= OnPlayerPrepareWorkout;
+            PatchPlayerStopWorkout.OnPlayerStopWorkout -= GoToRandomArea;
         }
 
         void Start()
@@ -67,6 +74,7 @@ namespace hideoutcat
             interactiveCollider.transform.SetParent(transform, false);
 
             owner = Singleton<GameWorld>.Instance.MainPlayer.GetComponent<GamePlayerOwner>();
+            doorGym = FindObjectsByType<Door>(FindObjectsSortMode.None).Where(door => door.Id == "door_bunker_2_00002").FirstOrDefault();
         }
 
         Camera playerCam;
@@ -122,6 +130,31 @@ namespace hideoutcat
         {
             ResetAnimatorParameters();
             catGraphTraverser.LayNewPath(Plugin.CatGraph.GetNodeClosestWaypoint(transform.position));
+        }
+
+        private void OnPlayerPrepareWorkout()
+        {
+            if (doorGym.DoorState != EDoorState.Open)
+                return;
+
+            Node[] nodes = Plugin.CatGraph.nodes.Where(n => 
+                n.areaType == EAreaType.Gym && 
+                n.areaLevel == 1 && 
+                n.poseParameters.Count > 0 &&
+                n.poseParameters[0].Name == "Grooming").ToArray();
+
+            if (nodes == null || nodes.Length == 0)
+                return;
+            Node node = nodes[Random.Range(0, nodes.Length)];
+
+            lookAt.SetLookTarget(null);
+            catGraphTraverser.ForgetDestination();
+            transform.position = node.position;
+            transform.eulerAngles = new Vector3(0, node.poseRotation, 0);
+            ResetAnimatorParameters();
+            animator.Play("Idle", 0);
+            animator.SetBool("Grooming", true);
+            animator.Update(0);
         }
 
         public bool IsSleeping()
@@ -258,6 +291,11 @@ namespace hideoutcat
                 _currentState = CatState.Scratching;
                 return;
             }
+            if (animator.GetBool("Grooming"))
+            {
+                _currentState = CatState.Grooming;
+                return;
+            }
 
             _currentState = CatState.Idle;
         }
@@ -293,6 +331,9 @@ namespace hideoutcat
                     break;
                 case CatState.Scratching:
                     HandleScratchingState();
+                    break;
+                case CatState.Grooming:
+                    HandleGroomingState();
                     break;
             }
         }
@@ -391,6 +432,12 @@ namespace hideoutcat
                 GoToClosestWaypoint();
         }
 
+        private void HandleGroomingState()
+        {
+            if (UnityExtensions.RandomShouldOccur(75f))
+                GoToClosestWaypoint();
+        }
+
         private void HandleScratchingState()
         {
             if (UnityExtensions.RandomShouldOccur(15f))
@@ -437,6 +484,8 @@ namespace hideoutcat
             animator.SetBool("Eating", false);
             animator.SetBool("SharpenHorizontal", false);
             animator.SetBool("SharpenVertical", false);
+            animator.SetBool("Grooming", false);
+            animator.SetBool("RunningInCircles", false);
             animator.ResetTrigger("Fidget");
         }
 

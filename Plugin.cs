@@ -32,6 +32,8 @@ public class Plugin : BaseUnityPlugin
             new PatchHideoutAwake().Enable();
             new PatchAreaSelected().Enable();
             new PatchAvailableHideoutActions().Enable();
+            new PatchPlayerPrepareWorkout().Enable();
+            new PatchPlayerStopWorkout().Enable();
         }
 
         PatchHideoutAwake.OnHideoutAwake += HideUnwantedSceneObjects;

@@ -40,6 +40,7 @@ namespace hideoutcat.Pathfinding
 
         public void ForgetDestination()
         {
+            currentNode = null;
             currentPath = null;
         }
 
