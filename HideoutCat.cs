@@ -38,6 +38,8 @@ namespace hideoutcat
 
         private CatState _prevState;
 
+        GamePlayerOwner owner;
+
         void OnEnable()
         {
             Singleton<HideoutClass>.Instance.OnAreaUpdated += OnAreaUpdated;
@@ -63,6 +65,8 @@ namespace hideoutcat
             interactiveCollider.center = new Vector3(0, 0.15f, 0);
             interactiveCollider.gameObject.layer = 22; // Interactive
             interactiveCollider.transform.SetParent(transform, false);
+
+            owner = Singleton<GameWorld>.Instance.MainPlayer.GetComponent<GamePlayerOwner>();
         }
 
         Camera playerCam;
@@ -127,21 +131,28 @@ namespace hideoutcat
 
         public void WakeUp()
         {
-            animator.SetBool("Sleeping", false);
-            animator.SetTrigger("Fidget");
+            animator.SetBool("Sleeping", false); 
+            Fidget();
+
+            owner.InteractionsChangedHandler();
         }
 
         public void Pet()
         {
             animator.SetTrigger("Caress");
+
+            owner.InteractionsChangedHandler();
         }
 
         public bool IsPettable()
         {
             AnimatorStateInfo curState = animator.GetCurrentAnimatorStateInfo(0);
 
+            if (animator.IsInTransition(0))
+                return false;
+
             // already petting
-            if (animator.GetNextAnimatorStateInfo(0).IsTag("Caress") || curState.IsTag("Caress"))
+            if (curState.IsTag("Caress"))
                 return false;
 
             // the only states we have fitting animations for
@@ -168,6 +179,17 @@ namespace hideoutcat
             animator.SetTrigger("Meow");
         }
 
+        public void Fidget()
+        {
+            if (IsFidgeting())
+                return;
+
+            lookAt.SetLookTarget(null);
+            animator.SetTrigger("Fidget");
+
+            owner.InteractionsChangedHandler();
+        }
+
         void FixedUpdate()
         {
             animator.SetFloat("Random", Random.value); // used for different variants of fidgeting
@@ -184,7 +206,11 @@ namespace hideoutcat
             }
 
             if (_prevState != _currentState)
+            {
                 Plugin.Log.LogInfo($"New state: {_currentState}");
+
+                owner.InteractionsChangedHandler();
+            }
             _prevState = _currentState;
         }
 
@@ -195,15 +221,6 @@ namespace hideoutcat
             if (catGraphTraverser.HasDestination)
             {
                 _currentState = CatState.Moving;
-
-                if (catGraphTraverser.doorInTheWay != null)
-                {
-                    _currentState = CatState.WaitingByDoor;
-                }
-                else
-                {
-                    ResetAnimatorParameters();
-                }
                 return;
             }
             if (animator.GetBool("Sleeping"))
@@ -282,21 +299,30 @@ namespace hideoutcat
 
         private void HandleMovingState()
         {
-
+            if (catGraphTraverser.doorInTheWay != null)
+            {
+                _currentState = CatState.WaitingByDoor;
+            }
+            else
+            {
+                ResetAnimatorParameters();
+            }
         }
 
         private void HandleIdleState()
         {
-            if (UnityExtensions.RandomShouldOccur(20f))
+            if (UnityExtensions.RandomShouldOccur(10f))
             {
-                animator.SetTrigger("Fidget");
-                lookAt.SetLookTarget(null);
+                Fidget();
             }
 
             if (UnityExtensions.RandomShouldOccur(3f))
             {
                 animator.SetBool("Sitting", true);
             }
+
+            if (UnityExtensions.RandomShouldOccur(10f))
+                GoToRandomArea();
         }
 
         private void HandleWaitingByDoor()
@@ -311,10 +337,7 @@ namespace hideoutcat
         private void HandleSittingState()
         {
             if (UnityExtensions.RandomShouldOccur(20f))
-            {
-                animator.SetTrigger("Fidget");
-                lookAt.SetLookTarget(null);
-            }
+                Fidget();
             else if (UnityExtensions.RandomShouldOccur(3f) && !IsFidgeting())
                 lookAt.SetLookAtPlayer();
             else if (UnityExtensions.RandomShouldOccur(20f))
@@ -339,8 +362,7 @@ namespace hideoutcat
             }
             else if (UnityExtensions.RandomShouldOccur(20f))
             {
-                animator.SetTrigger("Fidget");
-                lookAt.SetLookTarget(null);
+                Fidget();
             }
             else if (UnityExtensions.RandomShouldOccur(5f) && !IsFidgeting())
             {
@@ -353,8 +375,7 @@ namespace hideoutcat
             if (UnityExtensions.RandomShouldOccur(40f))
             {
                 animator.SetBool("Sleeping", false);
-                animator.SetTrigger("Fidget");
-                lookAt.SetLookTarget(null);
+                Fidget();
             }
         }
 
@@ -379,10 +400,14 @@ namespace hideoutcat
         void HandlePlayerInteraction()
         {
             bool playerInTheWay = IsPlayerInTheWay();
-            if (playerInTheWay && _currentState == CatState.Moving && catGraphTraverser.HasDestination)
+            if (playerInTheWay && animator.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
             {
                 catGraphTraverser.ForgetDestination();
-                lookAt.SetLookAtPlayer();
+
+                if (!IsFidgeting())
+                { 
+                    lookAt.SetLookAtPlayer();
+                }
 
                 if (UnityExtensions.RandomShouldOccur(4f))
                     animator.SetBool("Sitting", true);

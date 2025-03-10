@@ -39,8 +39,9 @@ namespace hideoutcat
                 Name = "Pet",
                 Action = new Action(delegate 
                 { 
-                    cat.Pet(); 
-                    owner.InteractionsChangedHandler(); 
+                    cat.Pet();
+                    owner.Player.SetInteractInHands(EInteraction.ContainerOpenDefault);
+                    owner.ClearInteractionState();
                 }),
                 Disabled = !cat.IsPettable()
             });
@@ -50,8 +51,8 @@ namespace hideoutcat
                 Name = "Wake up",
                 Action = new Action(delegate 
                 { 
-                    cat.WakeUp(); 
-                    owner.InteractionsChangedHandler(); 
+                    cat.WakeUp();
+                    owner.ClearInteractionState();
                 }),
                 Disabled = !cat.IsSleeping()
             });
