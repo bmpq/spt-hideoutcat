@@ -17,6 +17,7 @@ namespace hideoutcat
         AreaData currentTargetArea;
 
         CatLookAt lookAt;
+        CatEyelids eyelids;
 
         CatGraphTraverser catGraphTraverser;
 
@@ -63,6 +64,7 @@ namespace hideoutcat
         {
             animator = GetComponent<Animator>();
             lookAt = gameObject.GetOrAddComponent<CatLookAt>();
+            eyelids = gameObject.GetOrAddComponent<CatEyelids>();
             catGraphTraverser = gameObject.GetOrAddComponent<CatGraphTraverser>();
             catGraphTraverser.OnDestinationReached += OnDestinationReached;
             catGraphTraverser.OnNodeReached += OnNodeReached;
@@ -449,6 +451,13 @@ namespace hideoutcat
 
         void HandlePlayerInteraction()
         {
+            if (IsPlayerShiningFlashlightAtFace())
+            {
+                eyelids.SetClamp(0.5f);
+            }
+            else if (eyelids.mode != CatEyelids.Mode.None)
+                eyelids.Release();
+
             bool playerInTheWay = IsPlayerInTheWay();
             if (playerInTheWay && animator.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
             {
@@ -462,6 +471,15 @@ namespace hideoutcat
                 if (UnityExtensions.RandomShouldOccur(4f))
                     animator.SetBool("Sitting", true);
             }
+        }
+
+        bool IsPlayerShiningFlashlightAtFace()
+        {
+            Transform source = GetPlayerCam();
+
+            if (CameraClass.Instance == null || CameraClass.Instance.Flashlight == null)
+                return false;
+            return CameraClass.Instance.Flashlight.IsActive;
         }
 
         bool IsPlayerInTheWay()
