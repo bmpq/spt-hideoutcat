@@ -18,6 +18,7 @@ namespace hideoutcat
 
         CatLookAt lookAt;
         CatEyelids eyelids;
+        CatAudio audio;
 
         CatGraphTraverser catGraphTraverser;
 
@@ -68,6 +69,8 @@ namespace hideoutcat
             catGraphTraverser = gameObject.GetOrAddComponent<CatGraphTraverser>();
             catGraphTraverser.OnDestinationReached += OnDestinationReached;
             catGraphTraverser.OnNodeReached += OnNodeReached;
+
+            audio = gameObject.GetOrAddComponent<CatAudio>();
 
             SphereCollider interactiveCollider = new GameObject("InteractiveCollider").AddComponent<SphereCollider>();
             interactiveCollider.radius = 0.4f;
@@ -177,6 +180,8 @@ namespace hideoutcat
             animator.SetTrigger("Caress");
 
             owner.InteractionsChangedHandler();
+
+            audio.Purr();
         }
 
         public bool IsPettable()
@@ -212,6 +217,7 @@ namespace hideoutcat
         public void Meow()
         {
             animator.SetTrigger("Meow");
+            audio.Meow();
         }
 
         public void Fidget()

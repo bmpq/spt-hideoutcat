@@ -27,6 +27,8 @@ namespace hideoutcat.Pathfinding
         public event Action<Node> OnDestinationReached;
         public event Action<List<Node>> OnNodeReached; // the parameter is the list of nodes that are left to traverse
 
+        public event Action OnJumpAirEnd;
+
         public Door[] doors;
 
         public Door doorInTheWay { get; private set; }
@@ -257,6 +259,11 @@ namespace hideoutcat.Pathfinding
             }
         }
 
+        public bool IsMovement()
+        {
+            return animator.GetCurrentAnimatorStateInfo(0).IsName("Movement");
+        }
+
         Door BlockedPathByDoor()
         {
             for (int i = 0; i < doors.Length; i++)
@@ -315,6 +322,8 @@ namespace hideoutcat.Pathfinding
             {
                 transform.SetPositionIndividualAxis(y: targetPosition.y);
                 animator.SetBool("JumpingForward", false);
+
+                OnJumpAirEnd?.Invoke();
             }
 
             prevDistToDest = distToTarget;
@@ -344,6 +353,8 @@ namespace hideoutcat.Pathfinding
             {
                 animator.SetBool("JumpingUp", false);
                 jumpUpEndOffset = targetPosition.y - transform.position.y;
+
+                OnJumpAirEnd?.Invoke();
             }
         }
 
@@ -382,6 +393,8 @@ namespace hideoutcat.Pathfinding
                 // another quick evil fix to avoid seeking the landing node after already landed, just consider the current target node reached on land
                 if (currentPathIndex < currentPath.Count - 2)
                     currentPathIndex++;
+
+                OnJumpAirEnd?.Invoke();
             }
         }
     }
