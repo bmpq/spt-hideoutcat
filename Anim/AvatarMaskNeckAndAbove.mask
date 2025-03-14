@@ -11,149 +11,147 @@ AvatarMask:
   m_Elements:
   - m_Path: 
     m_Weight: 1
-  - m_Path: Cat Simple
+  - m_Path: CatStray_CatStray_0
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode
+  - m_Path: RootNode
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat
+  - m_Path: RootNode/Arm_Cat
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton
+  - m_Path: RootNode/Arm_Cat/Skeleton
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_claw_b.L_046
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_claw_b.L_046
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_claw_b.L_046/Helper_claw_b.L_046_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_claw_b.L_046/Helper_claw_b.L_046_end
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_claw_b.R_047
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_claw_b.R_047
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_claw_b.R_047/Helper_claw_b.R_047_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_claw_b.R_047/Helper_claw_b.R_047_end
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_foot_f.L_048
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_foot_f.L_048
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_foot_f.L_048/Helper_foot_f.L_048_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_foot_f.L_048/Helper_foot_f.L_048_end
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_foot_f.R_049
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_foot_f.R_049
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_foot_f.R_049/Helper_foot_f.R_049_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Helper_foot_f.R_049/Helper_foot_f.R_049_end
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.L_038
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.L_038
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.L_038/leg_b.L_039
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.L_038/leg_b.L_039
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.L_038/leg_b.L_039/foot_b.L_040
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.L_038/leg_b.L_039/foot_b.L_040
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.L_038/leg_b.L_039/foot_b.L_040/claw_b.L_041
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.L_038/leg_b.L_039/foot_b.L_040/claw_b.L_041
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.L_038/leg_b.L_039/foot_b.L_040/claw_b.L_041/claw_b.L_041_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.L_038/leg_b.L_039/foot_b.L_040/claw_b.L_041/claw_b.L_041_end
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.R_042
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.R_042
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.R_042/leg_b.R_043
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.R_042/leg_b.R_043
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.R_042/leg_b.R_043/foot_b.R_044
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.R_042/leg_b.R_043/foot_b.R_044
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.R_042/leg_b.R_043/foot_b.R_044/claw_b.R_045
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.R_042/leg_b.R_043/foot_b.R_044/claw_b.R_045
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.R_042/leg_b.R_043/foot_b.R_044/claw_b.R_045/claw_b.R_045_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/hip_b.R_042/leg_b.R_043/foot_b.R_044/claw_b.R_045/claw_b.R_045_end
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032/tail_01_033
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032/tail_01_033
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032/tail_01_033/tail_02_034
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032/tail_01_033/tail_02_034
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032/tail_01_033/tail_02_034/tail_03_035
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032/tail_01_033/tail_02_034/tail_03_035
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032/tail_01_033/tail_02_034/tail_03_035/tail_04_036
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032/tail_01_033/tail_02_034/tail_03_035/tail_04_036
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032/tail_01_033/tail_02_034/tail_03_035/tail_04_036/tail_05_037
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032/tail_01_033/tail_02_034/tail_03_035/tail_04_036/tail_05_037
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032/tail_01_033/tail_02_034/tail_03_035/tail_04_036/tail_05_037/tail_05_037_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_01_032/tail_01_033/tail_02_034/tail_03_035/tail_04_036/tail_05_037/tail_05_037_end
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/ear_1.L_012
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/ear_1.L_012
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/ear_1.L_012/ear_2.L_013
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/ear_1.L_012/ear_2.L_013
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/ear_1.L_012/ear_2.L_013/ear_2.L_013_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/ear_1.L_012/ear_2.L_013/ear_2.L_013_end
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/ear_1.R_016
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/ear_1.R_016
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/ear_1.R_016/ear_2.R_017
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/ear_1.R_016/ear_2.R_017
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/ear_1.R_016/ear_2.R_017/ear_2.R_017_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/ear_1.R_016/ear_2.R_017/ear_2.R_017_end
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eye.L_020
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eye.L_020
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eye.L_020/eye.L_020_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eye.L_020/eye.L_020_end
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eye.R_021
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eye.R_021
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eye.R_021/eye.R_021_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eye.R_021/eye.R_021_end
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.L_014
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.L_014
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.L_014/eyelid.L_014_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.L_014/eyelid.L_014_end
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.R_018
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.R_018
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.R_018/eyelid.R_018_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.R_018/eyelid.R_018_end
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mouth_09
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mouth_09
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mouth_09/tongue_01_00
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mouth_09/tongue_01_00
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mouth_09/tongue_01_00/tongue_02_010
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mouth_09/tongue_01_00/tongue_02_010
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mouth_09/tongue_01_00/tongue_02_010/tongue_03_011
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mouth_09/tongue_01_00/tongue_02_010/tongue_03_011
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mouth_09/tongue_01_00/tongue_02_010/tongue_03_011/tongue_03_011_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mouth_09/tongue_01_00/tongue_02_010/tongue_03_011/tongue_03_011_end
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mustache.L_015
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mustache.L_015
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mustache.L_015/mustache.L_015_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mustache.L_015/mustache.L_015_end
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mustache.R_019
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mustache.R_019
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mustache.R_019/mustache.R_019_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/mustache.R_019/mustache.R_019_end
     m_Weight: 1
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.L_022
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.L_022
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.L_022/hip_f.L_023
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.L_022/hip_f.L_023
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.L_022/hip_f.L_023/leg_f.L_024
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.L_022/hip_f.L_023/leg_f.L_024
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.L_022/hip_f.L_023/leg_f.L_024/foot_f.L_025
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.L_022/hip_f.L_023/leg_f.L_024/foot_f.L_025
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.L_022/hip_f.L_023/leg_f.L_024/foot_f.L_025/claw_f.L_026
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.L_022/hip_f.L_023/leg_f.L_024/foot_f.L_025/claw_f.L_026
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.L_022/hip_f.L_023/leg_f.L_024/foot_f.L_025/claw_f.L_026/claw_f.L_026_end
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.L_022/hip_f.L_023/leg_f.L_024/foot_f.L_025/claw_f.L_026/claw_f.L_026_end
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.R_027
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.R_027
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.R_027/hip_f.R_028
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.R_027/hip_f.R_028
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.R_027/hip_f.R_028/leg_f.R_029
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.R_027/hip_f.R_028/leg_f.R_029
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.R_027/hip_f.R_028/leg_f.R_029/foot_f.R_030
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.R_027/hip_f.R_028/leg_f.R_029/foot_f.R_030
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.R_027/hip_f.R_028/leg_f.R_029/foot_f.R_030/claw_f.R_031
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.R_027/hip_f.R_028/leg_f.R_029/foot_f.R_030/claw_f.R_031
     m_Weight: 0
-  - m_Path: Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.R_027/hip_f.R_028/leg_f.R_029/foot_f.R_030/claw_f.R_031/claw_f.R_031_end
-    m_Weight: 0
-  - m_Path: Cat_1_Cat_0
+  - m_Path: RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/shoulder_blade.R_027/hip_f.R_028/leg_f.R_029/foot_f.R_030/claw_f.R_031/claw_f.R_031_end
     m_Weight: 0

@@ -1,388 +1,20 @@
 fileFormatVersion: 2
-guid: 79588e6e1ba50c4478124a3564659cf1
+guid: 178e367ecae226a4ea0ae1561437b61e
 ModelImporter:
-  serializedVersion: 19301
-  internalIDToNameTable:
-  - first:
-      74: -8793080281054918813
-    second: Skeleton|Attack_Crouch_RM_Skeleton
-  - first:
-      74: -4917848127831739419
-    second: Skeleton|Attack_down_Skeleton
-  - first:
-      74: -8562099852504669364
-    second: Skeleton|Attack_F_Skeleton
-  - first:
-      74: -2730839057511591399
-    second: Skeleton|Attack_L_Skeleton
-  - first:
-      74: -4296391004797540358
-    second: Skeleton|Attack_R_Skeleton
-  - first:
-      74: -4453918434468799113
-    second: Skeleton|Caress_idle_Skeleton
-  - first:
-      74: 5559575644397660213
-    second: Skeleton|Caress_lie_Skeleton
-  - first:
-      74: -885596901209294715
-    second: Skeleton|Caress_sit_Skeleton
-  - first:
-      74: 5322486098347706021
-    second: Skeleton|Co_attack_F_Skeleton
-  - first:
-      74: 3290821369368552316
-    second: Skeleton|Co_attack_L_Skeleton
-  - first:
-      74: 7533694071711123677
-    second: Skeleton|Co_attack_R_Skeleton
-  - first:
-      74: -821077169579670406
-    second: Skeleton|Co_Hit_F_Skeleton
-  - first:
-      74: 3337802703975403043
-    second: Skeleton|Co_Hit_M_Skeleton
-  - first:
-      74: 6762059985276899411
-    second: Skeleton|Combat_Die_L_Skeleton
-  - first:
-      74: 7697700033696000636
-    second: Skeleton|Combat_Die_R_Skeleton
-  - first:
-      74: 141351387841315699
-    second: Skeleton|Combat_end_Skeleton
-  - first:
-      74: -2611624427396152177
-    second: Skeleton|Combat_loop_Skeleton
-  - first:
-      74: -4182626145988849775
-    second: Skeleton|Combat_start_Skeleton
-  - first:
-      74: -7637072750202531495
-    second: Skeleton|Crouch_B_RM_Skeleton
-  - first:
-      74: -8758614026253314832
-    second: Skeleton|Crouch_BL_RM_Skeleton
-  - first:
-      74: 2981918622167707125
-    second: Skeleton|Crouch_BR_RM_Skeleton
-  - first:
-      74: 1660282071026436910
-    second: Skeleton|Crouch_F_RM_Skeleton
-  - first:
-      74: -6992221139225259631
-    second: Skeleton|Crouch_L_RM_Skeleton
-  - first:
-      74: -4300123748080720382
-    second: Skeleton|Crouch_R_RM_Skeleton
-  - first:
-      74: -4004816851209057640
-    second: Skeleton|CrouchIdle_end_Skeleton
-  - first:
-      74: 974257327224083344
-    second: Skeleton|CrouchIdle_loop_1_Skeleton
-  - first:
-      74: -7163372878928402577
-    second: Skeleton|CrouchIdle_loop_2_Skeleton
-  - first:
-      74: -6432771583220220276
-    second: Skeleton|CrouchIdle_start_Skeleton
-  - first:
-      74: 6969506617001025737
-    second: Skeleton|CrouchTurn_L_RM_Skeleton
-  - first:
-      74: -7321482656315949465
-    second: Skeleton|CrouchTurn_R_RM_Skeleton
-  - first:
-      74: -1915363760625053310
-    second: Skeleton|Defecate_Skeleton
-  - first:
-      74: -697723231112412081
-    second: Skeleton|Die_L_Skeleton
-  - first:
-      74: 783565286153600925
-    second: Skeleton|Die_R_Skeleton
-  - first:
-      74: 4257278473882560338
-    second: Skeleton|Drinking_Skeleton
-  - first:
-      74: -5452445783500735005
-    second: Skeleton|EatDrink_end_Skeleton
-  - first:
-      74: 6308181092461939976
-    second: Skeleton|EatDrink_start_Skeleton
-  - first:
-      74: -6241564828372443392
-    second: Skeleton|Eating_Skeleton
-  - first:
-      74: -9199651719480732646
-    second: Skeleton|Hit_B_Skeleton
-  - first:
-      74: 7140097127270040809
-    second: Skeleton|Hit_F_Skeleton
-  - first:
-      74: -2856113115418960463
-    second: Skeleton|Hit_M_Skeleton
-  - first:
-      74: 4744674354076707186
-    second: Skeleton|Idle_1_Skeleton
-  - first:
-      74: -7414515469640439114
-    second: Skeleton|Idle_2_Skeleton
-  - first:
-      74: -5314031200740344455
-    second: Skeleton|Idle_3_Skeleton
-  - first:
-      74: -8605818280220417882
-    second: Skeleton|Idle_4_Skeleton
-  - first:
-      74: 3392411296438168873
-    second: Skeleton|Idle_5_Skeleton
-  - first:
-      74: -7716204452423783661
-    second: Skeleton|Idle_6_Skeleton
-  - first:
-      74: -8753979006792087418
-    second: Skeleton|Idle_7_Skeleton
-  - first:
-      74: 5858318270948700188
-    second: Skeleton|JumpAir_high_F_Skeleton
-  - first:
-      74: 8912298454446763624
-    second: Skeleton|JumpAir_high_Skeleton
-  - first:
-      74: 635995377735998673
-    second: Skeleton|JumpAir_horiz_Skeleton
-  - first:
-      74: -338470622389984036
-    second: Skeleton|JumpAir_low_F_Skeleton
-  - first:
-      74: -2629606230249258083
-    second: Skeleton|JumpAir_low_Skeleton
-  - first:
-      74: -111584165504426596
-    second: Skeleton|JumpAir_up_F_Skeleton
-  - first:
-      74: -955631390446150257
-    second: Skeleton|JumpAir_up_Skeleton
-  - first:
-      74: 5892633243877451775
-    second: Skeleton|JumpFw_RM_Skeleton
-  - first:
-      74: -4238411172550809216
-    second: Skeleton|JumpLand_F_RM_Skeleton
-  - first:
-      74: -4839762042152487166
-    second: Skeleton|JumpLand_Place_Skeleton
-  - first:
-      74: -2357408891020165140
-    second: Skeleton|JumpLand_Skeleton
-  - first:
-      74: -5668425256204369214
-    second: Skeleton|JumpPlace_RM_Skeleton
-  - first:
-      74: 1914811723232251529
-    second: Skeleton|JumpRun_RM_Skeleton
-  - first:
-      74: 7458526083329462177
-    second: Skeleton|JumpStart_Down_RM_Skeleton
-  - first:
-      74: 1851628786447764471
-    second: Skeleton|JumpStart_F_RM_Skeleton
-  - first:
-      74: -4007194990975856745
-    second: Skeleton|JumpStart_place_RM_Skeleton
-  - first:
-      74: -3729891222213306075
-    second: Skeleton|JumpUp1_end_RM_Skeleton
-  - first:
-      74: -1730084277149702652
-    second: Skeleton|JumpUp2_end_RM_Skeleton
-  - first:
-      74: -6652456123201075078
-    second: Skeleton|JumpUp3_end_RM_Skeleton
-  - first:
-      74: 9159020492534102054
-    second: Skeleton|Lick_Skeleton
-  - first:
-      74: -2765206927288970745
-    second: Skeleton|Lie_belly_end_Skeleton
-  - first:
-      74: -7607026811624138977
-    second: Skeleton|Lie_belly_loop_1_Skeleton
-  - first:
-      74: 3205638555155540684
-    second: Skeleton|Lie_belly_loop_2_Skeleton
-  - first:
-      74: -7652515350545777771
-    second: Skeleton|Lie_belly_loop_3_Skeleton
-  - first:
-      74: 2025834538410876517
-    second: Skeleton|Lie_belly_sleep_end_Skeleton
-  - first:
-      74: -8742293125337604710
-    second: Skeleton|Lie_belly_sleep_Skeleton
-  - first:
-      74: -8910666466957135351
-    second: Skeleton|Lie_belly_sleep_start_Skeleton
-  - first:
-      74: 9118095075852560308
-    second: Skeleton|Lie_belly_start_Skeleton
-  - first:
-      74: 3879370158711057307
-    second: Skeleton|Lie_side_end_Skeleton
-  - first:
-      74: 451781184919820624
-    second: Skeleton|Lie_side_loop_1_Skeleton
-  - first:
-      74: 6761959598104392648
-    second: Skeleton|Lie_side_loop_2_Skeleton
-  - first:
-      74: -7759558619276032166
-    second: Skeleton|Lie_side_sleep_end_Skeleton
-  - first:
-      74: 6224170402790325014
-    second: Skeleton|Lie_side_sleep_Skeleton
-  - first:
-      74: -1505253910526090232
-    second: Skeleton|Lie_side_sleep_start_Skeleton
-  - first:
-      74: -6102507627086354615
-    second: Skeleton|Lie_side_start_Skeleton
-  - first:
-      74: 7662095830070838482
-    second: Skeleton|Run_F_RM_Skeleton
-  - first:
-      74: -664678447878500957
-    second: Skeleton|Run_L_RM_Skeleton
-  - first:
-      74: -2601530568530160684
-    second: Skeleton|Run_R_RM_Skeleton
-  - first:
-      74: 6748655205103625919
-    second: Skeleton|RunFast_F_RM_Skeleton
-  - first:
-      74: 130683796420155969
-    second: Skeleton|RunFast_L_RM_Skeleton
-  - first:
-      74: 8061016366143747020
-    second: Skeleton|RunFast_R_RM_Skeleton
-  - first:
-      74: 4419051241428586153
-    second: Skeleton|Scratching_Skeleton
-  - first:
-      74: -1455711421480633674
-    second: Skeleton|SharpenClaws_Horiz_Skeleton
-  - first:
-      74: -2034614141569967189
-    second: Skeleton|SharpenClaws_Vert_Skeleton
-  - first:
-      74: -632273464988517633
-    second: Skeleton|Sit_end_Skeleton
-  - first:
-      74: 8608883015956439809
-    second: Skeleton|Sit_loop_1_Skeleton
-  - first:
-      74: 8488856172941226451
-    second: Skeleton|Sit_loop_2_Skeleton
-  - first:
-      74: 6838513172881541846
-    second: Skeleton|Sit_loop_3_Skeleton
-  - first:
-      74: -6276343248100117215
-    second: Skeleton|Sit_start_Skeleton
-  - first:
-      74: 755613434710846457
-    second: Skeleton|Swim_B_RM_Skeleton
-  - first:
-      74: 3489848793528593723
-    second: Skeleton|Swim_BL_RM_Skeleton
-  - first:
-      74: -2296098204040344905
-    second: Skeleton|Swim_BR_RM_Skeleton
-  - first:
-      74: 7525695929475110079
-    second: Skeleton|Swim_Enter_RM_Skeleton
-  - first:
-      74: -7757010563596956046
-    second: Skeleton|Swim_F_RM_Skeleton
-  - first:
-      74: -1610847901648258154
-    second: Skeleton|Swim_Idle_Skeleton
-  - first:
-      74: -586151501231051646
-    second: Skeleton|Swim_L_RM_Skeleton
-  - first:
-      74: -9218273696319856235
-    second: Skeleton|Swim_R_RM_Skeleton
-  - first:
-      74: -3457639739544571861
-    second: Skeleton|Swim_TurnL_RM_Skeleton
-  - first:
-      74: 516609957933654570
-    second: Skeleton|Swim_TurnR_RM_Skeleton
-  - first:
-      74: 5022685613323664345
-    second: Skeleton|Trans_LieBelly_Sit_Skeleton
-  - first:
-      74: -1135583622240009991
-    second: Skeleton|Trans_LieSide_Sit_Skeleton
-  - first:
-      74: 7044036770341792254
-    second: Skeleton|Trans_Sit_LieBelly_Skeleton
-  - first:
-      74: 579250606437792016
-    second: Skeleton|Trans_Sit_LieSide_Skeleton
-  - first:
-      74: -1968438057381733419
-    second: Skeleton|Trot_F_RM_Skeleton
-  - first:
-      74: -7326744219702251072
-    second: Skeleton|Trot_L_RM_Skeleton
-  - first:
-      74: -2976963438568677484
-    second: Skeleton|Trot_R_RM_Skeleton
-  - first:
-      74: 5184569342818591309
-    second: Skeleton|Turn180_L_RM_Skeleton
-  - first:
-      74: 1181884851466323817
-    second: Skeleton|Turn180_R_RM_Skeleton
-  - first:
-      74: -5463077441788793825
-    second: Skeleton|Turn_L_RM_Skeleton
-  - first:
-      74: -3436901280748860132
-    second: Skeleton|Turn_R_RM_Skeleton
-  - first:
-      74: 4892707250406211796
-    second: Skeleton|Walk_B_RM_Skeleton
-  - first:
-      74: 3931835359015830399
-    second: Skeleton|Walk_BL_RM_Skeleton
-  - first:
-      74: -5274581266928100584
-    second: Skeleton|Walk_BR_RM_Skeleton
-  - first:
-      74: 6044865892767384464
-    second: Skeleton|Walk_F_RM_Skeleton
-  - first:
-      74: 8750097009439795292
-    second: Skeleton|Walk_L_RM_Skeleton
-  - first:
-      74: 2081861544558927707
-    second: Skeleton|Walk_R_RM_Skeleton
+  serializedVersion: 22200
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
-    materialImportMode: 0
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleCurves: 1
+    resampleCurves: 0
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -393,9 +25,9 @@ ModelImporter:
     importAnimatedCustomProperties: 0
     importConstraints: 0
     animationCompression: 1
-    animationRotationError: 0.08
-    animationPositionError: 0.08
-    animationScaleError: 0.08
+    animationRotationError: 0.02
+    animationPositionError: 0.02
+    animationScaleError: 0.02
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
@@ -403,7 +35,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Attack_Crouch_RM_Skeleton
       takeName: Skeleton|Attack_Crouch_RM_Skeleton
-      internalID: 0
+      internalID: -8793080281054918813
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -432,7 +64,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Attack_down_Skeleton
       takeName: Skeleton|Attack_down_Skeleton
-      internalID: 0
+      internalID: -4917848127831739419
       firstFrame: 0
       lastFrame: 50
       wrapMode: 0
@@ -461,7 +93,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Attack_F_Skeleton
       takeName: Skeleton|Attack_F_Skeleton
-      internalID: 0
+      internalID: -8562099852504669364
       firstFrame: 0
       lastFrame: 35
       wrapMode: 0
@@ -490,7 +122,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Attack_L_Skeleton
       takeName: Skeleton|Attack_L_Skeleton
-      internalID: 0
+      internalID: -2730839057511591399
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -519,7 +151,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Attack_R_Skeleton
       takeName: Skeleton|Attack_R_Skeleton
-      internalID: 0
+      internalID: -4296391004797540358
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -548,7 +180,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Caress_idle_Skeleton
       takeName: Skeleton|Caress_idle_Skeleton
-      internalID: 0
+      internalID: -4453918434468799113
       firstFrame: 0
       lastFrame: 80
       wrapMode: 0
@@ -577,7 +209,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Caress_lie_Skeleton
       takeName: Skeleton|Caress_lie_Skeleton
-      internalID: 0
+      internalID: 5559575644397660213
       firstFrame: 0
       lastFrame: 80
       wrapMode: 0
@@ -606,7 +238,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Caress_sit_Skeleton
       takeName: Skeleton|Caress_sit_Skeleton
-      internalID: 0
+      internalID: -885596901209294715
       firstFrame: 0
       lastFrame: 80
       wrapMode: 0
@@ -635,7 +267,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Co_attack_F_Skeleton
       takeName: Skeleton|Co_attack_F_Skeleton
-      internalID: 0
+      internalID: 5322486098347706021
       firstFrame: 0
       lastFrame: 34
       wrapMode: 0
@@ -664,7 +296,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Co_attack_L_Skeleton
       takeName: Skeleton|Co_attack_L_Skeleton
-      internalID: 0
+      internalID: 3290821369368552316
       firstFrame: 0
       lastFrame: 35
       wrapMode: 0
@@ -693,7 +325,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Co_attack_R_Skeleton
       takeName: Skeleton|Co_attack_R_Skeleton
-      internalID: 0
+      internalID: 7533694071711123677
       firstFrame: 0
       lastFrame: 35
       wrapMode: 0
@@ -720,9 +352,38 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
+      name: Skeleton|Co_attack_Series_Skeleton
+      takeName: Skeleton|Co_attack_Series_Skeleton
+      internalID: 4441959767423704443
+      firstFrame: 0
+      lastFrame: 50
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
       name: Skeleton|Co_Hit_F_Skeleton
       takeName: Skeleton|Co_Hit_F_Skeleton
-      internalID: 0
+      internalID: -821077169579670406
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -751,7 +412,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Co_Hit_M_Skeleton
       takeName: Skeleton|Co_Hit_M_Skeleton
-      internalID: 0
+      internalID: 3337802703975403043
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -780,7 +441,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Combat_Die_L_Skeleton
       takeName: Skeleton|Combat_Die_L_Skeleton
-      internalID: 0
+      internalID: 6762059985276899411
       firstFrame: 0
       lastFrame: 26
       wrapMode: 0
@@ -809,7 +470,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Combat_Die_R_Skeleton
       takeName: Skeleton|Combat_Die_R_Skeleton
-      internalID: 0
+      internalID: 7697700033696000636
       firstFrame: 0
       lastFrame: 26
       wrapMode: 0
@@ -838,7 +499,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Combat_end_Skeleton
       takeName: Skeleton|Combat_end_Skeleton
-      internalID: 0
+      internalID: 141351387841315699
       firstFrame: 0
       lastFrame: 20
       wrapMode: 0
@@ -867,7 +528,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Combat_loop_Skeleton
       takeName: Skeleton|Combat_loop_Skeleton
-      internalID: 0
+      internalID: -2611624427396152177
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -876,7 +537,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -896,7 +557,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Combat_start_Skeleton
       takeName: Skeleton|Combat_start_Skeleton
-      internalID: 0
+      internalID: -4182626145988849775
       firstFrame: 0
       lastFrame: 20
       wrapMode: 0
@@ -925,7 +586,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Crouch_B_RM_Skeleton
       takeName: Skeleton|Crouch_B_RM_Skeleton
-      internalID: 0
+      internalID: -7637072750202531495
       firstFrame: 0
       lastFrame: 28
       wrapMode: 0
@@ -954,7 +615,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Crouch_BL_RM_Skeleton
       takeName: Skeleton|Crouch_BL_RM_Skeleton
-      internalID: 0
+      internalID: -8758614026253314832
       firstFrame: 0
       lastFrame: 28
       wrapMode: 0
@@ -983,7 +644,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Crouch_BR_RM_Skeleton
       takeName: Skeleton|Crouch_BR_RM_Skeleton
-      internalID: 0
+      internalID: 2981918622167707125
       firstFrame: 0
       lastFrame: 28
       wrapMode: 0
@@ -1012,7 +673,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Crouch_F_RM_Skeleton
       takeName: Skeleton|Crouch_F_RM_Skeleton
-      internalID: 0
+      internalID: 1660282071026436910
       firstFrame: 0
       lastFrame: 28
       wrapMode: 0
@@ -1041,7 +702,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Crouch_L_RM_Skeleton
       takeName: Skeleton|Crouch_L_RM_Skeleton
-      internalID: 0
+      internalID: -6992221139225259631
       firstFrame: 0
       lastFrame: 28
       wrapMode: 0
@@ -1070,7 +731,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Crouch_R_RM_Skeleton
       takeName: Skeleton|Crouch_R_RM_Skeleton
-      internalID: 0
+      internalID: -4300123748080720382
       firstFrame: 0
       lastFrame: 28
       wrapMode: 0
@@ -1099,7 +760,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|CrouchIdle_end_Skeleton
       takeName: Skeleton|CrouchIdle_end_Skeleton
-      internalID: 0
+      internalID: -4004816851209057640
       firstFrame: 0
       lastFrame: 26
       wrapMode: 0
@@ -1128,7 +789,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|CrouchIdle_loop_1_Skeleton
       takeName: Skeleton|CrouchIdle_loop_1_Skeleton
-      internalID: 0
+      internalID: 974257327224083344
       firstFrame: 0
       lastFrame: 80
       wrapMode: 0
@@ -1137,7 +798,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1157,7 +818,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|CrouchIdle_loop_2_Skeleton
       takeName: Skeleton|CrouchIdle_loop_2_Skeleton
-      internalID: 0
+      internalID: -7163372878928402577
       firstFrame: 0
       lastFrame: 100
       wrapMode: 0
@@ -1166,7 +827,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1186,7 +847,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|CrouchIdle_start_Skeleton
       takeName: Skeleton|CrouchIdle_start_Skeleton
-      internalID: 0
+      internalID: -6432771583220220276
       firstFrame: 0
       lastFrame: 16
       wrapMode: 0
@@ -1215,7 +876,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|CrouchTurn_L_RM_Skeleton
       takeName: Skeleton|CrouchTurn_L_RM_Skeleton
-      internalID: 0
+      internalID: 6969506617001025737
       firstFrame: 0
       lastFrame: 12
       wrapMode: 0
@@ -1244,7 +905,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|CrouchTurn_R_RM_Skeleton
       takeName: Skeleton|CrouchTurn_R_RM_Skeleton
-      internalID: 0
+      internalID: -7321482656315949465
       firstFrame: 0
       lastFrame: 12
       wrapMode: 0
@@ -1273,7 +934,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Defecate_Skeleton
       takeName: Skeleton|Defecate_Skeleton
-      internalID: 0
+      internalID: -1915363760625053310
       firstFrame: 0
       lastFrame: 140
       wrapMode: 0
@@ -1282,7 +943,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1302,7 +963,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Die_L_Skeleton
       takeName: Skeleton|Die_L_Skeleton
-      internalID: 0
+      internalID: -697723231112412081
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1331,7 +992,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Die_R_Skeleton
       takeName: Skeleton|Die_R_Skeleton
-      internalID: 0
+      internalID: 783565286153600925
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1360,7 +1021,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Drinking_Skeleton
       takeName: Skeleton|Drinking_Skeleton
-      internalID: 0
+      internalID: 4257278473882560338
       firstFrame: 0
       lastFrame: 100
       wrapMode: 0
@@ -1389,7 +1050,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|EatDrink_end_Skeleton
       takeName: Skeleton|EatDrink_end_Skeleton
-      internalID: 0
+      internalID: -5452445783500735005
       firstFrame: 0
       lastFrame: 35
       wrapMode: 0
@@ -1418,7 +1079,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|EatDrink_start_Skeleton
       takeName: Skeleton|EatDrink_start_Skeleton
-      internalID: 0
+      internalID: 6308181092461939976
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -1447,7 +1108,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Eating_Skeleton
       takeName: Skeleton|Eating_Skeleton
-      internalID: 0
+      internalID: -6241564828372443392
       firstFrame: 0
       lastFrame: 100
       wrapMode: 0
@@ -1476,7 +1137,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Hit_B_Skeleton
       takeName: Skeleton|Hit_B_Skeleton
-      internalID: 0
+      internalID: -9199651719480732646
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1505,7 +1166,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Hit_F_Skeleton
       takeName: Skeleton|Hit_F_Skeleton
-      internalID: 0
+      internalID: 7140097127270040809
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -1534,7 +1195,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Hit_M_Skeleton
       takeName: Skeleton|Hit_M_Skeleton
-      internalID: 0
+      internalID: -2856113115418960463
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -1563,7 +1224,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Idle_1_Skeleton
       takeName: Skeleton|Idle_1_Skeleton
-      internalID: 0
+      internalID: 4744674354076707186
       firstFrame: 0
       lastFrame: 80
       wrapMode: 0
@@ -1592,7 +1253,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Idle_2_Skeleton
       takeName: Skeleton|Idle_2_Skeleton
-      internalID: 0
+      internalID: -7414515469640439114
       firstFrame: 0
       lastFrame: 140
       wrapMode: 0
@@ -1621,7 +1282,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Idle_3_Skeleton
       takeName: Skeleton|Idle_3_Skeleton
-      internalID: 0
+      internalID: -5314031200740344455
       firstFrame: 0
       lastFrame: 100
       wrapMode: 0
@@ -1650,7 +1311,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Idle_4_Skeleton
       takeName: Skeleton|Idle_4_Skeleton
-      internalID: 0
+      internalID: -8605818280220417882
       firstFrame: 0
       lastFrame: 157
       wrapMode: 0
@@ -1679,7 +1340,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Idle_5_Skeleton
       takeName: Skeleton|Idle_5_Skeleton
-      internalID: 0
+      internalID: 3392411296438168873
       firstFrame: 0
       lastFrame: 180
       wrapMode: 0
@@ -1708,7 +1369,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Idle_6_Skeleton
       takeName: Skeleton|Idle_6_Skeleton
-      internalID: 0
+      internalID: -7716204452423783661
       firstFrame: 0
       lastFrame: 150
       wrapMode: 0
@@ -1737,7 +1398,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Idle_7_Skeleton
       takeName: Skeleton|Idle_7_Skeleton
-      internalID: 0
+      internalID: -8753979006792087418
       firstFrame: 0
       lastFrame: 107
       wrapMode: 0
@@ -1764,9 +1425,38 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
+      name: Skeleton|Idle_8_Skeleton
+      takeName: Skeleton|Idle_8_Skeleton
+      internalID: 2019286022857779548
+      firstFrame: 0
+      lastFrame: 160
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
       name: Skeleton|JumpAir_high_F_Skeleton
       takeName: Skeleton|JumpAir_high_F_Skeleton
-      internalID: 0
+      internalID: 5858318270948700188
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1795,7 +1485,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpAir_high_Skeleton
       takeName: Skeleton|JumpAir_high_Skeleton
-      internalID: 0
+      internalID: 8912298454446763624
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1824,7 +1514,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpAir_horiz_Skeleton
       takeName: Skeleton|JumpAir_horiz_Skeleton
-      internalID: 0
+      internalID: 635995377735998673
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1853,7 +1543,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpAir_low_F_Skeleton
       takeName: Skeleton|JumpAir_low_F_Skeleton
-      internalID: 0
+      internalID: -338470622389984036
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1882,7 +1572,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpAir_low_Skeleton
       takeName: Skeleton|JumpAir_low_Skeleton
-      internalID: 0
+      internalID: -2629606230249258083
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1911,7 +1601,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpAir_up_F_Skeleton
       takeName: Skeleton|JumpAir_up_F_Skeleton
-      internalID: 0
+      internalID: -111584165504426596
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1940,7 +1630,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpAir_up_Skeleton
       takeName: Skeleton|JumpAir_up_Skeleton
-      internalID: 0
+      internalID: -955631390446150257
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1969,7 +1659,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpFw_RM_Skeleton
       takeName: Skeleton|JumpFw_RM_Skeleton
-      internalID: 0
+      internalID: 5892633243877451775
       firstFrame: 0
       lastFrame: 45
       wrapMode: 0
@@ -1998,7 +1688,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpLand_F_RM_Skeleton
       takeName: Skeleton|JumpLand_F_RM_Skeleton
-      internalID: 0
+      internalID: -4238411172550809216
       firstFrame: 0
       lastFrame: 20
       wrapMode: 0
@@ -2027,7 +1717,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpLand_Place_Skeleton
       takeName: Skeleton|JumpLand_Place_Skeleton
-      internalID: 0
+      internalID: -4839762042152487166
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -2056,7 +1746,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpLand_Skeleton
       takeName: Skeleton|JumpLand_Skeleton
-      internalID: 0
+      internalID: -2357408891020165140
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -2085,7 +1775,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpPlace_RM_Skeleton
       takeName: Skeleton|JumpPlace_RM_Skeleton
-      internalID: 0
+      internalID: -5668425256204369214
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -2114,7 +1804,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpRun_RM_Skeleton
       takeName: Skeleton|JumpRun_RM_Skeleton
-      internalID: 0
+      internalID: 1914811723232251529
       firstFrame: 0
       lastFrame: 35
       wrapMode: 0
@@ -2143,7 +1833,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpStart_Down_RM_Skeleton
       takeName: Skeleton|JumpStart_Down_RM_Skeleton
-      internalID: 0
+      internalID: 7458526083329462177
       firstFrame: 0
       lastFrame: 18
       wrapMode: 0
@@ -2172,7 +1862,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpStart_F_RM_Skeleton
       takeName: Skeleton|JumpStart_F_RM_Skeleton
-      internalID: 0
+      internalID: 1851628786447764471
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -2201,7 +1891,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpStart_place_RM_Skeleton
       takeName: Skeleton|JumpStart_place_RM_Skeleton
-      internalID: 0
+      internalID: -4007194990975856745
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -2215,7 +1905,7 @@ ModelImporter:
       loopBlendOrientation: 0
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1
-      keepOriginalOrientation: 1
+      keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
       heightFromFeet: 0
@@ -2228,9 +1918,38 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
+      name: Skeleton|JumpStart_Up_Skeleton
+      takeName: Skeleton|JumpStart_Up_Skeleton
+      internalID: 4119702221904775173
+      firstFrame: 0
+      lastFrame: 10
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
       name: Skeleton|JumpUp1_end_RM_Skeleton
       takeName: Skeleton|JumpUp1_end_RM_Skeleton
-      internalID: 0
+      internalID: -3729891222213306075
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -2240,7 +1959,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 0
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -2259,7 +1978,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpUp2_end_RM_Skeleton
       takeName: Skeleton|JumpUp2_end_RM_Skeleton
-      internalID: 0
+      internalID: -1730084277149702652
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -2274,7 +1993,7 @@ ModelImporter:
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 0
+      keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
@@ -2288,7 +2007,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|JumpUp3_end_RM_Skeleton
       takeName: Skeleton|JumpUp3_end_RM_Skeleton
-      internalID: 0
+      internalID: -6652456123201075078
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -2317,7 +2036,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lick_Skeleton
       takeName: Skeleton|Lick_Skeleton
-      internalID: 0
+      internalID: 9159020492534102054
       firstFrame: 0
       lastFrame: 165
       wrapMode: 0
@@ -2326,7 +2045,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -2346,7 +2065,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_belly_end_Skeleton
       takeName: Skeleton|Lie_belly_end_Skeleton
-      internalID: 0
+      internalID: -2765206927288970745
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -2375,7 +2094,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_belly_loop_1_Skeleton
       takeName: Skeleton|Lie_belly_loop_1_Skeleton
-      internalID: 0
+      internalID: -7607026811624138977
       firstFrame: 0
       lastFrame: 80
       wrapMode: 0
@@ -2404,7 +2123,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_belly_loop_2_Skeleton
       takeName: Skeleton|Lie_belly_loop_2_Skeleton
-      internalID: 0
+      internalID: 3205638555155540684
       firstFrame: 0
       lastFrame: 140
       wrapMode: 0
@@ -2433,7 +2152,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_belly_loop_3_Skeleton
       takeName: Skeleton|Lie_belly_loop_3_Skeleton
-      internalID: 0
+      internalID: -7652515350545777771
       firstFrame: 0
       lastFrame: 100
       wrapMode: 0
@@ -2462,7 +2181,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_belly_sleep_end_Skeleton
       takeName: Skeleton|Lie_belly_sleep_end_Skeleton
-      internalID: 0
+      internalID: 2025834538410876517
       firstFrame: 0
       lastFrame: 20
       wrapMode: 0
@@ -2491,7 +2210,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_belly_sleep_Skeleton
       takeName: Skeleton|Lie_belly_sleep_Skeleton
-      internalID: 0
+      internalID: -8742293125337604710
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -2520,7 +2239,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_belly_sleep_start_Skeleton
       takeName: Skeleton|Lie_belly_sleep_start_Skeleton
-      internalID: 0
+      internalID: -8910666466957135351
       firstFrame: 0
       lastFrame: 20
       wrapMode: 0
@@ -2549,7 +2268,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_belly_start_Skeleton
       takeName: Skeleton|Lie_belly_start_Skeleton
-      internalID: 0
+      internalID: 9118095075852560308
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -2578,7 +2297,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_side_end_Skeleton
       takeName: Skeleton|Lie_side_end_Skeleton
-      internalID: 0
+      internalID: 3879370158711057307
       firstFrame: 0
       lastFrame: 35
       wrapMode: 0
@@ -2587,7 +2306,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -2607,7 +2326,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_side_loop_1_Skeleton
       takeName: Skeleton|Lie_side_loop_1_Skeleton
-      internalID: 0
+      internalID: 451781184919820624
       firstFrame: 0
       lastFrame: 80
       wrapMode: 0
@@ -2636,7 +2355,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_side_loop_2_Skeleton
       takeName: Skeleton|Lie_side_loop_2_Skeleton
-      internalID: 0
+      internalID: 6761959598104392648
       firstFrame: 0
       lastFrame: 180
       wrapMode: 0
@@ -2665,7 +2384,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_side_sleep_end_Skeleton
       takeName: Skeleton|Lie_side_sleep_end_Skeleton
-      internalID: 0
+      internalID: -7759558619276032166
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -2694,7 +2413,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_side_sleep_Skeleton
       takeName: Skeleton|Lie_side_sleep_Skeleton
-      internalID: 0
+      internalID: 6224170402790325014
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -2723,7 +2442,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_side_sleep_start_Skeleton
       takeName: Skeleton|Lie_side_sleep_start_Skeleton
-      internalID: 0
+      internalID: -1505253910526090232
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -2752,7 +2471,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Lie_side_start_Skeleton
       takeName: Skeleton|Lie_side_start_Skeleton
-      internalID: 0
+      internalID: -6102507627086354615
       firstFrame: 0
       lastFrame: 28
       wrapMode: 0
@@ -2761,7 +2480,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -2781,7 +2500,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Run_F_RM_Skeleton
       takeName: Skeleton|Run_F_RM_Skeleton
-      internalID: 0
+      internalID: 7662095830070838482
       firstFrame: 0
       lastFrame: 12
       wrapMode: 0
@@ -2810,7 +2529,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Run_L_RM_Skeleton
       takeName: Skeleton|Run_L_RM_Skeleton
-      internalID: 0
+      internalID: -664678447878500957
       firstFrame: 0
       lastFrame: 12
       wrapMode: 0
@@ -2839,7 +2558,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Run_R_RM_Skeleton
       takeName: Skeleton|Run_R_RM_Skeleton
-      internalID: 0
+      internalID: -2601530568530160684
       firstFrame: 0
       lastFrame: 12
       wrapMode: 0
@@ -2868,7 +2587,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|RunFast_F_RM_Skeleton
       takeName: Skeleton|RunFast_F_RM_Skeleton
-      internalID: 0
+      internalID: 6748655205103625919
       firstFrame: 0
       lastFrame: 12
       wrapMode: 0
@@ -2897,7 +2616,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|RunFast_L_RM_Skeleton
       takeName: Skeleton|RunFast_L_RM_Skeleton
-      internalID: 0
+      internalID: 130683796420155969
       firstFrame: 0
       lastFrame: 12
       wrapMode: 0
@@ -2926,7 +2645,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|RunFast_R_RM_Skeleton
       takeName: Skeleton|RunFast_R_RM_Skeleton
-      internalID: 0
+      internalID: 8061016366143747020
       firstFrame: 0
       lastFrame: 12
       wrapMode: 0
@@ -2955,7 +2674,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Scratching_Skeleton
       takeName: Skeleton|Scratching_Skeleton
-      internalID: 0
+      internalID: 4419051241428586153
       firstFrame: 0
       lastFrame: 125
       wrapMode: 0
@@ -2964,7 +2683,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -2984,7 +2703,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|SharpenClaws_Horiz_Skeleton
       takeName: Skeleton|SharpenClaws_Horiz_Skeleton
-      internalID: 0
+      internalID: -1455711421480633674
       firstFrame: 0
       lastFrame: 105
       wrapMode: 0
@@ -2993,7 +2712,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3013,7 +2732,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|SharpenClaws_Vert_Skeleton
       takeName: Skeleton|SharpenClaws_Vert_Skeleton
-      internalID: 0
+      internalID: -2034614141569967189
       firstFrame: 0
       lastFrame: 113
       wrapMode: 0
@@ -3022,7 +2741,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3042,7 +2761,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Sit_end_Skeleton
       takeName: Skeleton|Sit_end_Skeleton
-      internalID: 0
+      internalID: -632273464988517633
       firstFrame: 0
       lastFrame: 29
       wrapMode: 0
@@ -3071,7 +2790,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Sit_loop_1_Skeleton
       takeName: Skeleton|Sit_loop_1_Skeleton
-      internalID: 0
+      internalID: 8608883015956439809
       firstFrame: 0
       lastFrame: 80
       wrapMode: 0
@@ -3100,7 +2819,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Sit_loop_2_Skeleton
       takeName: Skeleton|Sit_loop_2_Skeleton
-      internalID: 0
+      internalID: 8488856172941226451
       firstFrame: 0
       lastFrame: 165
       wrapMode: 0
@@ -3129,9 +2848,38 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Sit_loop_3_Skeleton
       takeName: Skeleton|Sit_loop_3_Skeleton
-      internalID: 0
+      internalID: 6838513172881541846
       firstFrame: 0
-      lastFrame: 127
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Skeleton|Sit_loop_4_Skeleton
+      takeName: Skeleton|Sit_loop_4_Skeleton
+      internalID: 9036305658173773493
+      firstFrame: 0
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -3158,7 +2906,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Sit_start_Skeleton
       takeName: Skeleton|Sit_start_Skeleton
-      internalID: 0
+      internalID: -6276343248100117215
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -3187,7 +2935,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Swim_B_RM_Skeleton
       takeName: Skeleton|Swim_B_RM_Skeleton
-      internalID: 0
+      internalID: 755613434710846457
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3196,7 +2944,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3216,7 +2964,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Swim_BL_RM_Skeleton
       takeName: Skeleton|Swim_BL_RM_Skeleton
-      internalID: 0
+      internalID: 3489848793528593723
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3225,7 +2973,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3245,7 +2993,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Swim_BR_RM_Skeleton
       takeName: Skeleton|Swim_BR_RM_Skeleton
-      internalID: 0
+      internalID: -2296098204040344905
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3254,7 +3002,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3274,7 +3022,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Swim_Enter_RM_Skeleton
       takeName: Skeleton|Swim_Enter_RM_Skeleton
-      internalID: 0
+      internalID: 7525695929475110079
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -3283,7 +3031,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3303,7 +3051,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Swim_F_RM_Skeleton
       takeName: Skeleton|Swim_F_RM_Skeleton
-      internalID: 0
+      internalID: -7757010563596956046
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3312,7 +3060,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3332,7 +3080,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Swim_Idle_Skeleton
       takeName: Skeleton|Swim_Idle_Skeleton
-      internalID: 0
+      internalID: -1610847901648258154
       firstFrame: 0
       lastFrame: 32
       wrapMode: 0
@@ -3341,7 +3089,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3361,7 +3109,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Swim_L_RM_Skeleton
       takeName: Skeleton|Swim_L_RM_Skeleton
-      internalID: 0
+      internalID: -586151501231051646
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3370,7 +3118,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3390,7 +3138,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Swim_R_RM_Skeleton
       takeName: Skeleton|Swim_R_RM_Skeleton
-      internalID: 0
+      internalID: -9218273696319856235
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3399,7 +3147,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3419,7 +3167,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Swim_TurnL_RM_Skeleton
       takeName: Skeleton|Swim_TurnL_RM_Skeleton
-      internalID: 0
+      internalID: -3457639739544571861
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3428,7 +3176,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3448,7 +3196,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Swim_TurnR_RM_Skeleton
       takeName: Skeleton|Swim_TurnR_RM_Skeleton
-      internalID: 0
+      internalID: 516609957933654570
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3457,7 +3205,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3477,7 +3225,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Trans_LieBelly_Sit_Skeleton
       takeName: Skeleton|Trans_LieBelly_Sit_Skeleton
-      internalID: 0
+      internalID: 5022685613323664345
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -3506,7 +3254,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Trans_LieSide_Sit_Skeleton
       takeName: Skeleton|Trans_LieSide_Sit_Skeleton
-      internalID: 0
+      internalID: -1135583622240009991
       firstFrame: 0
       lastFrame: 35
       wrapMode: 0
@@ -3535,7 +3283,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Trans_Sit_LieBelly_Skeleton
       takeName: Skeleton|Trans_Sit_LieBelly_Skeleton
-      internalID: 0
+      internalID: 7044036770341792254
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -3564,7 +3312,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Trans_Sit_LieSide_Skeleton
       takeName: Skeleton|Trans_Sit_LieSide_Skeleton
-      internalID: 0
+      internalID: 579250606437792016
       firstFrame: 0
       lastFrame: 29
       wrapMode: 0
@@ -3593,7 +3341,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Trot_F_RM_Skeleton
       takeName: Skeleton|Trot_F_RM_Skeleton
-      internalID: 0
+      internalID: -1968438057381733419
       firstFrame: 0
       lastFrame: 16
       wrapMode: 0
@@ -3622,7 +3370,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Trot_L_RM_Skeleton
       takeName: Skeleton|Trot_L_RM_Skeleton
-      internalID: 0
+      internalID: -7326744219702251072
       firstFrame: 0
       lastFrame: 16
       wrapMode: 0
@@ -3651,7 +3399,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Trot_R_RM_Skeleton
       takeName: Skeleton|Trot_R_RM_Skeleton
-      internalID: 0
+      internalID: -2976963438568677484
       firstFrame: 0
       lastFrame: 16
       wrapMode: 0
@@ -3680,7 +3428,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Turn180_L_RM_Skeleton
       takeName: Skeleton|Turn180_L_RM_Skeleton
-      internalID: 0
+      internalID: 5184569342818591309
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3689,7 +3437,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3709,7 +3457,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Turn180_R_RM_Skeleton
       takeName: Skeleton|Turn180_R_RM_Skeleton
-      internalID: 0
+      internalID: 1181884851466323817
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3718,7 +3466,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -3738,7 +3486,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Turn_L_RM_Skeleton
       takeName: Skeleton|Turn_L_RM_Skeleton
-      internalID: 0
+      internalID: -5463077441788793825
       firstFrame: 0
       lastFrame: 12
       wrapMode: 0
@@ -3767,7 +3515,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Turn_R_RM_Skeleton
       takeName: Skeleton|Turn_R_RM_Skeleton
-      internalID: 0
+      internalID: -3436901280748860132
       firstFrame: 0
       lastFrame: 12
       wrapMode: 0
@@ -3796,7 +3544,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Walk_B_RM_Skeleton
       takeName: Skeleton|Walk_B_RM_Skeleton
-      internalID: 0
+      internalID: 4892707250406211796
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3825,7 +3573,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Walk_BL_RM_Skeleton
       takeName: Skeleton|Walk_BL_RM_Skeleton
-      internalID: 0
+      internalID: 3931835359015830399
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3854,7 +3602,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Walk_BR_RM_Skeleton
       takeName: Skeleton|Walk_BR_RM_Skeleton
-      internalID: 0
+      internalID: -5274581266928100584
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3883,7 +3631,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Walk_F_RM_Skeleton
       takeName: Skeleton|Walk_F_RM_Skeleton
-      internalID: 0
+      internalID: 6044865892767384464
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3912,7 +3660,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Walk_L_RM_Skeleton
       takeName: Skeleton|Walk_L_RM_Skeleton
-      internalID: 0
+      internalID: 8750097009439795292
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3941,7 +3689,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Skeleton|Walk_R_RM_Skeleton
       takeName: Skeleton|Walk_R_RM_Skeleton
-      internalID: 0
+      internalID: 2081861544558927707
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -3967,7 +3715,7 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -3975,27 +3723,35 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 1
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
+    optimizeBones: 0
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -4027,6 +3783,9 @@ ModelImporter:
   animationType: 2
   humanoidOversampling: 1
   avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
   assetBundleName: 

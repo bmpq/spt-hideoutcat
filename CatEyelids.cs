@@ -26,8 +26,14 @@ namespace hideoutcat
 
         void Start()
         {
-            boneEyelidL = transform.Find("Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.L_014");
-            boneEyelidR = transform.Find("Cat Simple/RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.R_018");
+            boneEyelidL = transform.Find("RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.L_014");
+            boneEyelidR = transform.Find("RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.R_018");
+
+            if (boneEyelidL == null)
+            {
+                Plugin.Log.LogError($"Error init {nameof(CatEyelids)}! cant find armature bone");
+                return;
+            }
         }
 
         // LateUpdate to override animator
