@@ -4,8 +4,8 @@ namespace hideoutcat
 {
     public class CatEyelids : MonoBehaviour
     {
-        const float angleClosed = -17f;
-        const float angleOpen = 38.384f;
+        const float angleClosed = 20f;
+        const float angleOpen = -42f;
 
         Transform boneEyelidL;
         Transform boneEyelidR;

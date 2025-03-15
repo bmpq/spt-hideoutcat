@@ -18,6 +18,7 @@ namespace hideoutcat
 
         CatLookAt lookAt;
         CatEyelids eyelids;
+        CatPupils pupils;
         CatAudio audio;
 
         CatGraphTraverser catGraphTraverser;
@@ -66,6 +67,7 @@ namespace hideoutcat
             animator = GetComponent<Animator>();
             lookAt = gameObject.GetOrAddComponent<CatLookAt>();
             eyelids = gameObject.GetOrAddComponent<CatEyelids>();
+            pupils = gameObject.GetOrAddComponent<CatPupils>();
             catGraphTraverser = gameObject.GetOrAddComponent<CatGraphTraverser>();
             catGraphTraverser.OnDestinationReached += OnDestinationReached;
             catGraphTraverser.OnNodeReached += OnNodeReached;
@@ -239,12 +241,6 @@ namespace hideoutcat
             HandleBehavior(); // Handle behavior based on _currentState
 
             HandlePlayerInteraction();
-
-            if (lookAt.IsLookingAtPlayer() && Vector3.Distance(transform.position, GetPlayerCam().position) < 3f)
-            {
-                if (UnityExtensions.RandomShouldOccur(5f))
-                    Meow();
-            }
 
             if (_prevState != _currentState)
             {
@@ -445,7 +441,7 @@ namespace hideoutcat
 
         private void HandleGroomingState()
         {
-            if (UnityExtensions.RandomShouldOccur(75f))
+            if (UnityExtensions.RandomShouldOccur(35f))
                 GoToClosestWaypoint();
         }
 
@@ -457,12 +453,27 @@ namespace hideoutcat
 
         void HandlePlayerInteraction()
         {
+            bool playerNearby = Vector3.Distance(transform.position, GetPlayerCam().position) < 3f;
+            bool lookingAtPlayer = lookAt.IsLookingAtPlayer();
+
+            if (lookingAtPlayer && playerNearby)
+            {
+                if (UnityExtensions.RandomShouldOccur(5f))
+                    Meow();
+            }
+
             if (IsPlayerShiningFlashlightAtFace())
             {
                 eyelids.SetClamp(0.5f);
+                pupils.SetDilation(0f);
             }
-            else if (eyelids.mode != CatEyelids.Mode.None)
-                eyelids.Release();
+            else
+            {
+                if (eyelids.mode != CatEyelids.Mode.None)
+                    eyelids.Release();
+
+                pupils.SetDilation(lookingAtPlayer ? 0.6f : 0.4f);
+            }
 
             bool playerInTheWay = IsPlayerInTheWay();
             if (playerInTheWay && animator.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
@@ -481,8 +492,6 @@ namespace hideoutcat
 
         bool IsPlayerShiningFlashlightAtFace()
         {
-            Transform source = GetPlayerCam();
-
             if (CameraClass.Instance == null || CameraClass.Instance.Flashlight == null)
                 return false;
             return CameraClass.Instance.Flashlight.IsActive;
@@ -529,6 +538,9 @@ namespace hideoutcat
 
         void GoToRandomArea()
         {
+            if (IsPlayerInTheWay())
+                return;
+
             var areas = Singleton<HideoutClass>.Instance.AreaDatas.OrderBy(x => Random.value);
 
             foreach (var area in areas)
