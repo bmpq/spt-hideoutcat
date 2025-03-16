@@ -189,6 +189,7 @@ namespace hideoutcat.Pathfinding
                     if (Mathf.Abs(angleToTarget) < 7f) // wait to face the direction
                     {
                         animator.SetBool("JumpingForward", true);
+                        animator.Update(0);
                     }
                 }
                 else if (targetPosition.y > transform.position.y + 0.3f) // means we need to initiate jump up
@@ -196,6 +197,7 @@ namespace hideoutcat.Pathfinding
                     if (Mathf.Abs(angleToTarget) < 10f) // wait to face the direction
                     {
                         animator.SetBool("JumpingUp", true);
+                        animator.Update(0);
                     }
                 }
                 else if (targetPosition.y < transform.position.y - 0.3f) // means we need to initiate jump down
@@ -203,6 +205,7 @@ namespace hideoutcat.Pathfinding
                     if (Mathf.Abs(angleToTarget) < 10f) // wait to face the direction
                     {
                         animator.SetBool("JumpingDown", true);
+                        animator.Update(0);
                     }
                 }
                 else // keep moving
@@ -322,6 +325,7 @@ namespace hideoutcat.Pathfinding
             {
                 transform.SetPositionIndividualAxis(y: targetPosition.y);
                 animator.SetBool("JumpingForward", false);
+                animator.Update(0);
 
                 OnJumpAirEnd?.Invoke();
             }
@@ -352,6 +356,7 @@ namespace hideoutcat.Pathfinding
             if (transform.position.y > targetPosition.y - 0.7f) // the (end) clip expects exactly 0.5 offset on Y
             {
                 animator.SetBool("JumpingUp", false);
+                animator.Update(0);
                 jumpUpEndOffset = targetPosition.y - transform.position.y;
 
                 OnJumpAirEnd?.Invoke();
@@ -389,6 +394,7 @@ namespace hideoutcat.Pathfinding
             {
                 transform.SetPositionIndividualAxis(y: targetPosition.y);
                 animator.SetBool("JumpingDown", false);
+                animator.Update(0);
 
                 // another quick evil fix to avoid seeking the landing node after already landed, just consider the current target node reached on land
                 if (currentPathIndex < currentPath.Count - 2)

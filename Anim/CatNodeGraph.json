@@ -502,17 +502,16 @@
   {
     "name": "117c_Waypoint",
     "position": {
-      "x": 0.288,
+      "x": 0.194,
       "y": 0.0,
-      "z": 1.312
+      "z": 1.116
     },
     "connectedTo": [
       "2b7e_BitcoinFarm_AL",
       "6b25_IntelligenceCenter_L2_POSE",
       "50bb_IntelligenceCenter_L2",
       "5ca5_Waypoint",
-      "21bc_Waypoint",
-      "7ed2_IntelligenceCenter_L3_POSE"
+      "21bc_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -768,8 +767,7 @@
       "9ca2_Waypoint",
       "b93f_Waypoint",
       "2be6_Waypoint",
-      "db95_Gym_L1_POSE",
-      "9536_Gym_L1_POSE"
+      "db95_Gym_L1_POSE"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -2325,7 +2323,6 @@
       "z": 2.01
     },
     "connectedTo": [
-      "117c_Waypoint",
       "2b7e_BitcoinFarm_AL"
     ],
     "forwardJump": false,
@@ -2467,9 +2464,9 @@
   {
     "name": "6e5e_ScavCase_L1",
     "position": {
-      "x": -6.314,
+      "x": -6.266,
       "y": 0.0,
-      "z": -6.952
+      "z": -7.034
     },
     "connectedTo": [
       "7022_Waypoint",
@@ -2723,11 +2720,12 @@
     "position": {
       "x": 0.734,
       "y": 0.858,
-      "z": 0.96
+      "z": 1.112
     },
     "connectedTo": [
       "666b_BitcoinFarm_AL",
-      "7ed2_IntelligenceCenter_L3_POSE"
+      "7ed2_IntelligenceCenter_L3_POSE",
+      "117c_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "BitcoinFarm",
@@ -3190,63 +3188,12 @@
     "connectedTo": [
       "b93f_Waypoint",
       "2be6_Waypoint",
-      "c0b5_Waypoint",
-      "7bb9_Gym_L1_POSE"
-    ],
-    "forwardJump": false,
-    "areaType": "Gym",
-    "areaLevel": 1,
-    "poseRotation": 230.689346,
-    "poseParameters": [
-      {
-        "Name": "Grooming",
-        "Type": "Bool",
-        "BoolValue": true,
-        "FloatValue": 0.0,
-        "IntValue": 0
-      }
-    ]
-  },
-  {
-    "name": "7bb9_Gym_L1_POSE",
-    "position": {
-      "x": 10.567,
-      "y": 0.0123000145,
-      "z": 9.941
-    },
-    "connectedTo": [
-      "db95_Gym_L1_POSE",
-      "9536_Gym_L1_POSE"
-    ],
-    "forwardJump": false,
-    "areaType": "Gym",
-    "areaLevel": 1,
-    "poseRotation": 225.860336,
-    "poseParameters": [
-      {
-        "Name": "Grooming",
-        "Type": "Bool",
-        "BoolValue": true,
-        "FloatValue": 0.0,
-        "IntValue": 0
-      }
-    ]
-  },
-  {
-    "name": "9536_Gym_L1_POSE",
-    "position": {
-      "x": 11.875,
-      "y": 0.0123000145,
-      "z": 8.002
-    },
-    "connectedTo": [
-      "7bb9_Gym_L1_POSE",
       "c0b5_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "Gym",
     "areaLevel": 1,
-    "poseRotation": 284.402618,
+    "poseRotation": 230.689346,
     "poseParameters": [
       {
         "Name": "Grooming",

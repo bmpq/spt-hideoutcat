@@ -46,6 +46,8 @@ namespace hideoutcat
 
         Door doorGym;
 
+        float meowCooldown;
+
         void OnEnable()
         {
             Singleton<HideoutClass>.Instance.OnAreaUpdated += OnAreaUpdated;
@@ -180,6 +182,7 @@ namespace hideoutcat
         public void Pet()
         {
             animator.SetTrigger("Caress");
+            animator.Update(0);
 
             owner.InteractionsChangedHandler();
 
@@ -213,11 +216,16 @@ namespace hideoutcat
 
         public bool IsFidgeting()
         {
+            animator.Update(0);
             return animator.GetCurrentAnimatorStateInfo(0).IsTag("Fidget");
         }
 
         public void Meow()
         {
+            if (meowCooldown > 0f)
+                return;
+            meowCooldown = 1f;
+
             animator.SetTrigger("Meow");
             audio.Meow();
         }
@@ -229,12 +237,15 @@ namespace hideoutcat
 
             lookAt.SetLookTarget(null);
             animator.SetTrigger("Fidget");
+            animator.Update(0);
 
             owner.InteractionsChangedHandler();
         }
 
         void FixedUpdate()
         {
+            meowCooldown -= Time.fixedDeltaTime;
+
             animator.SetFloat("Random", Random.value); // used for different variants of fidgeting
 
             UpdateState(); // Update the _currentState based on the Animator (mirror)
