@@ -34,6 +34,7 @@ namespace hideoutcat
                 }
 
                 herring.SetActive(kitchenArea.CurrentLevel > 0);
+                herring.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
                 switch (kitchenArea.CurrentLevel)
                 {
                     case 1:
@@ -41,7 +42,7 @@ namespace hideoutcat
                         break;
                     case 2:
                     case 3:
-                        herring.transform.position = new Vector3(5.494505f, 0.7590022f, -5.090755f);
+                        herring.transform.position = new Vector3(5.432f, 0.759f, -4.9755f);
                         break;
                 }
             }
@@ -79,9 +80,11 @@ namespace hideoutcat
                         break;
                     case 2:
                         kitchenArea.HighlightTransform.Find("dish_1 (1)")?.gameObject.SetActive(false);
+                        kitchenArea.HighlightTransform.Find("fork (1)")?.gameObject.SetActive(false);
                         break;
                     case 3:
                         kitchenArea.HighlightTransform.Find("dish_1 (4)")?.gameObject.SetActive(false);
+                        kitchenArea.HighlightTransform.Find("fork (2)")?.gameObject.SetActive(false);
                         break;
                 }
             }

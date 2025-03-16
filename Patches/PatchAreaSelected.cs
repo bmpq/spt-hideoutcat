@@ -1,4 +1,5 @@
-﻿using EFT.Hideout;
+﻿using Comfort.Common;
+using EFT.Hideout;
 using HarmonyLib;
 using SPT.Reflection.Patching;
 using System;
@@ -14,6 +15,9 @@ namespace hideoutcat
 
         public static event Action<AreaData> OnAreaLevelUpdated;
 
+        // when hideout unloads, all AreaDatas become obsolete, on the next hideout reload it'll just keep adding new instances
+        // nothing breaks but it is a memory leak
+        // todo: find a hook when hideout unloads to clear this dictionary
         static Dictionary<AreaData, Action> unsubscribeActions = new Dictionary<AreaData, Action>();
 
         protected override MethodBase GetTargetMethod()

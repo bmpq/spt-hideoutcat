@@ -432,15 +432,15 @@ namespace hideoutcat
                 StartFidget();
             else if (UnityExtensions.RandomShouldOccur(3f) && !fidgeting)
                 lookAt.SetLookAtPlayer();
-            else if (UnityExtensions.RandomShouldOccur(20f))
+            else if (UnityExtensions.RandomShouldOccur(30f))
                 GoToRandomArea();
         }
-
+#if DEBUG
         void OnGUI()
         {
             IMGUIDebugDraw.Draw.Label(GetPlayerCam().GetComponent<Camera>(), transform.position, _currentState.ToString());
         }
-
+#endif
         private void HandleLyingState()
         {
             if (UnityExtensions.RandomShouldOccur(60f))
@@ -448,7 +448,7 @@ namespace hideoutcat
                 SetState(CatState.Sleeping, true);
                 lookAt.SetLookTarget(null);
             }
-            else if (UnityExtensions.RandomShouldOccur(20f))
+            else if (UnityExtensions.RandomShouldOccur(60f))
             {
                 GoToRandomArea();
             }
@@ -555,7 +555,7 @@ namespace hideoutcat
             directionToTarget.y = 0f;
             float angleToPlayer = Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up);
 
-            bool playerInTheWay = distToPlayer < 2f && Mathf.Abs(angleToPlayer) < 40f;
+            bool playerInTheWay = distToPlayer < 2f && Mathf.Abs(angleToPlayer) < 30f;
 
             return playerInTheWay;
         }
