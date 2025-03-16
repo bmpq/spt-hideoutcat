@@ -265,7 +265,8 @@
       "fbb8_Waypoint",
       "b36c_Waypoint",
       "42c5_Waypoint",
-      "5912_SolarPower_L1"
+      "5912_SolarPower_L1",
+      "668c_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -548,7 +549,8 @@
     },
     "connectedTo": [
       "7022_Waypoint",
-      "2be7_Waypoint"
+      "2be7_Waypoint",
+      "25a2_Waypoint"
     ],
     "forwardJump": false,
     "areaType": "NotSet",
@@ -890,9 +892,9 @@
   {
     "name": "c3b4_WaterCloset_L3",
     "position": {
-      "x": -6.06,
+      "x": -6.008,
       "y": 0.0,
-      "z": 6.341
+      "z": 6.387
     },
     "connectedTo": [
       "3618_WaterCloset_L3",
@@ -924,9 +926,9 @@
   {
     "name": "2806_WaterCloset_L3_POSE",
     "position": {
-      "x": -6.8652,
+      "x": -6.877,
       "y": 0.6057,
-      "z": 6.2258
+      "z": 6.254
     },
     "connectedTo": [
       "3618_WaterCloset_L3"
@@ -2464,9 +2466,9 @@
   {
     "name": "6e5e_ScavCase_L1",
     "position": {
-      "x": -6.266,
+      "x": -6.309,
       "y": 0.0,
-      "z": -7.034
+      "z": -6.988
     },
     "connectedTo": [
       "7022_Waypoint",

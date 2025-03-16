@@ -113,9 +113,13 @@ namespace hideoutcat
 
         private void OnNodeReached(List<Node> nodesLeft)
         {
-            if (nodesLeft.Count > 0)
+            if (nodesLeft.Count > 1)
             {
                 lookAt.LookAt(nodesLeft[Mathf.Min(1, nodesLeft.Count - 1)].position + new Vector3(0, 0.3f, 0));
+            }
+            else
+            {
+                lookAt.SetLookTarget(null);
             }
         }
 
@@ -503,7 +507,7 @@ namespace hideoutcat
             if (IsPlayerShiningFlashlightAtFace())
             {
                 eyelids.SetClamp(0.8f);
-                pupils.SetDilation(0f);
+                pupils.SetDilation(DistanceToPlayer().RemapClamped(0.3f, 2f, 0, 0.6f));
             }
             else
             {
