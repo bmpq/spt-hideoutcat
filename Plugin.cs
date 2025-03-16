@@ -4,6 +4,7 @@ using BepInEx.Logging;
 using Comfort.Common;
 using DG.Tweening;
 using EFT;
+using EFT.Hideout;
 using hideoutcat;
 using hideoutcat.Pathfinding;
 using Newtonsoft.Json;
@@ -14,12 +15,15 @@ using System.IO;
 using System.Linq;
 using tarkin;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [BepInPlugin("com.tarkin.hideoutcat", "hideoutcat", "1.0.0.0")]
 public class Plugin : BaseUnityPlugin
 {
     internal static new ManualLogSource Log;
     public static Graph CatGraph;
+
+    static bool catSpawned;
 
     private void Start()
     {
@@ -34,10 +38,15 @@ public class Plugin : BaseUnityPlugin
             new PatchAvailableHideoutActions().Enable();
             new PatchPlayerPrepareWorkout().Enable();
             new PatchPlayerStopWorkout().Enable();
-        }
 
-        PatchHideoutAwake.OnHideoutAwake += HideUnwantedSceneObjects;
-        PatchAreaSelected.OnAreaLevelUpdated += (_) => HideUnwantedSceneObjects();
+            new PatchBonusPanelUpdateView().Enable();
+
+            PatchHideoutAwake.OnHideoutAwake += HideUnwantedSceneObjects;
+            PatchAreaSelected.OnAreaLevelUpdated += (_) => HideUnwantedSceneObjects();
+
+            PatchHideoutAwake.OnHideoutAwake += SpawnCat;
+            PatchAreaSelected.OnAreaLevelUpdated += (_) => SpawnCat();
+        }
     }
 
     private bool LoadCatAreaData()
@@ -80,6 +89,77 @@ public class Plugin : BaseUnityPlugin
 
     private void InitConfiguration()
     {
+    }
+
+    static bool RequirementsMet()
+    {
+        AreaData areaKitchen = Singleton<HideoutClass>.Instance.AreaDatas.FirstOrDefault(x => x.Template.Type == EAreaType.Kitchen);
+        if (areaKitchen == null)
+            return false;
+
+        return areaKitchen.CurrentLevel > 0;
+    }
+
+    static void SpawnCat()
+    {
+        if (catSpawned)
+            return;
+
+        if (!RequirementsMet())
+            return;
+
+        catSpawned = true;
+
+        GameObject catObject = GameObject.Instantiate(BundleLoader.Load("hideoutcat").LoadAsset<GameObject>("hideoutcat"));
+        ReplaceShadersToNative(catObject);
+
+        HideoutCat cat = catObject.AddComponent<HideoutCat>();
+
+        List<AreaData> availableArea = new List<AreaData>();
+        foreach (var area in Singleton<HideoutClass>.Instance.AreaDatas)
+        {
+            if (area.CurrentLevel > 0)
+                availableArea.Add(area);
+        }
+        if (availableArea.Count > 0)
+        {
+            Plugin.Log.LogInfo($"{availableArea.Count} avaiable areas");
+
+            Random.InitState((int)System.DateTime.Now.Ticks); // apparently tarkov sets the seed somewhere, need to overwrite
+            availableArea = availableArea.OrderBy(_ => Random.value).ToList();
+
+            foreach (var spawnArea in availableArea)
+            {
+                var nodes = Plugin.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(spawnArea.Template.Type, spawnArea.CurrentLevel);
+                if (nodes.Count > 0)
+                {
+                    Node target = nodes[Random.Range(0, nodes.Count)];
+                    cat.transform.position = Plugin.CatGraph.GetNodeClosestWaypoint(target.position).position;
+                    cat.SetTargetNode(target);
+                    return;
+                }
+            }
+        }
+
+        Plugin.Log.LogInfo("no available areas, defaulting to a random waypoint node");
+        Node waypointNode = Plugin.CatGraph.GetNodeClosestWaypoint(new Vector3(Random.value * 16f, 0, 0));
+        cat.transform.position = waypointNode.position;
+        cat.SetTargetNode(waypointNode);
+    }
+
+    static void ReplaceShadersToNative(GameObject go)
+    {
+        Renderer[] rends = go.GetComponentsInChildren<Renderer>();
+
+        foreach (var rend in rends)
+        {
+            foreach (var mat in rend.materials)
+            {
+                Shader nativeShader = Shader.Find(mat.shader.name);
+                if (nativeShader != null)
+                    mat.shader = nativeShader;
+            }
+        }
     }
 
     static void HideUnwantedSceneObjects()
