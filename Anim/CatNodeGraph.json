@@ -2905,7 +2905,7 @@
     "poseRotation": 263.262573,
     "poseParameters": [
       {
-        "Name": "SharpenVertical",
+        "Name": "SharpeningVertical",
         "Type": "Bool",
         "BoolValue": true,
         "FloatValue": 0.0,
