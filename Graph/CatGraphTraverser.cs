@@ -158,7 +158,9 @@ namespace hideoutcat.Pathfinding
             {
                 HandleJumpingUp();
             }
-            else if (animator.IsInTransition(0) && animator.GetAnimatorTransitionInfo(0).IsName("JumpUpAir -> JumpUpEnd"))
+            else if (animator.IsInTransition(0) && 
+                (animator.GetAnimatorTransitionInfo(0).IsName("JumpUpAir -> JumpUpEnd")
+                || animator.GetAnimatorTransitionInfo(0).IsName("JumpUpStart -> JumpUpEnd"))) // precarious
             {
                 float t = animator.GetAnimatorTransitionInfo(0).normalizedTime;
                 transform.SetPositionIndividualAxis(y: Mathf.Lerp(targetPosition.y - jumpUpEndOffset, targetPosition.y, t));
@@ -350,16 +352,15 @@ namespace hideoutcat.Pathfinding
 
                 transform.position += new Vector3(0, upSpeed, 0);
                 transform.position += transform.forward * horizontalSpeed;
-            }
 
+                if (transform.position.y > targetPosition.y - 0.7f) // the (end) clip expects exactly 0.5 offset on Y
+                {
+                    animator.SetBool("JumpingUp", false);
+                    animator.Update(0);
+                    jumpUpEndOffset = targetPosition.y - transform.position.y;
 
-            if (transform.position.y > targetPosition.y - 0.7f) // the (end) clip expects exactly 0.5 offset on Y
-            {
-                animator.SetBool("JumpingUp", false);
-                animator.Update(0);
-                jumpUpEndOffset = targetPosition.y - transform.position.y;
-
-                OnJumpAirEnd?.Invoke();
+                    OnJumpAirEnd?.Invoke();
+                }
             }
         }
 
