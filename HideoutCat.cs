@@ -56,16 +56,16 @@ namespace hideoutcat
 
         void OnEnable()
         {
-            Singleton<HideoutClass>.Instance.OnAreaUpdated += OnAreaUpdated;
             PatchAreaSelected.OnAreaSelected += SetTargetArea;
+            PatchAreaSelected.OnAreaLevelUpdated += OnAreaLevelUpdated;
             PatchPlayerPrepareWorkout.OnPlayerPrepareWorkout += OnPlayerPrepareWorkout;
             PatchPlayerStopWorkout.OnPlayerStopWorkout += GoToRandomArea;
         }
 
         void OnDisable()
         {
-            Singleton<HideoutClass>.Instance.OnAreaUpdated -= OnAreaUpdated;
             PatchAreaSelected.OnAreaSelected -= SetTargetArea;
+            PatchAreaSelected.OnAreaLevelUpdated -= OnAreaLevelUpdated;
             PatchPlayerPrepareWorkout.OnPlayerPrepareWorkout -= OnPlayerPrepareWorkout;
             PatchPlayerStopWorkout.OnPlayerStopWorkout -= GoToRandomArea;
         }
@@ -89,7 +89,6 @@ namespace hideoutcat
             interactiveCollider.transform.SetParent(transform, false);
 
             owner = Singleton<GameWorld>.Instance.MainPlayer.GetComponent<GamePlayerOwner>();
-            doorGym = FindObjectsByType<Door>(FindObjectsSortMode.None).Where(door => door.Id == "door_bunker_2_00002").FirstOrDefault();
 
             ResetAnimatorParameters();
         }
@@ -161,10 +160,10 @@ namespace hideoutcat
             }
         }
 
-        private void OnAreaUpdated()
+        private void OnAreaLevelUpdated(AreaData areaData)
         {
             TeleportToClosestWaypoint();
-            StartTraversingToArea(currentTargetArea);
+            StartTraversingToArea(areaData);
         }
 
         void TeleportToClosestWaypoint()
@@ -182,6 +181,16 @@ namespace hideoutcat
 
         private void OnPlayerPrepareWorkout()
         {
+            if (doorGym == null)
+            {
+                doorGym = FindObjectsByType<Door>(FindObjectsSortMode.None).Where(door => door.Id == "door_bunker_2_00002").FirstOrDefault();
+                if (doorGym == null)
+                {
+                    Plugin.Log.LogError("Can't find the gym door! lol");
+                    return;
+                }
+            }
+
             if (doorGym.DoorState != EDoorState.Open)
                 return;
 

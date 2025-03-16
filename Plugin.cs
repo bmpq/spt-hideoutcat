@@ -37,7 +37,7 @@ public class Plugin : BaseUnityPlugin
         }
 
         PatchHideoutAwake.OnHideoutAwake += HideUnwantedSceneObjects;
-        Singleton<HideoutClass>.Instance.OnAreaUpdated += HideUnwantedSceneObjects;
+        PatchAreaSelected.OnAreaLevelUpdated += (_) => HideUnwantedSceneObjects();
     }
 
     private bool LoadCatAreaData()
