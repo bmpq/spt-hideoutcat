@@ -41,11 +41,10 @@ public class Plugin : BaseUnityPlugin
 
             new PatchBonusPanelUpdateView().Enable();
 
-            PatchHideoutAwake.OnHideoutAwake += HideUnwantedSceneObjects;
-            PatchAreaSelected.OnAreaLevelUpdated += (_) => HideUnwantedSceneObjects();
-
             PatchHideoutAwake.OnHideoutAwake += SpawnCat;
             PatchAreaSelected.OnAreaLevelUpdated += (_) => SpawnCat();
+
+            PropManager.Init();
         }
     }
 
@@ -110,8 +109,8 @@ public class Plugin : BaseUnityPlugin
 
         catSpawned = true;
 
-        GameObject catObject = GameObject.Instantiate(BundleLoader.Load("hideoutcat").LoadAsset<GameObject>("hideoutcat"));
-        ReplaceShadersToNative(catObject);
+        GameObject catObject = GameObject.Instantiate(AssetBundleLoader.LoadAssetBundle("hideoutcat").LoadAsset<GameObject>("hideoutcat"));
+        AssetBundleLoader.ReplaceShadersToNative(catObject);
 
         HideoutCat cat = catObject.AddComponent<HideoutCat>();
 
@@ -145,35 +144,5 @@ public class Plugin : BaseUnityPlugin
         Node waypointNode = Plugin.CatGraph.GetNodeClosestWaypoint(new Vector3(Random.value * 16f, 0, 0));
         cat.transform.position = waypointNode.position;
         cat.SetTargetNode(waypointNode);
-    }
-
-    static void ReplaceShadersToNative(GameObject go)
-    {
-        Renderer[] rends = go.GetComponentsInChildren<Renderer>();
-
-        foreach (var rend in rends)
-        {
-            foreach (var mat in rend.materials)
-            {
-                Shader nativeShader = Shader.Find(mat.shader.name);
-                if (nativeShader != null)
-                    mat.shader = nativeShader;
-            }
-        }
-    }
-
-    static void HideUnwantedSceneObjects()
-    {
-        // heating 1
-        UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(14.38238f, 0.5160349f, -5.618773f))?.SetActive(false); // books_01 (1)
-
-        // heating 2
-        UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(14.20716f, 0.5158756f, -5.420396f))?.SetActive(false); // books_01 (2)
-
-        // heating 3
-        UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(15.85126f, 0.5397013f, -4.845883f))?.SetActive(false); // paper3 (1)
-        UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(15.84810f, 0.5374010f, -5.039324f))?.SetActive(false); // paper3 (2)
-        UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(15.97384f, 0.5497416f, -4.821522f))?.SetActive(false); // Firewood_4 (7)
-        UnityExtensions.FindGameObjectWithComponentAtPosition<LODGroup>(new Vector3(16.07953f, 0.5244959f, -4.975954f))?.SetActive(false); // Firewood_4 (6)
     }
 }

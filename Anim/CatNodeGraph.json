@@ -460,9 +460,9 @@
   {
     "name": "9296_Waypoint",
     "position": {
-      "x": -0.902,
+      "x": -1.478,
       "y": 0.0,
-      "z": 5.601
+      "z": 5.581
     },
     "connectedTo": [
       "5ca5_Waypoint",
@@ -1307,9 +1307,9 @@
   {
     "name": "e6f3_Heating_L2_POSE",
     "position": {
-      "x": 14.195,
+      "x": 14.185,
       "y": 0.5142,
-      "z": -5.423
+      "z": -5.522
     },
     "connectedTo": [
       "faae_Heating_L2"
@@ -1867,9 +1867,9 @@
   {
     "name": "33f8_Kitchen_L3_POSE",
     "position": {
-      "x": 5.604,
+      "x": 5.553,
       "y": 0.753,
-      "z": -4.77
+      "z": -4.738
     },
     "connectedTo": [
       "b36c_Waypoint"

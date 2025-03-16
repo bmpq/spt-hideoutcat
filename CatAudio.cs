@@ -1,6 +1,7 @@
 ﻿using Comfort.Common;
 using EFT.Ballistics;
 using hideoutcat.Pathfinding;
+using tarkin;
 using UnityEngine;
 
 namespace hideoutcat
@@ -102,7 +103,7 @@ namespace hideoutcat
 
             graphTraverser.OnJumpAirEnd += GraphTraverser_OnJumpAirEnd;
 
-            allClips = BundleLoader.Load("hideoutcat_audio").LoadAllAssets<AudioClip>();
+            allClips = AssetBundleLoader.LoadAssetBundle("hideoutcat_audio").LoadAllAssets<AudioClip>();
             if (allClips == null || allClips.Length == 0)
             {
                 Plugin.Log.LogError("CatAudio: No audio clips loaded from bundle!");
