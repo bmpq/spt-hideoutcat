@@ -19,6 +19,15 @@ namespace hideoutcat
 
         float stepTimer;
 
+        public enum MeowType
+        {
+            Address,
+            Far,
+            Exertion,
+            Grumpy,
+            Short
+        }
+
         private void OnEnable()
         {
             audioSource = Singleton<BetterAudio>.Instance.GetSource(BetterAudio.AudioSourceGroupType.Character, true);
@@ -34,9 +43,26 @@ namespace hideoutcat
             }
         }
 
-        public void Meow()
+        public void Meow(MeowType meowType)
         {
-            PlayRandomClipByPrefix(allClips, "cat_meow_look");
+            switch (meowType)
+            {
+                case MeowType.Address:
+                    PlayRandomClipByPrefix(allClips, "cat_meow_look");
+                    break;
+                case MeowType.Far:
+                    PlayRandomClipByPrefix(allClips, "cat_generic_meow");
+                    break;
+                case MeowType.Exertion:
+                    PlayRandomClipByPrefix(allClips, "cat_meow_after_jump");
+                    break;
+                case MeowType.Grumpy:
+                    PlayRandomClipByPrefix(allClips, "cat_meow_grumpy");
+                    break;
+                case MeowType.Short:
+                    PlayRandomClipByPrefix(allClips, "cat_meow_ok");
+                    break;
+            }
         }
 
         public void Purr()
@@ -88,7 +114,7 @@ namespace hideoutcat
         private void GraphTraverser_OnJumpAirEnd()
         {
             PlayMaterialSound("cat_land_");
-            PlayRandomClipByPrefix(allClips, "cat_meow_after_jump");
+            Meow(MeowType.Exertion);
         }
 
         public void PlayStep()

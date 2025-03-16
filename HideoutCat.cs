@@ -177,6 +177,8 @@ namespace hideoutcat
             Fidget();
 
             owner.InteractionsChangedHandler();
+
+            audio.Meow(CatAudio.MeowType.Short);
         }
 
         public void Pet()
@@ -222,12 +224,18 @@ namespace hideoutcat
 
         public void Meow()
         {
+            if (IsBusy()) return;
+
             if (meowCooldown > 0f)
                 return;
             meowCooldown = 1f;
 
             animator.SetTrigger("Meow");
-            audio.Meow();
+
+            if (DistanceToPlayer() < 5f)
+                audio.Meow(CatAudio.MeowType.Address);
+            else
+                audio.Meow(CatAudio.MeowType.Far);
         }
 
         public void Fidget()
@@ -462,9 +470,14 @@ namespace hideoutcat
                 GoToClosestWaypoint();
         }
 
+        float DistanceToPlayer()
+        {
+            return Vector3.Distance(transform.position, GetPlayerCam().position);
+        }
+
         void HandlePlayerInteraction()
         {
-            bool playerNearby = Vector3.Distance(transform.position, GetPlayerCam().position) < 3f;
+            bool playerNearby = DistanceToPlayer() < 3f;
             bool lookingAtPlayer = lookAt.IsLookingAtPlayer();
 
             if (lookingAtPlayer && playerNearby)
@@ -472,6 +485,9 @@ namespace hideoutcat
                 if (UnityExtensions.RandomShouldOccur(5f))
                     Meow();
             }
+
+            if (UnityExtensions.RandomShouldOccur(65f))
+                Meow();
 
             if (IsPlayerShiningFlashlightAtFace())
             {
@@ -537,6 +553,7 @@ namespace hideoutcat
             animator.SetBool("Grooming", false);
             animator.SetBool("RunningInCircles", false);
             animator.ResetTrigger("Fidget");
+            animator.Update(0);
         }
 
         bool IsBusy()
