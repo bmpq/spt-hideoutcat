@@ -526,7 +526,7 @@ namespace hideoutcat
                 pupils.SetDilation(lookingAtPlayer ? 0.6f : 0.4f);
             }
 
-            if (IsPlayerInTheWay() && _currentState == CatState.Moving)
+            if (IsPlayerInTheWay() && _currentState == CatState.Moving && Mathf.Abs(catGraphTraverser.DeltaY) < 0.01f)
             {
                 catGraphTraverser.ForgetDestination();
                 SetState(CatState.Idle, true);

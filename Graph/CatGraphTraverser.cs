@@ -15,6 +15,8 @@ namespace hideoutcat.Pathfinding
         public float VelocityMagnitude => Velocity.magnitude / Time.deltaTime;
         private Vector3 prevPos;
 
+        public float DeltaY { get; private set; }
+
         private Graph pathfindingGraph => Plugin.CatGraph;
         private Node currentNode;
         public List<Node> currentPath;
@@ -129,6 +131,8 @@ namespace hideoutcat.Pathfinding
             {
                 transform.SetPositionIndividualAxis(y: Mathf.Lerp(transform.position.y, currentPath[currentPath.Count - 1].position.y, Time.deltaTime * 3f));
             }
+
+            DeltaY = transform.position.y - currentPath[Mathf.Min(currentPathIndex, currentPath.Count - 1)].position.y;
         }
 
         float currentTurnVelocity;
