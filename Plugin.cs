@@ -20,6 +20,9 @@ using Random = UnityEngine.Random;
 [BepInPlugin("com.tarkin.hideoutcat", "hideoutcat", "1.0.0.0")]
 public class Plugin : BaseUnityPlugin
 {
+    internal static ConfigEntry<Coat> Coat;
+    internal static ConfigEntry<Color> EyeColor;
+
     internal static new ManualLogSource Log;
     public static Graph CatGraph;
 
@@ -46,6 +49,12 @@ public class Plugin : BaseUnityPlugin
 
             PropManager.Init();
         }
+    }
+
+    private void InitConfiguration()
+    {
+        Coat = Config.Bind("", "Coat", hideoutcat.Coat.GREY, "Applies on the next hideout load");
+        EyeColor = Config.Bind("", "Eye colour", new Color(0.56f, 0.75f, 0.40f), "Applies on the next hideout load");
     }
 
     private bool LoadCatAreaData()
@@ -86,10 +95,6 @@ public class Plugin : BaseUnityPlugin
         }
     }
 
-    private void InitConfiguration()
-    {
-    }
-
     static bool RequirementsMet()
     {
         AreaData areaKitchen = Singleton<HideoutClass>.Instance.AreaDatas.FirstOrDefault(x => x.Template.Type == EAreaType.Kitchen);
@@ -111,6 +116,22 @@ public class Plugin : BaseUnityPlugin
 
         GameObject catObject = GameObject.Instantiate(AssetBundleLoader.LoadAssetBundle("hideoutcat").LoadAsset<GameObject>("hideoutcat"));
         AssetBundleLoader.ReplaceShadersToNative(catObject);
+
+        SkinnedMeshRenderer rend = catObject.GetComponentInChildren<SkinnedMeshRenderer>();
+        rend.materials[1].color = EyeColor.Value;
+        if (Coat.Value != (Coat)Coat.DefaultValue)
+        {
+            string textureName = $"MAINTEX_{Coat.Value.ToString().ToUpper()}";
+            Texture2D coatTex = AssetBundleLoader.LoadAssetBundle("hideoutcat").LoadAsset<Texture2D>(textureName);
+            if (coatTex != null)
+            {
+                rend.materials[0].mainTexture = coatTex;
+            }
+            else
+            {
+                Plugin.Log.LogError($"Error loading {Coat.Value} coat texture");
+            }
+        }
 
         HideoutCat cat = catObject.AddComponent<HideoutCat>();
 
