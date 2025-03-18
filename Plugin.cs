@@ -44,7 +44,7 @@ public class Plugin : BaseUnityPlugin
 
             new PatchBonusPanelUpdateView().Enable();
 
-            PatchHideoutAwake.OnHideoutAwake += SpawnCat;
+            PatchHideoutAwake.OnHideoutAwake += () => { catSpawned = false; SpawnCat(); };
             PatchAreaSelected.OnAreaLevelUpdated += (_) => SpawnCat();
 
             PropManager.Init();
