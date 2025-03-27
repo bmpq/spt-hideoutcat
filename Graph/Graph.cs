@@ -105,7 +105,7 @@ namespace hideoutcat.Pathfinding
 
             foreach (Node node in nodes)
             {
-                if (node.poseParameters.Count > 0)
+                if (node.pose != Node.Pose.None)
                 {
                     if (node.areaType == areaType && node.areaLevel == areaLevel)
                     {

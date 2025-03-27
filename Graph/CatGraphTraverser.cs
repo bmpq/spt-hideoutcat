@@ -83,7 +83,7 @@ namespace hideoutcat.Pathfinding
                     if (lastNode)
                     {
                         float angleDifference = Mathf.DeltaAngle(currentNode.poseRotation, transform.eulerAngles.y);
-                        if (currentNode.poseParameters.Count > 0 && Mathf.Abs(angleDifference) > 10f) // if no pose needed, skip turning, consider reached
+                        if (currentNode.pose != Node.Pose.None && Mathf.Abs(angleDifference) > 10f) // if no pose needed, skip turning, consider reached
                         {
                             float turn = -Mathf.Sign(angleDifference);
                             TickMovement(0, turn);

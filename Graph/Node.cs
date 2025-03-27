@@ -22,11 +22,19 @@ namespace hideoutcat.Pathfinding
         public int areaLevel;
 
         public float poseRotation;
-        public List<AnimatorParameter> poseParameters = new List<AnimatorParameter>();
+        public Pose pose;
 
-        public override string ToString() 
+        public enum Pose
         {
-            return $"{areaType}:{areaLevel}" + (poseParameters.Count > 0 ? "(Pose)" : "") + $"-{name}";
+            None,
+            Sitting,
+            LyingBelly,
+            LyingSide,
+            Eating,
+            Defecating,
+            Grooming,
+            SharpeningVertical,
+            SharpeningHorizontal
         }
     }
 }

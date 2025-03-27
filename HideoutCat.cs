@@ -124,39 +124,34 @@ namespace hideoutcat
 
         private void OnDestinationReached(Node node)
         {
-            foreach (var parameter in node.poseParameters)
-            {
-                parameter.Apply(animator);
-            }
+            if (node.pose != Node.Pose.None)
+                animator.SetBool(node.pose.ToString(), true);
 
             lookAt.SetLookTarget(null);
 
             // the node dictates the animator parameters, so we work backwards in this case, setting the state from parsed parameters and not the other way around
-            if (node.poseParameters.Any(p => p.Name == "Sitting"))
+            switch (node.pose)
             {
-                SetState(CatState.Sitting, false);
-            }
-            else if (node.poseParameters.Any(p => p.Name == "LyingSide") || node.poseParameters.Any(p => p.Name == "LyingBelly"))
-            {
-                lastLyingPoseBelly = node.poseParameters.Any(p => p.Name == "LyingBelly");
-
-                SetState(CatState.Lying, false);
-            }
-            else if (node.poseParameters.Any(p => p.Name == "Eating"))
-            {
-                SetState(CatState.Eating, false);
-            }
-            else if (node.poseParameters.Any(p => p.Name == "Defecating"))
-            {
-                SetState(CatState.Defecating, false);
-            }
-            else if (node.poseParameters.Any(p => p.Name == "Grooming"))
-            {
-                SetState(CatState.Grooming, false);
-            }
-            else
-            {
-                SetState(CatState.Idle, false);
+                case Node.Pose.Sitting:
+                    SetState(CatState.Sitting, false);
+                    break;
+                case Node.Pose.LyingBelly:
+                case Node.Pose.LyingSide:
+                    lastLyingPoseBelly = (node.pose == Node.Pose.LyingBelly);
+                    SetState(CatState.Lying, false);
+                    break;
+                case Node.Pose.Eating:
+                    SetState(CatState.Eating, false);
+                    break;
+                case Node.Pose.Defecating:
+                    SetState(CatState.Defecating, false);
+                    break;
+                case Node.Pose.Grooming:
+                    SetState(CatState.Grooming, false);
+                    break;
+                default:
+                    SetState(CatState.Idle, false);
+                    break;
             }
         }
 
@@ -196,9 +191,8 @@ namespace hideoutcat
 
             Node[] nodes = Plugin.CatGraph.nodes.Where(n => 
                 n.areaType == EAreaType.Gym && 
-                n.areaLevel == 1 && 
-                n.poseParameters.Count > 0 &&
-                n.poseParameters[0].Name == "Grooming").ToArray();
+                n.areaLevel == 1 &&
+                n.pose == Node.Pose.Grooming).ToArray();
 
             if (nodes == null || nodes.Length == 0)
                 return;
