@@ -17,7 +17,7 @@ namespace hideoutcat.Pathfinding
 
         public float DeltaY { get; private set; }
 
-        private Graph pathfindingGraph => Plugin.CatGraph;
+        private Graph pathfindingGraph => CatDependencyProviders.CatGraph;
         private Node currentNode;
         public List<Node> currentPath;
         private int currentPathIndex;
@@ -58,7 +58,7 @@ namespace hideoutcat.Pathfinding
 
             if (currentPath == null)
             {
-                Plugin.Log.LogError($"No Path Found from {currentNode} to {targetNode}");
+                Debug.LogError($"No Path Found from {currentNode} to {targetNode}");
             }
         }
 
@@ -95,14 +95,14 @@ namespace hideoutcat.Pathfinding
                             Node destinationNode = currentPath[currentPath.Count - 1];
                             currentPath = null;
 
-                            Plugin.Log.LogInfo("Reached final destination!");
+                            Debug.Log("Reached final destination!");
                             OnDestinationReached?.Invoke(destinationNode);
                         }
                     }
                     else
                     {
                         currentPathIndex++;
-                        Plugin.Log.LogInfo($"Set next node to: {currentPath[currentPathIndex].name}");
+                        Debug.Log($"Set next node to: {currentPath[currentPathIndex].name}");
                         
                         // broadcast nodes left to traverse
                         OnNodeReached?.Invoke(currentPath.Skip(currentPathIndex).ToList());

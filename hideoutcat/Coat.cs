@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace hideoutcat
 {
-    internal enum Coat
+    public enum Coat
     {
         GREY,
         BLACK,

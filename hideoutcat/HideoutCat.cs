@@ -1,5 +1,4 @@
-﻿using BepInEx;
-using Comfort.Common;
+﻿using Comfort.Common;
 using EFT;
 using EFT.Hideout;
 using EFT.Interactive;
@@ -45,8 +44,6 @@ namespace hideoutcat
         float fidgetingTime;
         bool fidgeting => fidgetingTime > 0;
 
-        GamePlayerOwner owner;
-
         Door doorGym;
 
         float meowCooldown;
@@ -56,18 +53,25 @@ namespace hideoutcat
 
         void OnEnable()
         {
-            PatchAreaSelected.OnAreaSelected += SetTargetArea;
-            PatchAreaSelected.OnAreaLevelUpdated += OnAreaLevelUpdated;
-            PatchPlayerPrepareWorkout.OnPlayerPrepareWorkout += OnPlayerPrepareWorkout;
-            PatchPlayerStopWorkout.OnPlayerStopWorkout += GoToRandomArea;
+            if (!CatDependencyProviders.IsInitialized)
+            {
+                Debug.LogError("cat dependencies not initialized! destroying the cat!!!");
+                Destroy(this.gameObject);
+                return;
+            }
+
+            CatDependencyProviders.PlayerEvents.AreaSelected += SetTargetArea;
+            CatDependencyProviders.PlayerEvents.AreaLevelUpdated += OnAreaLevelUpdated;
+            CatDependencyProviders.PlayerEvents.PlayerPrepareWorkout += OnPlayerPrepareWorkout;
+            CatDependencyProviders.PlayerEvents.PlayerStopWorkout += GoToRandomArea;
         }
 
         void OnDisable()
         {
-            PatchAreaSelected.OnAreaSelected -= SetTargetArea;
-            PatchAreaSelected.OnAreaLevelUpdated -= OnAreaLevelUpdated;
-            PatchPlayerPrepareWorkout.OnPlayerPrepareWorkout -= OnPlayerPrepareWorkout;
-            PatchPlayerStopWorkout.OnPlayerStopWorkout -= GoToRandomArea;
+            CatDependencyProviders.PlayerEvents.AreaSelected -= SetTargetArea;
+            CatDependencyProviders.PlayerEvents.AreaLevelUpdated -= OnAreaLevelUpdated;
+            CatDependencyProviders.PlayerEvents.PlayerPrepareWorkout -= OnPlayerPrepareWorkout;
+            CatDependencyProviders.PlayerEvents.PlayerStopWorkout -= GoToRandomArea;
         }
 
         void Start()
@@ -88,8 +92,6 @@ namespace hideoutcat
             interactiveCollider.gameObject.layer = 22; // Interactive
             interactiveCollider.transform.SetParent(transform, false);
 
-            owner = Singleton<GameWorld>.Instance.MainPlayer.GetComponent<GamePlayerOwner>();
-
             ResetAnimatorParameters();
         }
 
@@ -105,7 +107,7 @@ namespace hideoutcat
             if (catGraphTraverser == null)
                 catGraphTraverser = gameObject.GetOrAddComponent<CatGraphTraverser>();
 
-            Plugin.Log.LogInfo($"Set destination node to: {node.name}");
+            Debug.Log($"Set destination node to: {node.name}");
 
             catGraphTraverser.LayNewPath(node);
         }
@@ -161,17 +163,25 @@ namespace hideoutcat
             StartTraversingToArea(areaData);
         }
 
+        public void TeleportToRandomWaypoint()
+        {
+            Node waypointNode = CatDependencyProviders.CatGraph.GetNodeClosestWaypoint(new Vector3(Random.value * 16f, 0, 0));
+            transform.position = waypointNode.position;
+
+            GoToRandomArea();
+        }
+
         void TeleportToClosestWaypoint()
         {
             ResetAnimatorParameters();
-            transform.position = Plugin.CatGraph.GetNodeClosestWaypoint(transform.position).position;
+            transform.position = CatDependencyProviders.CatGraph.GetNodeClosestWaypoint(transform.position).position;
             SetState(CatState.Idle, true);
         }
 
         void GoToClosestWaypoint()
         {
             ResetAnimatorParameters();
-            SetTargetNode(Plugin.CatGraph.GetNodeClosestWaypoint(transform.position)); // GoToClosestWaypoint now sets the state
+            SetTargetNode(CatDependencyProviders.CatGraph.GetNodeClosestWaypoint(transform.position)); // GoToClosestWaypoint now sets the state
         }
 
         private void OnPlayerPrepareWorkout()
@@ -181,7 +191,7 @@ namespace hideoutcat
                 doorGym = FindObjectsByType<Door>(FindObjectsSortMode.None).Where(door => door.Id == "door_bunker_2_00002").FirstOrDefault();
                 if (doorGym == null)
                 {
-                    Plugin.Log.LogError("Can't find the gym door! lol");
+                    Debug.LogError("Can't find the gym door! lol");
                     return;
                 }
             }
@@ -189,7 +199,7 @@ namespace hideoutcat
             if (doorGym.DoorState != EDoorState.Open)
                 return;
 
-            Node[] nodes = Plugin.CatGraph.nodes.Where(n => 
+            Node[] nodes = CatDependencyProviders.CatGraph.nodes.Where(n => 
                 n.areaType == EAreaType.Gym && 
                 n.areaLevel == 1 &&
                 n.pose == Node.Pose.Grooming).ToArray();
@@ -273,8 +283,7 @@ namespace hideoutcat
 
             if (_prevState != _currentState)
             {
-                Plugin.Log.LogInfo($"New state: {_currentState}");
-                owner.InteractionsChangedHandler();
+                Debug.Log($"New state: {_currentState}");
             }
             _prevState = _currentState;
         }
@@ -286,8 +295,6 @@ namespace hideoutcat
 
             _prevState = _currentState;
             _currentState = newState;
-
-            owner.InteractionsChangedHandler();
 
             if (!setAnimatorParameters)
                 return;
@@ -588,7 +595,7 @@ namespace hideoutcat
 
             foreach (var area in areas)
             {
-                var nodes = Plugin.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(area.Template.Type, area.CurrentLevel);
+                var nodes = CatDependencyProviders.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(area.Template.Type, area.CurrentLevel);
                 if (nodes.Count == 0)
                     continue;
 
@@ -613,10 +620,10 @@ namespace hideoutcat
         {
             currentTargetArea = area;
 
-            List<Node> targetNodes = Plugin.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(area.Template.Type, area.CurrentLevel);
+            List<Node> targetNodes = CatDependencyProviders.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(area.Template.Type, area.CurrentLevel);
             if (targetNodes.Count == 0)
             {
-                Plugin.Log.LogInfo($"No available nodes for {area.Template.Type} level {area.CurrentLevel}");
+                Debug.Log($"No available nodes for {area.Template.Type} level {area.CurrentLevel}");
                 return;
             }
 

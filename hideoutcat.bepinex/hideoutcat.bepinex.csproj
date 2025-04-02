@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <AssemblyName>hideoutcat</AssemblyName>
+    <AssemblyName>hideoutcat.bepinex</AssemblyName>
     <Version>1.0.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
@@ -15,6 +15,10 @@
   <PropertyGroup>
     <SPTPath>E:\Games\SPT_BLEEDINGEDGE</SPTPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\hideoutcat\hideoutcat.csproj" />
+  </ItemGroup>
   
   <ItemGroup>
     <Reference Include="BepInEx">

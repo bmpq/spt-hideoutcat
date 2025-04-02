@@ -2,10 +2,10 @@
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using Comfort.Common;
-using DG.Tweening;
 using EFT;
 using EFT.Hideout;
 using hideoutcat;
+using hideoutcat.bepinex;
 using hideoutcat.Pathfinding;
 using Newtonsoft.Json;
 using Newtonsoft.Json.UnityConverters.Math;
@@ -20,11 +20,12 @@ using Random = UnityEngine.Random;
 [BepInPlugin("com.tarkin.hideoutcat", "hideoutcat", "1.0.1.0")]
 public class Plugin : BaseUnityPlugin
 {
+    internal static BepInExPlayerEvents PlayerEvents { get; private set; }
+
     internal static ConfigEntry<Coat> Coat;
     internal static ConfigEntry<Color> EyeColor;
 
     internal static new ManualLogSource Log;
-    public static Graph CatGraph;
 
     static bool catSpawned;
 
@@ -34,8 +35,13 @@ public class Plugin : BaseUnityPlugin
 
         InitConfiguration();
 
-        if (LoadCatAreaData())
+        Graph catGraph = LoadCatAreaData();
+
+        if (catGraph != null)
         {
+            PlayerEvents = new BepInExPlayerEvents();
+            CatDependencyProviders.Initialize(catGraph, PlayerEvents);
+
             new PatchHideoutAwake().Enable();
             new PatchAreaSelected().Enable();
             new PatchAvailableHideoutActions().Enable();
@@ -45,9 +51,13 @@ public class Plugin : BaseUnityPlugin
             new PatchBonusPanelUpdateView().Enable();
 
             PatchHideoutAwake.OnHideoutAwake += () => { catSpawned = false; SpawnCat(); };
-            PatchAreaSelected.OnAreaLevelUpdated += (_) => SpawnCat();
+            PlayerEvents.AreaLevelUpdated += (_) => SpawnCat();
 
             PropManager.Init();
+        }
+        else
+        {
+            Plugin.Log.LogError("Error loading Cat graph data!!!");
         }
     }
 
@@ -57,7 +67,7 @@ public class Plugin : BaseUnityPlugin
         EyeColor = Config.Bind("", "Eye colour", new Color(0.56f, 0.75f, 0.40f), "Applies on the next hideout load");
     }
 
-    private bool LoadCatAreaData()
+    private Graph LoadCatAreaData()
     {
         try
         {
@@ -84,14 +94,12 @@ public class Plugin : BaseUnityPlugin
             }
 
             // we done
-            CatGraph = new Graph(nodes);
-
-            return true;
+            return new Graph(nodes);
         }
         catch (Exception ex)
         {
             Plugin.Log.LogError("error loading cat config file: " + ex);
-            return false;
+            return null;
         }
     }
 
@@ -112,10 +120,12 @@ public class Plugin : BaseUnityPlugin
         if (!RequirementsMet())
             return;
 
-        catSpawned = true;
-
         GameObject catObject = GameObject.Instantiate(AssetBundleLoader.LoadAssetBundle("hideoutcat").LoadAsset<GameObject>("hideoutcat"));
-        AssetBundleLoader.ReplaceShadersToNative(catObject);
+        //AssetBundleLoader.ReplaceShadersToNative(catObject);
+
+        Plugin.Log.LogInfo("Cat spawned into scene!");
+
+        catSpawned = true;
 
         SkinnedMeshRenderer rend = catObject.GetComponentInChildren<SkinnedMeshRenderer>();
         rend.materials[1].color = EyeColor.Value;
@@ -135,35 +145,17 @@ public class Plugin : BaseUnityPlugin
 
         HideoutCat cat = catObject.AddComponent<HideoutCat>();
 
-        List<AreaData> availableArea = new List<AreaData>();
-        foreach (var area in Singleton<HideoutClass>.Instance.AreaDatas)
+        AudioClip[] catAudioClips = AssetBundleLoader.LoadAssetBundle("hideoutcat_audio").LoadAllAssets<AudioClip>();
+        if (catAudioClips == null || catAudioClips.Length == 0)
         {
-            if (area.CurrentLevel > 0)
-                availableArea.Add(area);
+            Debug.LogError("CatAudio: No audio clips loaded from bundle!");
         }
-        if (availableArea.Count > 0)
+        else
         {
-            Plugin.Log.LogInfo($"{availableArea.Count} avaiable areas");
-
-            Random.InitState((int)System.DateTime.Now.Ticks); // apparently tarkov sets the seed somewhere, need to overwrite
-            availableArea = availableArea.OrderBy(_ => Random.value).ToList();
-
-            foreach (var spawnArea in availableArea)
-            {
-                var nodes = Plugin.CatGraph.FindDeadEndNodesByAreaTypeAndLevel(spawnArea.Template.Type, spawnArea.CurrentLevel);
-                if (nodes.Count > 0)
-                {
-                    Node target = nodes[Random.Range(0, nodes.Count)];
-                    cat.transform.position = Plugin.CatGraph.GetNodeClosestWaypoint(target.position).position;
-                    cat.SetTargetNode(target);
-                    return;
-                }
-            }
+            CatAudio catAudio = catObject.AddComponent<CatAudio>();
+            catAudio.Init(catAudioClips);
         }
 
-        Plugin.Log.LogInfo("no available areas, defaulting to a random waypoint node");
-        Node waypointNode = Plugin.CatGraph.GetNodeClosestWaypoint(new Vector3(Random.value * 16f, 0, 0));
-        cat.transform.position = waypointNode.position;
-        cat.SetTargetNode(waypointNode);
+        cat.TeleportToRandomWaypoint();
     }
 }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace hideoutcat
+namespace hideoutcat.bepinex
 {
     internal class PatchAvailableHideoutActions : ModulePatch
     {

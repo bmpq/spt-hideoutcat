@@ -3,7 +3,7 @@ using HarmonyLib;
 using SPT.Reflection.Patching;
 using System.Reflection;
 
-namespace hideoutcat
+namespace hideoutcat.bepinex
 {
     internal class PatchHideoutAwake : ModulePatch
     {

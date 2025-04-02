@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace hideoutcat
+namespace hideoutcat.bepinex
 {
     internal class PatchBonusPanelUpdateView : ModulePatch
     {
