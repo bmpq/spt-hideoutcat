@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace hideoutcat
 {
-    internal class CatAudio : MonoBehaviour
+    public class CatAudio : MonoBehaviour
     {
         private const int GroundLayerMask = 1 << 12; // HighPolyCollider
         private const float GroundRaycastDistance = 0.2f;
@@ -27,6 +27,11 @@ namespace hideoutcat
             Exertion,
             Grumpy,
             Short
+        }
+
+        public void Init(AudioClip[] clips)
+        {
+            allClips = clips;
         }
 
         private void OnEnable()
@@ -102,14 +107,6 @@ namespace hideoutcat
             graphTraverser = GetComponent<CatGraphTraverser>();
 
             graphTraverser.OnJumpAirEnd += GraphTraverser_OnJumpAirEnd;
-
-            allClips = AssetBundleLoader.LoadAssetBundle("hideoutcat_audio").LoadAllAssets<AudioClip>();
-            if (allClips == null || allClips.Length == 0)
-            {
-                Plugin.Log.LogError("CatAudio: No audio clips loaded from bundle!");
-                enabled = false;
-                return;
-            }
         }
 
         private void GraphTraverser_OnJumpAirEnd()
@@ -189,7 +186,7 @@ namespace hideoutcat
             }
             else
             {
-                Plugin.Log.LogWarning("CatAudio: No clips found with prefix: " + prefix);
+                Debug.LogWarning("CatAudio: No clips found with prefix: " + prefix);
             }
         }
     }

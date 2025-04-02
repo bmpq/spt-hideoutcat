@@ -4,15 +4,13 @@ using SPT.Reflection.Patching;
 using System;
 using System.Reflection;
 
-namespace hideoutcat
+namespace hideoutcat.bepinex
 {
-    internal class PatchPlayerStopWorkout : ModulePatch
+    internal class PatchPlayerPrepareWorkout : ModulePatch
     {
-        public static event Action OnPlayerStopWorkout;
-
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.Method(typeof(HideoutPlayerOwner), nameof(HideoutPlayerOwner.StopWorkout));
+            return AccessTools.Method(typeof(HideoutPlayerOwner), nameof(HideoutPlayerOwner.PrepareWorkout));
         }
 
         [PatchPostfix]
@@ -20,7 +18,7 @@ namespace hideoutcat
         {
             try
             {
-                OnPlayerStopWorkout?.Invoke();
+                Plugin.PlayerEvents.TriggerPlayerWorkoutPrepare();
             }
             catch (Exception ex) { Plugin.Log.LogError(ex); }
         }

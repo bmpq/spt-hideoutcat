@@ -10,6 +10,11 @@ namespace hideoutcat.Pathfinding
         public List<Node> nodes;
         public readonly List<Node> waypointNodes;
 
+        public Graph()
+        {
+            nodes = new List<Node>();
+        }
+
         public Graph(List<Node> nodes)
         {
             this.nodes = nodes;
@@ -26,6 +31,11 @@ namespace hideoutcat.Pathfinding
         public void AddNode(Node node)
         {
             nodes.Add(node);
+        }
+
+        public Node FindNodeById(string id)
+        {
+            return nodes.Find(n => n.name == id);
         }
 
         public Node FindNodeByName(string name)
@@ -51,7 +61,7 @@ namespace hideoutcat.Pathfinding
         {
             if (startNode == null || endNode == null)
             {
-                Plugin.Log.LogError("Start or End node is null!");
+                Debug.LogError("Start or End node is null!");
                 return null;
             }
 
@@ -99,7 +109,7 @@ namespace hideoutcat.Pathfinding
 
         public List<Node> FindDeadEndNodesByAreaTypeAndLevel(EAreaType areaType, int areaLevel)
         {
-            Plugin.Log.LogDebug($"requesting deadend node for {areaType} (level {areaLevel})");
+            Debug.Log($"requesting deadend node for {areaType} (level {areaLevel})");
 
             List<Node> deadEndNodes = new List<Node>();
 

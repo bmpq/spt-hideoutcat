@@ -1,0 +1,104 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>hideoutcat</AssemblyName>
+    <Version>1.0.1</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <SPTPath>E:\Games\SPT_BLEEDINGEDGE</SPTPath>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Reference Include="IMGUIDebugDraw">
+      <HintPath>$(SPTPath)\BepInEx\plugins\tarkin\IMGUIDebugDraw.dll</HintPath>
+    </Reference>
+    
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    
+    <Reference Include="UnityEngine">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Cinemachine">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\Cinemachine.dll</HintPath>
+    </Reference>
+    <Reference Include="Comfort">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\Comfort.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.UnityConverters">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\Newtonsoft.Json.UnityConverters.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>$(SPTPath)\EscapeFromTarkov_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="CopyDllAfterBuild" AfterTargets="Build">
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(SPTPath)\BepInEx\plugins\tarkin" />
+  </Target>
+
+  <Target Name="ExportProjectFilesAfterBuild" AfterTargets="Build">
+
+    <PropertyGroup>
+      <ExportDestination>T:\extract\UNITYPROJECT_EFT35392\Assets\HideoutCat\csproj</ExportDestination>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectSourceFiles Include="$(MSBuildProjectDirectory)\**\*.*"
+                          Exclude="$(MSBuildProjectDirectory)\bin\**\*.*;
+                                 $(MSBuildProjectDirectory)\obj\**\*.*;
+                                 $(MSBuildProjectDirectory)\.vs\**\*.*;
+                                 $(MSBuildProjectDirectory)\.git\**\*.*;
+                                 $(MSBuildProjectDirectory)\*.csproj;" />
+    </ItemGroup>
+
+    <Message Text="Copying source files to $(ExportDestination)..." Importance="high" />
+
+    <Copy SourceFiles="@(ProjectSourceFiles)"
+          DestinationFolder="$(ExportDestination)\%(RecursiveDir)"
+          SkipUnchangedFiles="true" />
+
+    <Message Text="Project export complete." Importance="high" />
+
+  </Target>
+  
+</Project>

@@ -17,7 +17,29 @@ namespace tarkin
                 }
             }
 
-            Plugin.Log.LogWarning($"GameObject with {typeof(T)} at position {position} not found");
+            Debug.LogWarning($"GameObject with {typeof(T)} at position {position} not found");
+
+            return null;
+        }
+
+        public static Transform FindImmediateChildContains(this Transform parent, string name)
+        {
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                if (parent.GetChild(i).name.Contains(name))
+                    return parent.GetChild(i);
+            }
+
+            return null;
+        }
+
+        public static Transform FindImmediateChildExact(this Transform parent, string name)
+        {
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                if (parent.GetChild(i).name == name)
+                    return parent.GetChild(i);
+            }
 
             return null;
         }

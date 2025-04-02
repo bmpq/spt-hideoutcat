@@ -31,7 +31,7 @@ namespace hideoutcat
 
             if (boneEyelidL == null)
             {
-                Plugin.Log.LogError($"Error init {nameof(CatEyelids)}! cant find armature bone");
+                Debug.LogError($"Error init {nameof(CatEyelids)}! cant find armature bone");
                 return;
             }
         }

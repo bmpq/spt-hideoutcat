@@ -7,14 +7,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace hideoutcat
+namespace hideoutcat.bepinex
 {
     internal class PatchAreaSelected : ModulePatch
     {
-        public static event Action<AreaData> OnAreaSelected;
-
-        public static event Action<AreaData> OnAreaLevelUpdated;
-
         // when hideout unloads, all AreaDatas become obsolete, on the next hideout reload it'll just keep adding new instances
         // nothing breaks but it is a memory leak
         // todo: find a hook when hideout unloads to clear this dictionary
@@ -30,10 +26,10 @@ namespace hideoutcat
         {
             if (!unsubscribeActions.ContainsKey(areaData))
             {
-                unsubscribeActions[areaData] = areaData.LevelUpdated.Subscribe((silent) => OnAreaLevelUpdated.Invoke(areaData));
+                unsubscribeActions[areaData] = areaData.LevelUpdated.Subscribe((silent) => Plugin.PlayerEvents.TriggerAreaLevelUpdated(areaData));
             }
 
-            OnAreaSelected?.Invoke(areaData);
+            Plugin.PlayerEvents.TriggerAreaSelected(areaData);
         }
     }
 }

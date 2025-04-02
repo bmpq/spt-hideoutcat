@@ -4,7 +4,7 @@ using EFT.Hideout;
 using System.Linq;
 using UnityEngine;
 
-namespace hideoutcat
+namespace hideoutcat.bepinex
 {
     internal static class PropManager
     {
@@ -13,7 +13,7 @@ namespace hideoutcat
         public static void Init()
         {
             PatchHideoutAwake.OnHideoutAwake += UpdateProps;
-            PatchAreaSelected.OnAreaLevelUpdated += (_) => UpdateProps();
+            Plugin.PlayerEvents.AreaLevelUpdated += (_) => UpdateProps();
         }
 
         static void UpdateProps()

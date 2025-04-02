@@ -36,5 +36,15 @@ namespace hideoutcat.Pathfinding
             SharpeningVertical,
             SharpeningHorizontal
         }
+
+        public void ConnectTo(Node other)
+        {
+            if (connectedTo == null)
+                connectedTo = new List<Node>();
+            if (!connectedTo.Contains(other))
+            {
+                connectedTo.Add(other);
+            }
+        }
     }
 }
