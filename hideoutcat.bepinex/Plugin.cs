@@ -94,7 +94,9 @@ public class Plugin : BaseUnityPlugin
             }
 
             // we done
-            return new Graph(nodes);
+            Graph graph = new Graph();
+            graph.nodes = nodes;
+            return graph;
         }
         catch (Exception ex)
         {

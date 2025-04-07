@@ -8,24 +8,10 @@ namespace hideoutcat.Pathfinding
     public class Graph
     {
         public List<Node> nodes;
-        public readonly List<Node> waypointNodes;
 
         public Graph()
         {
             nodes = new List<Node>();
-        }
-
-        public Graph(List<Node> nodes)
-        {
-            this.nodes = nodes;
-
-            waypointNodes = new List<Node>();
-
-            foreach (var node in nodes)
-            {
-                if (node.areaType == EAreaType.NotSet)
-                    waypointNodes.Add(node);
-            }
         }
 
         public void AddNode(Node node)
@@ -52,7 +38,8 @@ namespace hideoutcat.Pathfinding
 
         public Node GetNodeClosestWaypoint(Vector3 worldPos)
         {
-            return waypointNodes
+            return nodes
+                .Where(t => t.areaType == EAreaType.NotSet)
                 .OrderBy(t => (t.position - worldPos).sqrMagnitude)
                 .FirstOrDefault();
         }

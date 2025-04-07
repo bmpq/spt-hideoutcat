@@ -177,6 +177,12 @@ namespace hideoutcat
 
         private void PlayRandomClipByPrefix(AudioClip[] clips, string prefix)
         {
+            if (clips == null || clips.Length == 0)
+            {
+                Debug.LogWarning("CatAudio: No clips loaded!");
+                return;
+            }
+
             AudioClip[] filteredClips = System.Array.FindAll(clips, clip => clip.name.StartsWith(prefix));
 
             if (filteredClips.Length > 0)
