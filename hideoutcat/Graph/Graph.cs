@@ -1,23 +1,45 @@
-using EFT;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace hideoutcat.Pathfinding
 {
-    public class Graph
+    public enum EAreaType
+    {
+        NotSet = -1,
+        Vents,
+        Security,
+        WaterCloset,
+        Stash,
+        Generator,
+        Heating,
+        WaterCollector,
+        MedStation,
+        Kitchen,
+        RestSpace,
+        Workbench,
+        IntelligenceCenter,
+        ShootingRange,
+        Library,
+        ScavCase,
+        Illumination,
+        PlaceOfFame,
+        AirFilteringUnit,
+        SolarPower,
+        BoozeGenerator,
+        BitcoinFarm,
+        ChristmasIllumination,
+        EmergencyWall,
+        Gym,
+        WeaponStand,
+        WeaponStandSecondary,
+        EquipmentPresetsStand,
+        CircleOfCultists
+    }
+
+    public class Graph : MonoBehaviour
     {
         public List<Node> nodes;
-
-        public Graph()
-        {
-            nodes = new List<Node>();
-        }
-
-        public void AddNode(Node node)
-        {
-            nodes.Add(node);
-        }
 
         public Node FindNodeById(string id)
         {

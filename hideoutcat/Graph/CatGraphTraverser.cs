@@ -3,12 +3,10 @@ using System.Linq;
 using UnityEngine;
 using tarkin;
 using System;
-using EFT.Interactive;
-using EFT;
-using Comfort.Common;
 
 namespace hideoutcat.Pathfinding
 {
+    [RequireComponent(typeof(Animator))]
     public class CatGraphTraverser : MonoBehaviour
     {
         public Vector3 Velocity { get; private set; }
@@ -17,29 +15,30 @@ namespace hideoutcat.Pathfinding
 
         public float DeltaY { get; private set; }
 
-        private Graph pathfindingGraph => CatDependencyProviders.CatGraph;
+        [SerializeField] private Graph pathfindingGraph;
+
         private Node currentNode;
         public List<Node> currentPath;
         private int currentPathIndex;
 
         public bool HasDestination => currentPath != null;
 
-        Animator animator;
+        private Animator animator;
 
         public event Action<Node> OnDestinationReached;
         public event Action<List<Node>> OnNodeReached; // the parameter is the list of nodes that are left to traverse
 
         public event Action OnJumpAirEnd;
 
-        public Door[] doors;
-
-        public Door doorInTheWay { get; private set; }
-
         void Start()
         {
             animator = GetComponent<Animator>();
 
-            doors = FindObjectsByType<Door>(FindObjectsSortMode.None);
+            if (pathfindingGraph == null)
+            {
+                Debug.LogWarning("no pathfinding graph assigned!");
+                Destroy(this);
+            }
         }
 
         public void ForgetDestination()
@@ -255,12 +254,6 @@ namespace hideoutcat.Pathfinding
                             return;
                         }
                     }
-
-                    doorInTheWay = BlockedPathByDoor();
-                    if (doorInTheWay != null)
-                    {
-                        targetThrust = 0f;
-                    }
                 }
 
                 TickMovement(targetThrust, targetTurn);
@@ -271,32 +264,6 @@ namespace hideoutcat.Pathfinding
         public bool IsMovement()
         {
             return animator.GetCurrentAnimatorStateInfo(0).IsName("Movement");
-        }
-
-        Door BlockedPathByDoor()
-        {
-            for (int i = 0; i < doors.Length; i++)
-            {
-                if (doors[i] == null || !doors[i].gameObject.activeInHierarchy)
-                    continue;
-
-                if (doors[i].DoorState == EDoorState.Open)
-                    continue;
-
-                float distToDoor = Vector3.Distance(doors[i].transform.parent.position, transform.position);
-                Vector3 directionToTarget = (doors[i].transform.parent.position - transform.position).normalized;
-                directionToTarget.y = 0f;
-                float angleToDoor = Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up);
-
-                bool doorInTheWay = distToDoor < 2f && Mathf.Abs(angleToDoor) < 90f;
-
-                if (doorInTheWay)
-                {
-                    return doors[i];
-                }
-            }
-
-            return null;
         }
 
         private void HandleJumpingForward()

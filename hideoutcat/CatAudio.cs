@@ -1,22 +1,21 @@
-﻿using Comfort.Common;
-using EFT.Ballistics;
-using hideoutcat.Pathfinding;
-using tarkin;
+﻿using hideoutcat.Pathfinding;
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace hideoutcat
 {
     public class CatAudio : MonoBehaviour
     {
-        private const int GroundLayerMask = 1 << 12; // HighPolyCollider
-        private const float GroundRaycastDistance = 0.2f;
+        public event Action<AudioClip, float> OnClipPlayRequest;
+
+        public Func<string> GetGroundMaterialPrefixFunc;
 
         private CatGraphTraverser graphTraverser;
 
-        private BetterSource audioSource;
         private AudioClip[] allClips;
 
-        private MaterialType lastPlayedMaterialType = MaterialType.Concrete;
+        private Func<string> getGroundMaterialPrefixFunc;
 
         float stepTimer;
 
@@ -29,24 +28,12 @@ namespace hideoutcat
             Short
         }
 
-        public void Init(AudioClip[] clips)
+        public void Init(AudioClip[] clips, Func<string> groundMaterialFunc)
         {
             allClips = clips;
-        }
 
-        private void OnEnable()
-        {
-            audioSource = Singleton<BetterAudio>.Instance.GetSource(BetterAudio.AudioSourceGroupType.Character, true);
-            if (audioSource == null)
-                Debug.LogError("CatAudio: Could not get BetterAudio source.");
-        }
-
-        private void OnDisable()
-        {
-            if (audioSource != null)
-            {
-                audioSource.Release();
-            }
+            getGroundMaterialPrefixFunc = groundMaterialFunc ?? throw new ArgumentNullException(nameof(groundMaterialFunc),
+                "The ground material provider function cannot be null.");
         }
 
         public void Meow(MeowType meowType)
@@ -78,8 +65,6 @@ namespace hideoutcat
 
         void Update()
         {
-            audioSource.Position = transform.position;
-
             if (graphTraverser.VelocityMagnitude > 0.1f)
             {
                 stepTimer += Time.deltaTime;
@@ -122,57 +107,16 @@ namespace hideoutcat
 
         private void PlayMaterialSound(string prefix)
         {
-            MaterialType materialType = GetGroundMaterial();
-            string clipPrefix = prefix + GetMaterialClipNamePrefix(materialType);
+            if (getGroundMaterialPrefixFunc == null)
+            {
+                Debug.LogError("CatAudio was not properly initialized. getGroundMaterialPrefixFunc is null.");
+                return;
+            }
+
+            string materialPrefix = getGroundMaterialPrefixFunc.Invoke();
+            string clipPrefix = prefix + materialPrefix;
+
             PlayRandomClipByPrefix(allClips, clipPrefix);
-            lastPlayedMaterialType = materialType;
-        }
-
-        private MaterialType GetGroundMaterial()
-        {
-            return GetMaterialFromRaycast(-transform.up) ?? // straight down
-                   GetMaterialFromRaycast(transform.forward + new Vector3(0, -0.1f, 0)) ?? // when jumping up have to check forward down
-                   lastPlayedMaterialType;
-        }
-
-        private MaterialType? GetMaterialFromRaycast(Vector3 direction)
-        {
-            if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, GroundRaycastDistance, GroundLayerMask, QueryTriggerInteraction.Ignore) &&
-                hitInfo.collider.gameObject.TryGetComponent(out BallisticCollider ballistic))
-            {
-                return ballistic.TypeOfMaterial;
-            }
-            return null;
-        }
-
-        private string GetMaterialClipNamePrefix(MaterialType materialType)
-        {
-            switch (materialType)
-            {
-                case MaterialType.Asphalt:
-                case MaterialType.Concrete:
-                    return "concrete";
-                case MaterialType.MetalThick:
-                case MaterialType.MetalThin:
-                case MaterialType.MetalNoDecal:
-                    return "metal";
-                case MaterialType.Tile:
-                    return "tile";
-                case MaterialType.WoodThick:
-                case MaterialType.WoodThin:
-                    return "wood";
-                case MaterialType.Plastic:
-                    return "plastic";
-                case MaterialType.GarbageMetal:
-                    return "garbage";
-                case MaterialType.GarbagePaper:
-                    return "paper";
-                case MaterialType.Cardboard:
-                    return "cardboard";
-                case MaterialType.Fabric:
-                default:
-                    return "carpet";
-            }
         }
 
         private void PlayRandomClipByPrefix(AudioClip[] clips, string prefix)
@@ -188,7 +132,7 @@ namespace hideoutcat
             if (filteredClips.Length > 0)
             {
                 AudioClip clipToPlay = filteredClips[Random.Range(0, filteredClips.Length)];
-                audioSource.Play(clipToPlay, null, 1f);
+                OnClipPlayRequest.Invoke(clipToPlay, 1f);
             }
             else
             {

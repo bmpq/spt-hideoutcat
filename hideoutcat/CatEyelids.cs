@@ -4,11 +4,11 @@ namespace hideoutcat
 {
     public class CatEyelids : MonoBehaviour
     {
-        const float angleClosed = 20f;
-        const float angleOpen = -42f;
+        [SerializeField] float angleClosed = 20f;
+        [SerializeField] float angleOpen = -42f;
 
-        Transform boneEyelidL;
-        Transform boneEyelidR;
+        [SerializeField] Transform boneEyelidL;
+        [SerializeField] Transform boneEyelidR;
 
         float overrideValue;
         float maxValue;
@@ -23,18 +23,6 @@ namespace hideoutcat
         float releasingTime;
 
         public Mode mode { get; private set; }
-
-        void Start()
-        {
-            boneEyelidL = transform.Find("RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.L_014");
-            boneEyelidR = transform.Find("RootNode/Arm_Cat/Skeleton/root_bone_01/Spine_base_02/spine_02_03/spine_03_04/spine_04_05/spine_05_06/neck_07/head_08/eyelid.R_018");
-
-            if (boneEyelidL == null)
-            {
-                Debug.LogError($"Error init {nameof(CatEyelids)}! cant find armature bone");
-                return;
-            }
-        }
 
         // LateUpdate to override animator
         void LateUpdate()

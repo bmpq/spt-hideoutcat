@@ -1,12 +1,13 @@
 ﻿using EFT;
 using HarmonyLib;
+using hideoutcat;
 using SPT.Reflection.Patching;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace hideoutcat.bepinex
+namespace tarkin.hideoutcat.bepinex
 {
     internal class PatchAvailableHideoutActions : ModulePatch
     {
@@ -33,29 +34,6 @@ namespace hideoutcat.bepinex
             {
                 Actions = new List<ActionsTypesClass>()
             };
-
-            actionsReturnClass.Actions.Add(new ActionsTypesClass
-            {
-                Name = "Pet",
-                Action = new Action(delegate 
-                { 
-                    cat.Pet();
-                    owner.Player.SetInteractInHands(EInteraction.ContainerOpenDefault);
-                    owner.InteractionsChangedHandler();
-                }),
-                Disabled = !cat.IsPettable()
-            });
-
-            actionsReturnClass.Actions.Add(new ActionsTypesClass
-            {
-                Name = "Wake up",
-                Action = new Action(delegate 
-                { 
-                    cat.WakeUp();
-                    owner.InteractionsChangedHandler();
-                }),
-                Disabled = !cat.IsSleeping()
-            });
 
             return actionsReturnClass;
         }

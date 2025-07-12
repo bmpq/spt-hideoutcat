@@ -1,13 +1,14 @@
 ﻿using EFT.Hideout;
 using HarmonyLib;
 using SPT.Reflection.Patching;
+using System;
 using System.Reflection;
 
-namespace hideoutcat.bepinex
+namespace tarkin.hideoutcat.bepinex
 {
     internal class PatchHideoutAwake : ModulePatch
     {
-        public static event System.Action OnHideoutAwake;
+        public static event Action OnPostfix;
 
         protected override MethodBase GetTargetMethod()
         {
@@ -17,7 +18,7 @@ namespace hideoutcat.bepinex
         [PatchPostfix]
         private static void Postfix(HideoutController __instance)
         {
-            OnHideoutAwake?.Invoke();
+            OnPostfix?.Invoke();
         }
     }
 }

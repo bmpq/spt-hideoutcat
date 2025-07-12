@@ -4,10 +4,12 @@ using SPT.Reflection.Patching;
 using System;
 using System.Reflection;
 
-namespace hideoutcat.bepinex
+namespace tarkin.hideoutcat.bepinex
 {
     internal class PatchPlayerPrepareWorkout : ModulePatch
     {
+        public static event Action OnPostfix;
+
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.Method(typeof(HideoutPlayerOwner), nameof(HideoutPlayerOwner.PrepareWorkout));
@@ -16,11 +18,7 @@ namespace hideoutcat.bepinex
         [PatchPostfix]
         private static void PatchPostfix()
         {
-            try
-            {
-                Plugin.PlayerEvents.TriggerPlayerWorkoutPrepare();
-            }
-            catch (Exception ex) { Plugin.Log.LogError(ex); }
+            OnPostfix?.Invoke();
         }
     }
 }
