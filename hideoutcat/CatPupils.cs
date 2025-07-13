@@ -2,28 +2,51 @@
 
 namespace tarkin.hideoutcat
 {
+    [RequireComponent(typeof(SkinnedMeshRenderer))]
     internal class CatPupils : MonoBehaviour
     {
-        Material matEye;
+        private Material matEyeInstance;
 
-        float internalValue;
-        float targetValue;
+        [SerializeField, Range(0f, 1f)]
+        private float targetValue = 0.3f;
 
-        void Start()
+        private float internalValue;
+
+        private static readonly int DilationProperty = Shader.PropertyToID("_Dilation");
+
+        void Awake()
         {
-            matEye = GetComponentInChildren<SkinnedMeshRenderer>().materials[1];
-            targetValue = 0.3f;
+            var renderer = GetComponent<SkinnedMeshRenderer>();
+
+            if (renderer.materials.Length > 1)
+            {
+                matEyeInstance = renderer.materials[1];
+            }
+            else
+            {
+                Debug.LogError("The SkinnedMeshRenderer on " + gameObject.name + " needs at least 2 materials.", this);
+
+                enabled = false;
+            }
         }
 
         void Update()
         {
             internalValue = Mathf.Lerp(internalValue, targetValue, Time.deltaTime * 3f);
-            matEye.SetFloat("_Dilation", internalValue);
+            matEyeInstance?.SetFloat(DilationProperty, internalValue);
         }
 
         public void SetDilation(float dilation)
         {
-            targetValue = dilation;
+            targetValue = Mathf.Clamp01(dilation);
+        }
+
+        void OnDestroy()
+        {
+            if (matEyeInstance != null)
+            {
+                Destroy(matEyeInstance);
+            }
         }
     }
 }

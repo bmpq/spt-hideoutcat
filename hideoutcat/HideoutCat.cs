@@ -9,14 +9,14 @@ namespace tarkin.hideoutcat
 {
     public class HideoutCat : MonoBehaviour
     {
-        Animator animator;
+        [SerializeField] Animator animator;
 
-        CatLookAt lookAt;
-        CatEyelids eyelids;
-        CatPupils pupils;
-        CatAudio audio;
+        [SerializeField] CatLookAt lookAt;
+        [SerializeField] CatEyelids eyelids;
+        [SerializeField] CatPupils pupils;
+        [SerializeField] CatAudio audio;
 
-        CatGraphTraverser catGraphTraverser;
+        [SerializeField] CatGraphTraverser catGraphTraverser;
 
         private enum CatState
         {

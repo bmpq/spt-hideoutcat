@@ -5,16 +5,23 @@ namespace tarkin.hideoutcat
     public class BoneLookAt : MonoBehaviour
     {
         public Transform targetLookAt;
-        public Transform bone;
-        public Vector3 targetOffset = Vector3.zero;
-        public float weight = 1f;
-        public Vector3 customUpVector = Vector3.zero; // if zero use local
-        public bool useAngleLimits = false;
-        public Vector3 maxAngleLimits = new Vector3(45f, 45f, 45f);
-        public Vector3 minAngleLimits = new Vector3(-45f, -45f, -45f);
 
+        [Space(10)]
+        public Vector3 targetOffset = Vector3.zero;
+        [SerializeField] private Vector3 _rotationOffsetEuler = Vector3.zero;
+        public Vector3 customUpVector = Vector3.zero; // if zero use local
+
+        [Space(10)]
+        public bool useAngleLimits = false;
+        public Vector3 minAngleLimits = new Vector3(-45f, -45f, -45f);
+        public Vector3 maxAngleLimits = new Vector3(45f, 45f, 45f);
+
+        [Space(10)]
         public float smoothTime = 0.2f;
         public float resetSmoothTime = 0.5f; // separate smooth time for resetting when the target is null
+
+        [Range(0, 1)]
+        public float weight = 1f;
 
         public Vector3 rotationOffsetEuler
         {
@@ -28,7 +35,7 @@ namespace tarkin.hideoutcat
                 _rotationOffset = Quaternion.Euler(_rotationOffsetEuler);
             }
         }
-        private Vector3 _rotationOffsetEuler = Vector3.zero;
+
         private Quaternion _rotationOffset = Quaternion.identity;
 
         private Quaternion _currentRotation;
@@ -38,18 +45,23 @@ namespace tarkin.hideoutcat
         private bool _wasTargetNotNull = true; // Track if target was not null in the previous frame
         private float weightTargetNotNull = 1f;
 
+#if UNITY_EDITOR
+        void OnValidate()
+        {
+            rotationOffsetEuler = _rotationOffsetEuler;
+        }
+#endif
 
         void Start()
         {
-            if (bone == null) bone = transform; // added null check for bone
-            _currentRotation = bone.localRotation;
-            _resetRotation = bone.localRotation; // Initialize resetRotation with current rotation
+            _currentRotation = transform.localRotation;
+            _resetRotation = transform.localRotation; // Initialize resetRotation with current rotation
         }
 
         // running LateUpdate() to override Animator
         void LateUpdate()
         {
-            if (bone == null)
+            if (transform == null)
             {
                 return;
             }
@@ -61,7 +73,7 @@ namespace tarkin.hideoutcat
             {
                 if (_wasTargetNotNull) // Target just became null, store current rotation
                 {
-                    _resetRotation = bone.localRotation;
+                    _resetRotation = transform.localRotation;
                     _wasTargetNotNull = false;
                 }
                 _targetRotation = _resetRotation; // Reset target rotation to the stored reset rotation
@@ -72,13 +84,13 @@ namespace tarkin.hideoutcat
 
                 // Calculate the target rotation as before
                 Vector3 finalTargetPosition = targetLookAt.position + targetOffset;
-                Vector3 upVector = (customUpVector == Vector3.zero) ? bone.up : customUpVector;
-                Quaternion lookAtRotation = Quaternion.LookRotation(finalTargetPosition - bone.position, upVector);
+                Vector3 upVector = (customUpVector == Vector3.zero) ? transform.up : customUpVector;
+                Quaternion lookAtRotation = Quaternion.LookRotation(finalTargetPosition - transform.position, upVector);
 
                 Quaternion targetLocalRotation = Quaternion.identity;
-                if (bone.parent != null)
+                if (transform.parent != null)
                 {
-                    targetLocalRotation = Quaternion.Inverse(bone.parent.rotation) * lookAtRotation;
+                    targetLocalRotation = Quaternion.Inverse(transform.parent.rotation) * lookAtRotation;
                 }
                 else
                 {
@@ -99,7 +111,7 @@ namespace tarkin.hideoutcat
             float currentSmoothTime = (targetLookAt == null) ? resetSmoothTime : smoothTime;
 
             _currentRotation = SmoothDampQuaternion(_currentRotation, _targetRotation, ref _currentAngularVelocity, currentSmoothTime);
-            bone.localRotation = Quaternion.Slerp(bone.localRotation, _currentRotation, weight * weightTargetNotNull);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, _currentRotation, weight * weightTargetNotNull);
 
         }
 
