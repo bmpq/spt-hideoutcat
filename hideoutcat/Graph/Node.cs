@@ -6,9 +6,7 @@ namespace tarkin.hideoutcat.Pathfinding
 {
     public class Node : MonoBehaviour
     {
-        public Vector3 position;
-
-        public List<Node> connectedTo = new List<Node>();
+        public List<Node> connectedTo { get; private set; } = new List<Node>();
 
         public bool forwardJump;
 
@@ -16,7 +14,6 @@ namespace tarkin.hideoutcat.Pathfinding
 
         public int areaLevel;
 
-        public float poseRotation;
         public Pose pose;
 
         public enum Pose
@@ -40,6 +37,17 @@ namespace tarkin.hideoutcat.Pathfinding
             {
                 connectedTo.Add(other);
             }
+        }
+
+        public float poseRotation
+        {
+            get => transform.eulerAngles.y;
+            set => transform.eulerAngles = new Vector3(0, value, 0);
+        }
+        public Vector3 position
+        {
+            get => transform.position;
+            set => transform.position = value;
         }
     }
 }

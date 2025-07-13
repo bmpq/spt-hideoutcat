@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>hideoutcat.editor</AssemblyName>
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <UnityEditorPath>T:\Unity\2022.3.43f1\Editor\Data\Managed</UnityEditorPath>
+    <UnityProjectPath>T:\extract\UNITYPROJECT_EFT35392</UnityProjectPath>
+    <RootNamespace>tarkin.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="UnityEngine.Modules" Version="2022.3.43" IncludeAssets="compile" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\hideoutcat\hideoutcat.csproj" />
+    <Reference Include="$(UnityEditorPath)\UnityEditor.dll" />
+    <Reference Include="$(UnityEditorPath)\Newtonsoft.Json.dll" />
+    <Reference Include="$(UnityProjectPath)\Library\ScriptAssemblies\Vertx.Debugging.Editor.dll" />
+    <Reference Include="$(UnityProjectPath)\Assets\_PrimaryAssets\Plugins\Newtonsoft.Json.UnityConverters.dll" />
+  </ItemGroup>
+
+  <Target Name="CopyDllAfterBuildEditor" AfterTargets="Build">
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(UnityProjectPath)\Assets\HideoutCat" />
+  </Target>
+</Project>
