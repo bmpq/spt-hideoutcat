@@ -4,6 +4,7 @@
     <TargetFramework>net472</TargetFramework>
     <AssemblyName>hideoutcat.editor</AssemblyName>
     <Version>0.0.1</Version>
+    <Configurations>UNITY_EDITOR</Configurations>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -21,6 +22,8 @@
     <Reference Include="$(UnityEditorPath)\UnityEditor.dll" />
     <Reference Include="$(UnityEditorPath)\Newtonsoft.Json.dll" />
     <Reference Include="$(UnityProjectPath)\Library\ScriptAssemblies\Vertx.Debugging.Editor.dll" />
+    <Reference Include="$(UnityProjectPath)\Library\ScriptAssemblies\Vertx.Debugging.Runtime.dll" />
+    <Reference Include="$(UnityProjectPath)\Library\ScriptAssemblies\Unity.Mathematics.dll" />
     <Reference Include="$(UnityProjectPath)\Assets\_PrimaryAssets\Plugins\Newtonsoft.Json.UnityConverters.dll" />
   </ItemGroup>
 

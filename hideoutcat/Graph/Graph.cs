@@ -39,28 +39,41 @@ namespace tarkin.hideoutcat.Pathfinding
 
     public class Graph : MonoBehaviour
     {
-        public List<Node> nodes;
+        public List<Node> Nodes
+        {
+            get
+            {
+#if UNITY_EDITOR
+                _nodes = null;
+#endif
+                if (_nodes == null)
+                    _nodes = GetComponentsInChildren<Node>().ToList();
+                return _nodes;
+            }
+        }
+
+        private List<Node> _nodes;
 
         public Node FindNodeById(string id)
         {
-            return nodes.Find(n => n.name == id);
+            return Nodes.Find(n => n.name == id);
         }
 
         public Node FindNodeByName(string name)
         {
-            return nodes.Find(n => n.name == name);
+            return Nodes.Find(n => n.name == name);
         }
 
         public Node GetNodeClosestAny(Vector3 worldPos)
         {
-            return nodes
+            return Nodes
                 .OrderBy(t => (t.position - worldPos).sqrMagnitude)
                 .FirstOrDefault();
         }
 
         public Node GetNodeClosestWaypoint(Vector3 worldPos)
         {
-            return nodes
+            return Nodes
                 .Where(t => t.areaType == EAreaType.NotSet)
                 .OrderBy(t => (t.position - worldPos).sqrMagnitude)
                 .FirstOrDefault();
@@ -122,7 +135,7 @@ namespace tarkin.hideoutcat.Pathfinding
 
             List<Node> deadEndNodes = new List<Node>();
 
-            foreach (Node node in nodes)
+            foreach (Node node in Nodes)
             {
                 if (node.pose != Node.Pose.None)
                 {

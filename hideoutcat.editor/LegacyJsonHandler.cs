@@ -95,6 +95,8 @@ namespace tarkin.hideoutcat.editor
             
             foreach (var goNode in goNodes)
             {
+                goNode.connectedTo = new List<Node>();
+
                 NodeJsonData jsonNode = jsonNodes.FirstOrDefault(n => n.name == goNode.name);
                 foreach (var stringNode in jsonNode.ConnectionNames)
                 {
@@ -102,6 +104,8 @@ namespace tarkin.hideoutcat.editor
                     goNode.connectedTo.Add(goTarget);
                 }
             }
+
+            root.gameObject.AddComponent<Graph>();
 
             Debug.Log("Graph Deserialized!");
         }

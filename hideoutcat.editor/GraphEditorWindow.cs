@@ -98,6 +98,9 @@ namespace tarkin.hideoutcat.editor
                 return; // Early return to avoid node selection/connection logic
             }
 
+            DrawNodesInfo(Nodes);
+            DrawNodesConnections(Nodes);
+
             DrawNodeButtons(Nodes);
             DrawConnectionRemoveButtons(Nodes);
 
@@ -133,11 +136,11 @@ namespace tarkin.hideoutcat.editor
             return true;
         }
 
-        private void DrawNodeButtons(Node[] Nodes)
+        private void DrawNodeButtons(Node[] nodes)
         {
             var view = SceneView.lastActiveSceneView;
 
-            foreach (Node Node in Nodes)
+            foreach (Node Node in nodes)
             {
                 float distToSceneViewCamera = Vector3.Distance(view.camera.transform.position, Node.transform.position);
 
@@ -181,14 +184,14 @@ namespace tarkin.hideoutcat.editor
             }
         }
 
-        private void DrawConnectionRemoveButtons(Node[] Nodes)
+        private void DrawConnectionRemoveButtons(Node[] nodes)
         {
             var view = SceneView.lastActiveSceneView;
 
             // Use a list to store disconnection actions to avoid modifying the collection during iteration
             List<(Node, Node)> nodesToDisconnect = new List<(Node, Node)>();
 
-            foreach (Node Node in Nodes)
+            foreach (Node Node in nodes)
             {
                 if (!Node.gameObject.activeInHierarchy)
                     continue;
@@ -239,6 +242,60 @@ namespace tarkin.hideoutcat.editor
 
             // Repaint only need to call once per OnSceneGUI call.
             SceneView.RepaintAll();
+        }
+
+        private void DrawNodesInfo(Node[] nodes)
+        {
+            foreach (Node node in nodes)
+            {
+                if (!node.gameObject.activeInHierarchy)
+                    continue;
+
+                if (node.areaType != EAreaType.NotSet)
+                {
+                    Handles.Label(node.transform.position + Vector3.up * 0.1f, $"{node.areaType} (L{node.areaLevel})", EditorStyles.helpBox);
+                }
+
+                if (node.pose != Node.Pose.None)
+                {
+                    Handles.color = Color.white;
+                    Handles.Label(node.transform.position + Vector3.up * 0.13f, node.pose.ToString(), EditorStyles.miniButtonLeft);
+                }
+
+                Handles.color = Color.blue;
+                Handles.DrawWireDisc(node.transform.position, Vector3.up, 0.2f);
+            }
+        }
+
+        private void DrawNodesConnections(Node[] nodes)
+        {
+            Handles.color = Color.blue;
+
+            foreach (Node node in nodes)
+            {
+                if (!node.gameObject.activeInHierarchy || node.connectedTo == null)
+                    continue;
+
+                foreach (var connection in node.connectedTo)
+                {
+                    if (connection != null && connection.gameObject.activeInHierarchy)
+                    {
+                        Handles.DrawLine(node.transform.position, connection.transform.position);
+
+                        Vector3 direction = (connection.transform.position - node.transform.position).normalized;
+                        if (node.forwardJump)
+                        {
+                            Handles.color = new Color(0f, 0f, 1f);
+                            Handles.DrawSolidDisc(node.transform.position + new Vector3(0, 0.2f, 0), Vector3.up, 0.1f);
+                        }
+
+                        Handles.color = Color.blue;
+                        Vector3 arrowHeadPoint = connection.transform.position - direction * 0.5f;
+                        Handles.DrawLine(arrowHeadPoint + Quaternion.Euler(0, 45, 0) * (-direction * 0.2f), arrowHeadPoint);
+                        Handles.DrawLine(arrowHeadPoint + Quaternion.Euler(0, -45, 0) * (-direction * 0.2f), arrowHeadPoint);
+                    }
+                }
+            }
         }
 
         private void CreateNewNodeAtMousePosition(Node[] existingNodes)

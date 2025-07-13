@@ -6,6 +6,7 @@
     <Version>1.0.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
+    <Configurations>UNITY_EDITOR;RUNTIME</Configurations>
   </PropertyGroup>
 
   <PropertyGroup>

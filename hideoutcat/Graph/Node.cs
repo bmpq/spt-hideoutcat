@@ -6,7 +6,7 @@ namespace tarkin.hideoutcat.Pathfinding
 {
     public class Node : MonoBehaviour
     {
-        public List<Node> connectedTo { get; private set; } = new List<Node>();
+        public List<Node> connectedTo;
 
         public bool forwardJump;
 
@@ -27,16 +27,6 @@ namespace tarkin.hideoutcat.Pathfinding
             Grooming,
             SharpeningVertical,
             SharpeningHorizontal
-        }
-
-        public void ConnectTo(Node other)
-        {
-            if (connectedTo == null)
-                connectedTo = new List<Node>();
-            if (!connectedTo.Contains(other))
-            {
-                connectedTo.Add(other);
-            }
         }
 
         public float poseRotation
