@@ -1,11 +1,11 @@
 ﻿using Comfort.Common;
-using hideoutcat.Pathfinding;
+using tarkin.hideoutcat.Pathfinding;
 using System.Collections.Generic;
 using System.Linq;
 using tarkin;
 using UnityEngine;
 
-namespace hideoutcat
+namespace tarkin.hideoutcat
 {
     public class HideoutCat : MonoBehaviour
     {

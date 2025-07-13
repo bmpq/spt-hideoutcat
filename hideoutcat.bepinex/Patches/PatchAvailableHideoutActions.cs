@@ -1,6 +1,6 @@
 ﻿using EFT;
 using HarmonyLib;
-using hideoutcat;
+using tarkin.hideoutcat;
 using SPT.Reflection.Patching;
 using System;
 using System.Collections.Generic;

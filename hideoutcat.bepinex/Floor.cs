@@ -1,7 +1,7 @@
 ﻿using EFT.Ballistics;
 using UnityEngine;
 
-namespace hideoutcat.bepinex
+namespace tarkin.hideoutcat.bepinex
 {
     internal class Floor
     {

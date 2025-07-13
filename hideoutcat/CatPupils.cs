@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace hideoutcat
+namespace tarkin.hideoutcat
 {
     internal class CatPupils : MonoBehaviour
     {

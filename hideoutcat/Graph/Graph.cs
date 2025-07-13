@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace hideoutcat.Pathfinding
+namespace tarkin.hideoutcat.Pathfinding
 {
     public enum EAreaType
     {

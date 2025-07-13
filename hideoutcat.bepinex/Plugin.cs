@@ -4,7 +4,7 @@ using BepInEx.Logging;
 using Comfort.Common;
 using EFT;
 using EFT.Hideout;
-using hideoutcat.Pathfinding;
+using tarkin.hideoutcat.Pathfinding;
 using System.Linq;
 using UnityEngine;
 

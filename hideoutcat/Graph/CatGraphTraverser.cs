@@ -4,7 +4,7 @@ using UnityEngine;
 using tarkin;
 using System;
 
-namespace hideoutcat.Pathfinding
+namespace tarkin.hideoutcat.Pathfinding
 {
     [RequireComponent(typeof(Animator))]
     public class CatGraphTraverser : MonoBehaviour

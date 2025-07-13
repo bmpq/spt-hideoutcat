@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace hideoutcat.Pathfinding
+namespace tarkin.hideoutcat.Pathfinding
 {
     public class Node : MonoBehaviour
     {

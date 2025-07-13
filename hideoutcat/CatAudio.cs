@@ -1,9 +1,9 @@
-﻿using hideoutcat.Pathfinding;
+﻿using tarkin.hideoutcat.Pathfinding;
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace hideoutcat
+namespace tarkin.hideoutcat
 {
     public class CatAudio : MonoBehaviour
     {
