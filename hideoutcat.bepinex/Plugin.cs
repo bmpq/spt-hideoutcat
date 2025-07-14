@@ -27,6 +27,7 @@ namespace tarkin.hideoutcat.bepinex
             InitConfiguration();
 
             new PatchHideoutAwake().Enable();
+            PatchHideoutAwake.OnPostfix += () => SceneLoader.Instance.LoadBundleScene("hideoutcat");
             new PatchAreaSelected().Enable();
             new PatchAvailableHideoutActions().Enable();
             new PatchPlayerPrepareWorkout().Enable();
