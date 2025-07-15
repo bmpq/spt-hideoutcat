@@ -79,6 +79,11 @@ namespace tarkin.hideoutcat.editor
 
         private void OnSceneGUI(SceneView sceneView)
         {
+            if (Event.current.type == EventType.MouseDrag)
+            {
+                return;
+            }
+
             if (graphEditor == null)
                 return;
 
@@ -117,6 +122,8 @@ namespace tarkin.hideoutcat.editor
                 }
                 Handles.DrawLine(_connectionSourceNode.transform.position, worldMousePosition);
             }
+
+            SceneView.RepaintAll();
         }
 
 
@@ -239,9 +246,6 @@ namespace tarkin.hideoutcat.editor
             {
                 DisconnectNodes(nodeA, nodeB);
             }
-
-            // Repaint only need to call once per OnSceneGUI call.
-            SceneView.RepaintAll();
         }
 
         private void DrawNodesInfo(Node[] nodes)
@@ -373,7 +377,7 @@ namespace tarkin.hideoutcat.editor
             if (sourceNode == null || targetNode == null) return;
 
             SerializedObject serializedSourceNode = new SerializedObject(sourceNode);
-            SerializedProperty sourceConnectionsProperty = serializedSourceNode.FindProperty("connections");
+            SerializedProperty sourceConnectionsProperty = serializedSourceNode.FindProperty("connectedTo");
 
             bool sourceAlreadyConnected = false;
             for (int i = 0; i < sourceConnectionsProperty.arraySize; ++i)
