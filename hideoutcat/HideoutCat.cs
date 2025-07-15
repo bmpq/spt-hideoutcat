@@ -1,5 +1,4 @@
-﻿using Comfort.Common;
-using tarkin.hideoutcat.Pathfinding;
+﻿using tarkin.hideoutcat.Pathfinding;
 using System.Collections.Generic;
 using System.Linq;
 using tarkin;
