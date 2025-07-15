@@ -16,8 +16,10 @@ namespace tarkin.hideoutcat.BasicIK
         [Range(0.0f, 0.2f)]
         public float gizmoRadius = 0.05f;
         [Range(0.0f, 1.0f)]
-        public float alpha = 0.5f;
+        public float alpha = 0.25f;
         public bool alwaysShowGizmo = false;
+        public bool showCurrentAngle = true;
+
 
         private void OnDrawGizmos()
         {
@@ -41,22 +43,43 @@ namespace tarkin.hideoutcat.BasicIK
             // using parent matrix instead of own, otherwise the rotation itself would offset the range, resulting in incorrect visuals
             Handles.matrix = transform.parent.localToWorldMatrix;
 
-            Handles.color = AlphaMultiply(Handles.xAxisColor, alpha);
-            float angleX = maxLocalAngles.x - minLocalAngles.x;
-            Vector3 fromDirectionX = Quaternion.AngleAxis(minLocalAngles.x, Vector3.right) * Vector3.forward;
-            Handles.DrawSolidArc(transform.parent.InverseTransformPoint(transform.position), Vector3.right, fromDirectionX, angleX, gizmoRadius);
+            // -180 to 180 is simply better for visualization
+            Vector3 currentAngles = transform.localEulerAngles;
+            currentAngles.x = NormalizeAngle(currentAngles.x);
+            currentAngles.y = NormalizeAngle(currentAngles.y);
+            currentAngles.z = NormalizeAngle(currentAngles.z);
 
-            Handles.color = AlphaMultiply(Handles.yAxisColor, alpha);
-            float angleY = maxLocalAngles.y - minLocalAngles.y;
-            Vector3 fromDirectionY = Quaternion.AngleAxis(minLocalAngles.y, Vector3.up) * Vector3.forward;
-            Handles.DrawSolidArc(transform.parent.InverseTransformPoint(transform.position), Vector3.up, fromDirectionY, angleY, gizmoRadius);
+            Vector3 gizmoCenter = transform.parent.InverseTransformPoint(transform.position);
 
-            Handles.color = AlphaMultiply(Handles.zAxisColor, alpha);
-            float angleZ = maxLocalAngles.z - minLocalAngles.z;
-            Vector3 fromDirectionZ = Quaternion.AngleAxis(minLocalAngles.z, Vector3.forward) * Vector3.up;
-            Handles.DrawSolidArc(transform.parent.InverseTransformPoint(transform.position), Vector3.forward, fromDirectionZ, angleZ, gizmoRadius);
+            DrawAxisGizmo(gizmoCenter, Vector3.right, Vector3.forward, minLocalAngles.x, maxLocalAngles.x, currentAngles.x, Handles.xAxisColor);
+            DrawAxisGizmo(gizmoCenter, Vector3.up, Vector3.forward, minLocalAngles.y, maxLocalAngles.y, currentAngles.y, Handles.yAxisColor);
+            DrawAxisGizmo(gizmoCenter, Vector3.forward, Vector3.up, minLocalAngles.z, maxLocalAngles.z, currentAngles.z, Handles.zAxisColor);
 
             Handles.matrix = originalMatrix;
+        }
+
+        private void DrawAxisGizmo(Vector3 center, Vector3 axis, Vector3 referenceVector, float minAngle, float maxAngle, float currentAngle, Color color)
+        {
+            Handles.color = AlphaMultiply(color, alpha);
+            float angleRange = maxAngle - minAngle;
+            Vector3 fromDirection = Quaternion.AngleAxis(minAngle, axis) * referenceVector;
+            Handles.DrawSolidArc(center, axis, fromDirection, angleRange, gizmoRadius);
+
+            if (showCurrentAngle)
+            {
+                Handles.color = color;
+                Vector3 currentDirection = Quaternion.AngleAxis(currentAngle, axis) * referenceVector;
+                Handles.DrawLine(center, center + currentDirection * gizmoRadius * 1.2f, 2f);
+            }
+        }
+
+        private static float NormalizeAngle(float angle)
+        {
+            while (angle > 180)
+                angle -= 360;
+            while (angle < -180)
+                angle += 360;
+            return angle;
         }
 
         private static Color AlphaMultiply(Color color, float alpha)
