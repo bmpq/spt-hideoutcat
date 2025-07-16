@@ -11,11 +11,14 @@ namespace tarkin.hideoutcat.editor
 
         private void OnEnable()
         {
-            _constraint = (JointConstraint)target;
+            _constraint = target as JointConstraint;
         }
 
         private void OnSceneGUI()
         {
+            if (_constraint == null)
+                return;
+
             Transform transform = _constraint.transform;
             Transform parent = transform.parent;
 
@@ -50,8 +53,6 @@ namespace tarkin.hideoutcat.editor
         {
             minAngle = AngleHandle(center, axis, fromDirection, minAngle, color, "min");
             maxAngle = AngleHandle(center, axis, fromDirection, maxAngle, color, "max");
-
-            maxAngle = Mathf.Clamp(maxAngle, -180f, 180f);
         }
 
         private float AngleHandle(Vector3 center, Vector3 axis, Vector3 fromDirection, float angle, Color color, string label)

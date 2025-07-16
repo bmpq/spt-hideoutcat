@@ -6,10 +6,17 @@ using UnityEditor;
 
 namespace tarkin.hideoutcat.BasicIK
 {
+    public enum IKAlgorithm
+    {
+        FABRIK,
+        CCD
+    }
+
     [DefaultExecutionOrder(100)]
     [ExecuteAlways]
     public class BasicIK : MonoBehaviour
     {
+        public IKAlgorithm algorithm = IKAlgorithm.FABRIK;
         public int numberOfJoints = 2;
         public Transform ikTarget;
         public int iterations = 7;
@@ -23,11 +30,16 @@ namespace tarkin.hideoutcat.BasicIK
 
         private JointConstraint[] constraints;
 #if UNITY_EDITOR
+        [Header("Editor Gizmos")]
         [Range(0.0f, 1.0f)]
         public float gizmoSize = 0.05f;
 #endif
+        void Awake()
+        {
+            InitializeJoints();
+        }
 
-        public void Awake()
+        public void InitializeJoints()
         {
             jointChainLength = 0;
             jointTransforms = new Transform[numberOfJoints];
@@ -58,6 +70,7 @@ namespace tarkin.hideoutcat.BasicIK
             }
         }
 
+        #region FABRIK Solver
         void Backward()
         {
             jointPositions[jointPositions.Length - 1] = ikTarget.position;
@@ -112,10 +125,8 @@ namespace tarkin.hideoutcat.BasicIK
             }
         }
 
-        private void SolveIK()
+        private void SolveFABRIK()
         {
-            if (ikTarget == null) return;
-
             for (int i = 0; i < jointTransforms.Length; i++)
             {
                 jointPositions[i] = jointTransforms[i].position;
@@ -150,7 +161,75 @@ namespace tarkin.hideoutcat.BasicIK
 
             jointTransforms.Last().rotation = ikTarget.rotation;
         }
+        #endregion
 
+        #region CCD Solver
+        private void SolveCCD()
+        {
+            Transform endEffector = jointTransforms.Last();
+
+            for (int iter = 0; iter < iterations; iter++)
+            {
+                if (Vector3.Distance(endEffector.position, ikTarget.position) < tolerance)
+                    break;
+
+                // Iterate from the end-effector's parent down to the root joint
+                for (int i = jointTransforms.Length - 2; i >= 0; i--)
+                {
+                    Transform currentJoint = jointTransforms[i];
+                    JointConstraint constraint = constraints[i];
+
+                    Vector3 toEndEffector = (endEffector.position - currentJoint.position).normalized;
+                    Vector3 toTarget = (ikTarget.position - currentJoint.position).normalized;
+
+                    Quaternion deltaRotation = Quaternion.FromToRotation(toEndEffector, toTarget);
+                    Quaternion potentialNewWorldRotation = deltaRotation * currentJoint.rotation;
+
+                    if (constraint != null)
+                    {
+                        // To apply constraints, we work in the local space of the joint's parent
+                        Quaternion parentRotation = (i > 0)
+                            ? jointTransforms[i - 1].rotation
+                            : (transform.parent != null ? transform.parent.rotation : Quaternion.identity);
+
+                        Quaternion desiredLocalRotation = Quaternion.Inverse(parentRotation) * potentialNewWorldRotation;
+
+                        Vector3 localAngles = desiredLocalRotation.eulerAngles;
+                        Vector3 clampedAngles = new Vector3(
+                            ClampAngle(localAngles.x, constraint.minLocalAngles.x, constraint.maxLocalAngles.x),
+                            ClampAngle(localAngles.y, constraint.minLocalAngles.y, constraint.maxLocalAngles.y),
+                            ClampAngle(localAngles.z, constraint.minLocalAngles.z, constraint.maxLocalAngles.z)
+                        );
+
+                        Quaternion clampedLocalRotation = Quaternion.Euler(clampedAngles);
+
+                        currentJoint.rotation = parentRotation * clampedLocalRotation;
+                    }
+                    else
+                    {
+                        currentJoint.rotation = potentialNewWorldRotation;
+                    }
+                }
+            }
+
+            endEffector.rotation = ikTarget.rotation;
+        }
+        #endregion
+
+        private void SolveIK()
+        {
+            if (ikTarget == null || jointTransforms == null || jointTransforms.Length == 0) return;
+
+            switch (algorithm)
+            {
+                case IKAlgorithm.FABRIK:
+                    SolveFABRIK();
+                    break;
+                case IKAlgorithm.CCD:
+                    SolveCCD();
+                    break;
+            }
+        }
 
         private float ClampAngle(float angle, float min, float max)
         {
@@ -165,17 +244,32 @@ namespace tarkin.hideoutcat.BasicIK
         }
 
 #if UNITY_EDITOR
+        void OnValidate()
+        {
+            if (Application.isPlaying) return;
+
+            if (jointTransforms == null || jointTransforms.Length != numberOfJoints)
+            {
+                InitializeJoints();
+            }
+        }
+
         void OnDrawGizmos()
         {
+            if (!enabled) return;
+
             if (jointTransforms != null && jointTransforms.Length > 0)
             {
-                var current = transform;
-                for (int i = 0; i < numberOfJoints - 1; i += 1)
+                var current = jointTransforms[0];
+                for (int i = 0; i < jointTransforms.Length - 1; i += 1)
                 {
-                    if (current == null || current.childCount == 0) break;
-                    var child = current.GetChild(0);
-                    var length = Vector3.Distance(current.position, child.position);
-                    DrawWireCapsule(current.position + (child.position - current.position).normalized * length / 2, Quaternion.FromToRotation(Vector3.up, (child.position - current.position).normalized), gizmoSize, length, Color.cyan);
+                    var child = jointTransforms[i + 1];
+                    if (current == null || child == null) break;
+
+                    float length = Vector3.Distance(current.position, child.position);
+                    DrawWireCapsule(current.position + (child.position - current.position).normalized * length / 2,
+                                     Quaternion.FromToRotation(Vector3.up, (child.position - current.position).normalized),
+                                     gizmoSize, length, Color.cyan);
                     current = child;
                 }
             }
