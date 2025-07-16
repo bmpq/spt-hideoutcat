@@ -91,6 +91,11 @@ namespace tarkin.hideoutcat.InverseKinematics
             return ikTarget.TransformPoint(targetOffset);
         }
 
+        public float GetSolveResidual()
+        {
+            return Vector3.Distance(GetTargetPosWithOffset(), LastBone.position);
+        }
+
         #region FABRIK Solver
         void Backward()
         {
@@ -115,23 +120,46 @@ namespace tarkin.hideoutcat.InverseKinematics
 
                 Vector3 direction = (jointPositions[i] - jointPositions[parentIndex]).normalized;
 
-                Quaternion parentParentRotation = (parentIndex > 0) ? jointRotations[parentIndex - 1] : transform.parent != null ? transform.parent.rotation : Quaternion.identity;
+                Quaternion parentParentRotation = (parentIndex > 0)
+                    ? jointRotations[parentIndex - 1]
+                    : (transform.parent != null ? transform.parent.rotation : Quaternion.identity);
+
+                Quaternion desiredWorldRotation = Quaternion.LookRotation(direction,
+                    parentTransform.parent != null ? parentTransform.parent.up : Vector3.up);
 
                 Quaternion constrainedWorldRotation;
 
-                Quaternion desiredWorldRotation = Quaternion.LookRotation(direction, parentTransform.parent != null ? parentTransform.parent.up : Vector3.up);
-
-                if (constraint != null)
+                if (constraint != null && constraint.enabled)
                 {
                     Quaternion desiredLocalRotation = Quaternion.Inverse(parentParentRotation) * desiredWorldRotation;
-                    Vector3 localAngles = desiredLocalRotation.eulerAngles;
-                    Vector3 clampedAngles = new Vector3(
-                        ClampAngle(localAngles.x, constraint.minLocalAngles.x, constraint.maxLocalAngles.x),
-                        ClampAngle(localAngles.y, constraint.minLocalAngles.y, constraint.maxLocalAngles.y),
-                        ClampAngle(localAngles.z, constraint.minLocalAngles.z, constraint.maxLocalAngles.z)
-                    );
 
-                    Quaternion clampedLocalRotation = Quaternion.Euler(clampedAngles);
+                    Vector3 forwardInLocal = desiredLocalRotation * Vector3.forward;
+                    float yawAngle = Vector3.SignedAngle(Vector3.forward,
+                                                          Vector3.ProjectOnPlane(forwardInLocal, Vector3.up).normalized,
+                                                          Vector3.up);
+
+                    float clampedYawAngle = Mathf.Clamp(yawAngle, constraint.minLocalAngles.y, constraint.maxLocalAngles.y);
+                    Quaternion yawRotation = Quaternion.AngleAxis(clampedYawAngle, Vector3.up);
+
+                    Vector3 forwardAfterYaw = yawRotation * Vector3.forward;
+                    float pitchAngle = Vector3.SignedAngle(forwardAfterYaw,
+                                                            forwardInLocal,
+                                                            Vector3.right);
+
+                    float clampedPitchAngle = Mathf.Clamp(pitchAngle, constraint.minLocalAngles.x, constraint.maxLocalAngles.x);
+                    Quaternion pitchRotation = Quaternion.AngleAxis(clampedPitchAngle, Vector3.right);
+
+                    Quaternion yawPitchCombined = yawRotation * pitchRotation;
+                    Vector3 upAfterYawPitch = yawPitchCombined * Vector3.up;
+                    Vector3 upInLocal = desiredLocalRotation * Vector3.up;
+                    float rollAngle = Vector3.SignedAngle(upAfterYawPitch,
+                                                          upInLocal,
+                                                          forwardInLocal);
+
+                    float clampedRollAngle = Mathf.Clamp(rollAngle, constraint.minLocalAngles.z, constraint.maxLocalAngles.z);
+                    Quaternion rollRotation = Quaternion.AngleAxis(clampedRollAngle, Vector3.forward);
+
+                    Quaternion clampedLocalRotation = yawRotation * pitchRotation * rollRotation;
                     constrainedWorldRotation = parentParentRotation * clampedLocalRotation;
                 }
                 else
@@ -206,7 +234,7 @@ namespace tarkin.hideoutcat.InverseKinematics
                     Quaternion deltaRotation = Quaternion.FromToRotation(toEndEffector, toTarget);
                     Quaternion potentialNewWorldRotation = deltaRotation * currentJoint.rotation;
 
-                    if (constraint != null)
+                    if (constraint != null && constraint.enabled)
                     {
                         // To apply constraints, we work in the local space of the joint's parent
                         Quaternion parentRotation = (i > 0)
@@ -215,14 +243,53 @@ namespace tarkin.hideoutcat.InverseKinematics
 
                         Quaternion desiredLocalRotation = Quaternion.Inverse(parentRotation) * potentialNewWorldRotation;
 
-                        Vector3 localAngles = desiredLocalRotation.eulerAngles;
-                        Vector3 clampedAngles = new Vector3(
-                            ClampAngle(localAngles.x, constraint.minLocalAngles.x, constraint.maxLocalAngles.x),
-                            ClampAngle(localAngles.y, constraint.minLocalAngles.y, constraint.maxLocalAngles.y),
-                            ClampAngle(localAngles.z, constraint.minLocalAngles.z, constraint.maxLocalAngles.z)
-                        );
+                        // Decompose the desired rotation into "swing" and "twist"
+                        // Twist is the rotation around the joint's primary axis (e.g., local 'up' for a yaw joint)
+                        // Swing is the remaining rotation (e.g., pitch/roll)
 
-                        Quaternion clampedLocalRotation = Quaternion.Euler(clampedAngles);
+                        // We will handle this by clamping each axis sequentially. Let's assume a Y-X-Z rotation order.
+                        // This means we first determine Yaw (Y), then Pitch (X), then Roll (Z).
+
+                        // 1. --- Clamp Yaw (Y-axis) ---
+                        // We project a reference vector (like 'forward') onto the XZ plane and measure the angle.
+                        Vector3 forwardInLocal = desiredLocalRotation * Vector3.forward;
+                        float yawAngle = Vector3.SignedAngle(Vector3.forward,
+                                                              Vector3.ProjectOnPlane(forwardInLocal, Vector3.up).normalized,
+                                                              Vector3.up);
+
+                        float clampedYawAngle = Mathf.Clamp(yawAngle, constraint.minLocalAngles.y, constraint.maxLocalAngles.y);
+                        Quaternion yawRotation = Quaternion.AngleAxis(clampedYawAngle, Vector3.up);
+
+                        // 2. --- Clamp Pitch (X-axis) ---
+                        // Now we take the yaw-corrected reference and measure the pitch.
+                        Vector3 forwardAfterYaw = yawRotation * Vector3.forward;
+                        float pitchAngle = Vector3.SignedAngle(forwardAfterYaw,
+                                                                forwardInLocal,
+                                                                Vector3.right); // Use right-axis as the pivot for pitch
+
+                        float clampedPitchAngle = Mathf.Clamp(pitchAngle, constraint.minLocalAngles.x, constraint.maxLocalAngles.x);
+                        Quaternion pitchRotation = Quaternion.AngleAxis(clampedPitchAngle, Vector3.right);
+
+
+                        // 3. --- Clamp Roll (Z-axis) ---
+                        // Finally, we calculate the roll. We find the "up" vector after applying the desired yaw and pitch,
+                        // and compare it to the "up" vector from the full desired rotation.
+                        Quaternion yawPitchCombined = yawRotation * pitchRotation;
+                        Vector3 upAfterYawPitch = yawPitchCombined * Vector3.up;
+                        Vector3 upInLocal = desiredLocalRotation * Vector3.up;
+
+                        float rollAngle = Vector3.SignedAngle(upAfterYawPitch,
+                                                              upInLocal,
+                                                              forwardInLocal); // Use the final forward vector as the axis of roll
+
+                        float clampedRollAngle = Mathf.Clamp(rollAngle, constraint.minLocalAngles.z, constraint.maxLocalAngles.z);
+                        Quaternion rollRotation = Quaternion.AngleAxis(clampedRollAngle, Vector3.forward);
+
+
+                        // 4. --- Recombine and Apply ---
+                        // We combine the clamped rotations in the correct order (Y, then X, then Z)
+                        // Note: The order of multiplication is the reverse of the order of application.
+                        Quaternion clampedLocalRotation = yawRotation * pitchRotation * rollRotation;
 
                         currentJoint.rotation = parentRotation * clampedLocalRotation;
                     }
