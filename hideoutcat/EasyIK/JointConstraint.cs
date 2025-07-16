@@ -3,7 +3,7 @@
 using UnityEditor;
 #endif
 
-namespace tarkin.hideoutcat.BasicIK
+namespace tarkin.hideoutcat.InverseKinematics
 {
     [DisallowMultipleComponent]
     public class JointConstraint : MonoBehaviour

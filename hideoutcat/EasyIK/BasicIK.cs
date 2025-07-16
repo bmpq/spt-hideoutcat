@@ -4,8 +4,14 @@ using System.Linq;
 using UnityEditor;
 #endif
 
-namespace tarkin.hideoutcat.BasicIK
+namespace tarkin.hideoutcat.InverseKinematics
 {
+    public enum UpdateMode
+    {
+        Script,
+        LateUpdate
+    }
+
     public enum IKAlgorithm
     {
         FABRIK,
@@ -16,9 +22,11 @@ namespace tarkin.hideoutcat.BasicIK
     [ExecuteAlways]
     public class BasicIK : MonoBehaviour
     {
+        public UpdateMode updateMode = UpdateMode.Script;
         public IKAlgorithm algorithm = IKAlgorithm.FABRIK;
         public int numberOfJoints = 2;
         public Transform ikTarget;
+        public Vector3 targetOffset;
         public int iterations = 7;
         public float tolerance = 0.01f;
 
@@ -27,6 +35,9 @@ namespace tarkin.hideoutcat.BasicIK
         private Quaternion[] jointRotations;
         private float[] boneLength;
         private float jointChainLength;
+
+        public Transform LastBone => jointTransforms[jointTransforms.Length - 1];
+        public Transform[] Bones => jointTransforms;
 
         private JointConstraint[] constraints;
 #if UNITY_EDITOR
@@ -70,10 +81,20 @@ namespace tarkin.hideoutcat.BasicIK
             }
         }
 
+        public void SetTarget(Transform target)
+        {
+            ikTarget = target;
+        }
+
+        private Vector3 GetTargetPosWithOffset()
+        {
+            return ikTarget.TransformPoint(targetOffset);
+        }
+
         #region FABRIK Solver
         void Backward()
         {
-            jointPositions[jointPositions.Length - 1] = ikTarget.position;
+            jointPositions[jointPositions.Length - 1] = GetTargetPosWithOffset();
             for (int i = jointPositions.Length - 2; i >= 0; i--)
             {
                 Vector3 direction = (jointPositions[i] - jointPositions[i + 1]).normalized;
@@ -132,11 +153,11 @@ namespace tarkin.hideoutcat.BasicIK
                 jointPositions[i] = jointTransforms[i].position;
             }
 
-            float targetDistance = Vector3.Distance(jointPositions[0], ikTarget.position);
+            float targetDistance = Vector3.Distance(jointPositions[0], GetTargetPosWithOffset());
 
             if (targetDistance > jointChainLength)
             {
-                Vector3 direction = (ikTarget.position - jointPositions[0]).normalized;
+                Vector3 direction = (GetTargetPosWithOffset() - jointPositions[0]).normalized;
                 for (int i = 1; i < jointPositions.Length; i++)
                 {
                     jointPositions[i] = jointPositions[i - 1] + direction * boneLength[i - 1];
@@ -146,7 +167,7 @@ namespace tarkin.hideoutcat.BasicIK
             {
                 for (int iter = 0; iter < iterations; iter++)
                 {
-                    if (Vector3.Distance(jointPositions.Last(), ikTarget.position) < tolerance)
+                    if (Vector3.Distance(jointPositions.Last(), GetTargetPosWithOffset()) < tolerance)
                         break;
 
                     Backward();
@@ -170,7 +191,7 @@ namespace tarkin.hideoutcat.BasicIK
 
             for (int iter = 0; iter < iterations; iter++)
             {
-                if (Vector3.Distance(endEffector.position, ikTarget.position) < tolerance)
+                if (Vector3.Distance(endEffector.position, GetTargetPosWithOffset()) < tolerance)
                     break;
 
                 // Iterate from the end-effector's parent down to the root joint
@@ -180,7 +201,7 @@ namespace tarkin.hideoutcat.BasicIK
                     JointConstraint constraint = constraints[i];
 
                     Vector3 toEndEffector = (endEffector.position - currentJoint.position).normalized;
-                    Vector3 toTarget = (ikTarget.position - currentJoint.position).normalized;
+                    Vector3 toTarget = (GetTargetPosWithOffset() - currentJoint.position).normalized;
 
                     Quaternion deltaRotation = Quaternion.FromToRotation(toEndEffector, toTarget);
                     Quaternion potentialNewWorldRotation = deltaRotation * currentJoint.rotation;
@@ -216,7 +237,7 @@ namespace tarkin.hideoutcat.BasicIK
         }
         #endregion
 
-        private void SolveIK()
+        public void SolveIK()
         {
             if (ikTarget == null || jointTransforms == null || jointTransforms.Length == 0) return;
 
@@ -240,7 +261,8 @@ namespace tarkin.hideoutcat.BasicIK
 
         void LateUpdate()
         {
-            SolveIK();
+            if (updateMode == UpdateMode.LateUpdate)
+                SolveIK();
         }
 
 #if UNITY_EDITOR

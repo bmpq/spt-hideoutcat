@@ -1,4 +1,4 @@
-﻿using tarkin.hideoutcat.BasicIK;
+﻿using tarkin.hideoutcat.InverseKinematics;
 using UnityEditor;
 using UnityEngine;
 
