@@ -8,8 +8,20 @@ namespace tarkin.hideoutcat.InverseKinematics
     [DisallowMultipleComponent]
     public class JointConstraint : MonoBehaviour
     {
-        public Vector3 minLocalAngles = new Vector3(-45f, -45f, -45f);
-        public Vector3 maxLocalAngles = new Vector3(45f, 45f, 45f);
+        public Vector3 twistAxis = Vector3.forward;
+
+        [Range(0, 180)]
+        public float swingLimit = 45f;
+
+        public float twistLimitMin = -90f;
+        public float twistLimitMax = 90f; 
+        
+        public static void DecomposeSwingTwist(Quaternion rotation, Vector3 twistAxis, out Quaternion swing, out Quaternion twist)
+        {
+            Vector3 rotatedTwistAxis = rotation * twistAxis;
+            swing = Quaternion.FromToRotation(twistAxis, rotatedTwistAxis);
+            twist = Quaternion.Inverse(swing) * rotation;
+        }
 
 #if UNITY_EDITOR
         [Header("Gizmo Settings")]
@@ -18,8 +30,11 @@ namespace tarkin.hideoutcat.InverseKinematics
         [Range(0.0f, 1.0f)]
         public float alpha = 0.25f;
         public bool alwaysShowGizmo = false;
-        public bool showCurrentAngle = true;
-
+        public bool showCurrentRotation = true;
+        
+        void Start() 
+        {
+        }
 
         private void OnDrawGizmos()
         {
@@ -39,47 +54,84 @@ namespace tarkin.hideoutcat.InverseKinematics
 
         private void DrawConstraintGizmos()
         {
+            if (transform.parent == null) return;
+
             Matrix4x4 originalMatrix = Handles.matrix;
-            // using parent matrix instead of own, otherwise the rotation itself would offset the range, resulting in incorrect visuals
             Handles.matrix = transform.parent.localToWorldMatrix;
-
-            // -180 to 180 is simply better for visualization
-            Vector3 currentAngles = transform.localEulerAngles;
-            currentAngles.x = NormalizeAngle(currentAngles.x);
-            currentAngles.y = NormalizeAngle(currentAngles.y);
-            currentAngles.z = NormalizeAngle(currentAngles.z);
-
             Vector3 gizmoCenter = transform.parent.InverseTransformPoint(transform.position);
 
-            DrawAxisGizmo(gizmoCenter, Vector3.right, Vector3.forward, minLocalAngles.x, maxLocalAngles.x, currentAngles.x, Handles.xAxisColor);
-            DrawAxisGizmo(gizmoCenter, Vector3.up, Vector3.forward, minLocalAngles.y, maxLocalAngles.y, currentAngles.y, Handles.yAxisColor);
-            DrawAxisGizmo(gizmoCenter, Vector3.forward, Vector3.up, minLocalAngles.z, maxLocalAngles.z, currentAngles.z, Handles.zAxisColor);
+            DrawVolumetricCone(
+                gizmoCenter,
+                twistAxis.normalized,
+                swingLimit,
+                gizmoRadius,
+                AlphaMultiply(Color.yellow, alpha)
+            );
+
+            Handles.color = AlphaMultiply(Handles.zAxisColor, alpha);
+            Vector3 twistReference = Vector3.Cross(twistAxis, Vector3.up).normalized;
+            if (twistReference == Vector3.zero) twistReference = Vector3.right;
+
+            float twistRange = twistLimitMax - twistLimitMin;
+            Vector3 fromDirection = Quaternion.AngleAxis(twistLimitMin, twistAxis) * twistReference;
+            Handles.DrawSolidArc(gizmoCenter, twistAxis, fromDirection, twistRange, gizmoRadius);
+
+            if (showCurrentRotation)
+            {
+                Handles.color = Color.white;
+                Vector3 currentBoneDirection = transform.localRotation * twistAxis.normalized;
+                Handles.DrawLine(gizmoCenter, gizmoCenter + currentBoneDirection * gizmoRadius, 3f);
+
+                Quaternion currentLocalRotation = transform.localRotation;
+                Vector3 normalizedTwistAxis = twistAxis.normalized;
+                DecomposeSwingTwist(currentLocalRotation, normalizedTwistAxis, out _, out Quaternion currentTwist);
+                currentTwist.ToAngleAxis(out float currentTwistAngle, out Vector3 axis);
+
+                if (Vector3.Dot(axis, normalizedTwistAxis) < 0)
+                {
+                    currentTwistAngle *= -1;
+                }
+
+                Vector3 currentTwistDirection = Quaternion.AngleAxis(currentTwistAngle, normalizedTwistAxis) * twistReference;
+                Handles.color = Handles.zAxisColor;
+                Handles.DrawLine(gizmoCenter, gizmoCenter + currentTwistDirection * (gizmoRadius * 1.2f), 2f);
+            }
 
             Handles.matrix = originalMatrix;
         }
 
-        private void DrawAxisGizmo(Vector3 center, Vector3 axis, Vector3 referenceVector, float minAngle, float maxAngle, float currentAngle, Color color)
+        private static void DrawVolumetricCone(Vector3 apex, Vector3 direction, float angle, float length, Color color)
         {
-            Handles.color = AlphaMultiply(color, alpha);
-            float angleRange = maxAngle - minAngle;
-            Vector3 fromDirection = Quaternion.AngleAxis(minAngle, axis) * referenceVector;
-            Handles.DrawSolidArc(center, axis, fromDirection, angleRange, gizmoRadius);
-
-            if (showCurrentAngle)
+            if (angle <= 0) return;
+            if (angle >= 180)
             {
                 Handles.color = color;
-                Vector3 currentDirection = Quaternion.AngleAxis(currentAngle, axis) * referenceVector;
-                Handles.DrawLine(center, center + currentDirection * gizmoRadius * 1.2f, 2f);
+                Handles.DrawSolidDisc(apex, direction, length);
+                return;
             }
-        }
 
-        private static float NormalizeAngle(float angle)
-        {
-            while (angle > 180)
-                angle -= 360;
-            while (angle < -180)
-                angle += 360;
-            return angle;
+            float coneAngleRad = angle * Mathf.Deg2Rad;
+            float coneHeight = Mathf.Cos(coneAngleRad) * length;
+            float coneRadius = Mathf.Sin(coneAngleRad) * length;
+            Vector3 baseCenter = apex + direction * coneHeight;
+
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            Vector3 up = rotation * Vector3.up;
+            Vector3 right = rotation * Vector3.right;
+
+            Handles.color = color;
+
+            Handles.DrawSolidDisc(baseCenter, direction, coneRadius);
+
+            const int segments = 32;
+            Vector3 lastPoint = baseCenter + right * coneRadius;
+            for (int i = 1; i <= segments; i++)
+            {
+                float rad = (i / (float)segments) * 2 * Mathf.PI;
+                Vector3 currentPoint = baseCenter + (right * Mathf.Cos(rad) + up * Mathf.Sin(rad)) * coneRadius;
+                Handles.DrawAAConvexPolygon(apex, lastPoint, currentPoint);
+                lastPoint = currentPoint;
+            }
         }
 
         private static Color AlphaMultiply(Color color, float alpha)
