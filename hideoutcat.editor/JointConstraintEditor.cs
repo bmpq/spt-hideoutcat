@@ -27,6 +27,21 @@ namespace tarkin.hideoutcat.editor
 
             Vector3 center = parent.InverseTransformPoint(transform.position);
 
+            EditorGUI.BeginChangeCheck();
+
+            Quaternion twistAxisRotation = (_constraint.twistAxis != Vector3.zero)
+                ? Quaternion.LookRotation(_constraint.twistAxis, parent.up)
+                : Quaternion.identity;
+
+            Quaternion newTwistAxisRotation = Handles.RotationHandle(twistAxisRotation, center);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(_constraint, "Change Twist Axis");
+                _constraint.twistAxis = (newTwistAxisRotation * Vector3.forward).normalized;
+                EditorUtility.SetDirty(_constraint);
+            }
+
             Vector3 twistAxis = _constraint.twistAxis.normalized;
             Vector3 fromDirection = Vector3.Cross(twistAxis, Vector3.up).normalized;
             if (fromDirection == Vector3.zero)
