@@ -30,7 +30,7 @@ namespace tarkin.hideoutcat.editor
             EditorGUI.BeginChangeCheck();
 
             Quaternion twistAxisRotation = (_constraint.twistAxis != Vector3.zero)
-                ? Quaternion.LookRotation(_constraint.twistAxis, parent.up)
+                ? Quaternion.LookRotation(_constraint.twistAxis, transform.up)
                 : Quaternion.identity;
 
             Quaternion newTwistAxisRotation = Handles.RotationHandle(twistAxisRotation, center);
@@ -54,7 +54,7 @@ namespace tarkin.hideoutcat.editor
             float newMin = _constraint.twistLimitMin;
             float newMax = _constraint.twistLimitMax;
 
-            DrawAngleHandles(center, twistAxis, fromDirection, Handles.zAxisColor, ref newMin, ref newMax);
+            DrawAngleHandles(center, twistAxis, fromDirection, ref newMin, ref newMax);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -67,11 +67,16 @@ namespace tarkin.hideoutcat.editor
             Handles.matrix = originalMatrix;
         }
 
-        private void DrawAngleHandles(Vector3 center, Vector3 axis, Vector3 fromDirection, Color color, ref float minAngle, ref float maxAngle)
+        private void DrawAngleHandles(Vector3 center, Vector3 axis, Vector3 fromDirection, ref float minAngle, ref float maxAngle)
         {
-            Handles.color = color;
+            Handles.color = new Color(Handles.zAxisColor.r, Handles.zAxisColor.g, Handles.zAxisColor.b, 0.2f);
+            Vector3 minDir = Quaternion.AngleAxis(minAngle, axis) * fromDirection;
+            float sweepAngle = maxAngle - minAngle;
+            Handles.DrawSolidArc(center, axis, minDir, sweepAngle, _constraint.gizmoRadius);
+
+            Handles.color = Handles.zAxisColor;
             minAngle = AngleHandle(center, axis, fromDirection, minAngle, "min");
-            maxAngle = AngleHandle(center, axis, fromDirection, maxAngle, "max");
+            maxAngle = Mathf.Max(minAngle, AngleHandle(center, axis, fromDirection, maxAngle, "max"));
         }
 
         private float AngleHandle(Vector3 center, Vector3 axis, Vector3 fromDirection, float angle, string label)
@@ -83,13 +88,14 @@ namespace tarkin.hideoutcat.editor
 
             Vector3 newHandlePosition = Handles.FreeMoveHandle(handlePosition, handleSize, Vector3.zero, Handles.SphereHandleCap);
 
-            // handle was moved
             if (newHandlePosition != handlePosition)
             {
                 Vector3 projectedVector = newHandlePosition - center;
                 Vector3 flattenedVector = Vector3.ProjectOnPlane(projectedVector, axis);
 
-                return Vector3.SignedAngle(fromDirection, flattenedVector.normalized, axis);
+                float deltaAngle = Vector3.SignedAngle(handleDirection, flattenedVector.normalized, axis);
+
+                return angle + deltaAngle;
             }
 
             return angle;
