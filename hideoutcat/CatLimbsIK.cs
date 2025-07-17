@@ -13,6 +13,8 @@ namespace tarkin.hideoutcat
         [Tooltip("ik influence over animator")]
         [SerializeField] private float factor;
 
+        [SerializeField] private float residualTolerance = 0.1f;
+
         private Transform[] ikTargets;
 
         void Awake()
@@ -32,9 +34,9 @@ namespace tarkin.hideoutcat
             for (int i = 0; i < limbs.Length; i++)
             {
                 Transform a = limbs[i].transform;
-                Transform b = limbs[i].LastBone;
-                Vector3 dir = b.position - a.position;
-                float dist = Vector3.Distance(a.position, b.position);
+                Vector3 b = limbs[i].LastBone.position - limbs[i].targetOffset;
+                Vector3 dir = b - a.position;
+                float dist = Vector3.Distance(a.position, b);
 
                 if (Physics.Raycast(a.position, dir, out RaycastHit hit, dist, raycastMask))
                 {
@@ -51,10 +53,15 @@ namespace tarkin.hideoutcat
 
                     limbs[i].SolveIK(); // modifies transforms
 
+                    float _factor = factor;
+                    float residual = limbs[i].GetSolveResidual();
+                    if (residual > residualTolerance)
+                        _factor = 0f;
+
                     for (int j = 0; j < limbs[i].Bones.Length; j++)
                     {
-                        limbs[i].Bones[j].localPosition = Vector3.Lerp(animatorPos[j], limbs[i].Bones[j].localPosition, factor);
-                        limbs[i].Bones[j].localRotation = Quaternion.Lerp(animatorRot[j], limbs[i].Bones[j].localRotation, factor);
+                        limbs[i].Bones[j].localPosition = Vector3.Lerp(animatorPos[j], limbs[i].Bones[j].localPosition, _factor);
+                        limbs[i].Bones[j].localRotation = Quaternion.Lerp(animatorRot[j], limbs[i].Bones[j].localRotation, _factor);
                     }
                 }
             }
