@@ -29,15 +29,17 @@ namespace tarkin.hideoutcat.editor
 
             EditorGUI.BeginChangeCheck();
 
-            Quaternion twistAxisRotation = (_constraint.twistAxis != Vector3.zero)
-                ? Quaternion.LookRotation(_constraint.twistAxis, transform.up)
-                : Quaternion.identity;
+            if (_constraint.handleRotation == Quaternion.identity)
+                _constraint.handleRotation = Quaternion.LookRotation(_constraint.twistAxis, transform.up);
+
+            Quaternion twistAxisRotation = _constraint.handleRotation;
 
             Quaternion newTwistAxisRotation = Handles.RotationHandle(twistAxisRotation, center);
 
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(_constraint, "Change Twist Axis");
+                _constraint.handleRotation = newTwistAxisRotation;
                 _constraint.twistAxis = (newTwistAxisRotation * Vector3.forward).normalized;
                 EditorUtility.SetDirty(_constraint);
             }

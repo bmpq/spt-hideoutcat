@@ -24,6 +24,8 @@ namespace tarkin.hideoutcat.InverseKinematics
         }
 
 #if UNITY_EDITOR
+        public Quaternion handleRotation { get; set; } = Quaternion.identity;
+
         [Header("Gizmo Settings")]
         [Range(0.0f, 0.2f)]
         public float gizmoRadius = 0.05f;
