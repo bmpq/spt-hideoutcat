@@ -14,10 +14,34 @@ namespace tarkin.hideoutcat.editor
             _constraint = target as JointConstraint;
         }
 
+        void DrawSelectButton(GameObject go)
+        {
+            Handles.color = Color.green;
+            float handleSize = HandleUtility.GetHandleSize(go.transform.position) * 0.2f;
+
+            if (Handles.Button(go.transform.position, Quaternion.identity, handleSize, handleSize, Handles.SphereHandleCap))
+            {
+                Selection.activeGameObject = go;
+            }
+        }
+
         private void OnSceneGUI()
         {
             if (_constraint == null || _constraint.transform.parent == null)
                 return;
+
+            foreach (var item in _constraint.GetComponentsInChildren<JointConstraint>())
+            {
+                if (item == _constraint)
+                    continue;
+                DrawSelectButton(item.gameObject);
+            }
+            foreach (var item in _constraint.GetComponentsInParent<JointConstraint>())
+            {
+                if (item == _constraint)
+                    continue;
+                DrawSelectButton(item.gameObject);
+            }
 
             Transform transform = _constraint.transform;
             Transform parent = transform.parent;
