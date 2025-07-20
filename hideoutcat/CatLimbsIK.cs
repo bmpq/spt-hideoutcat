@@ -30,41 +30,27 @@ namespace tarkin.hideoutcat
                 limbs[i].updateMode = UpdateMode.Script;
             }
         }
+
+        // lateupdate to read and write after animator
         void LateUpdate()
         {
-            float furthestHitDistance = -1f;
-            float secondFurthestHitDistance = -1f;
-
-            float floorDelta = 0;
-            float furthestFloorDelta = 0;
             int hitsFound = 0;
+
+            float smallestAnimatorHitDelta = float.MaxValue;
 
             for (int i = 0; i < limbs.Length; i++)
             {
-                Transform a = limbs[i].transform;
+                Vector3 a = limbs[i].transform.position;
                 Vector3 b = limbs[i].LastBone.position - limbs[i].targetOffset;
-                Vector3 dir = b - a.position;
-                float dist = Vector3.Distance(a.position, b);
+                Vector3 dir = Vector3.Normalize(b - a);
+                float dist = Vector3.Distance(a, b);
 
-                if (Physics.Raycast(a.position, dir, out RaycastHit hit, dist * 2f, raycastMask))
+                IMGUIDebugDraw.OnGUIDispatcher.Instance.Enqueue(() => IMGUIDebugDraw.Draw.DrawEdge(Camera.main, a, b, 1f, Color.green));
+
+                if (Physics.Raycast(a, dir, out RaycastHit hit, dist, raycastMask))
                 {
                     hitsFound++;
-                    float currentHitDistance = hit.distance;
-                    float currentFloorDelta = hit.point.y - b.y;
-
-                    if (currentHitDistance > furthestHitDistance)
-                    {
-                        secondFurthestHitDistance = furthestHitDistance;
-                        floorDelta = furthestFloorDelta;
-
-                        furthestHitDistance = currentHitDistance;
-                        furthestFloorDelta = currentFloorDelta;
-                    }
-                    else if (currentHitDistance > secondFurthestHitDistance)
-                    {
-                        secondFurthestHitDistance = currentHitDistance;
-                        floorDelta = currentFloorDelta;
-                    }
+                    smallestAnimatorHitDelta = Mathf.Min(smallestAnimatorHitDelta, dist - hit.distance);
 
                     ikTargets[i].position = hit.point;
                     ikTargets[i].rotation = transform.rotation;
@@ -92,22 +78,25 @@ namespace tarkin.hideoutcat
                 }
             }
 
-            if (hitsFound == 1)
-            {
-                floorDelta = furthestFloorDelta;
-            }
+            float yDelta = 0f;
 
-            const float floorCorrectionStrength = 5f;
+            bool falling = (hitsFound < 2);
 
-            if (floorDelta < 0)
+            if (falling)
             {
                 fallingSpeed += Time.deltaTime / 2f;
-                floorDelta = Physics.gravity.y / 5f * fallingSpeed;
+                yDelta = Physics.gravity.y * fallingSpeed * Time.deltaTime;
             }
             else
+            {
                 fallingSpeed = 0f;
-            transform.SetPositionIndividualAxis(y: transform.position.y + floorDelta * floorCorrectionStrength * Time.deltaTime);
+                
+                yDelta = Time.deltaTime * smallestAnimatorHitDelta * 5f;
+            }
+
+            transform.SetPositionIndividualAxis(y: transform.position.y + yDelta);
         }
+
         void OnDestroy()
         {
             for (int i = 0; i < limbs.Length; i++)
