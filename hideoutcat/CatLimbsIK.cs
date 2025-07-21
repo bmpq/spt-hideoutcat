@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using tarkin.hideoutcat.InverseKinematics;
+using System.Collections.Generic;
 
 namespace tarkin.hideoutcat
 {
@@ -32,6 +33,8 @@ namespace tarkin.hideoutcat
 
         private Transform[] ikTargets;
 
+        private Dictionary<Transform, (Vector3, Quaternion)> prevFrame;
+
         private float currentFallingSpeed;
 
         private Vector3 currentUp = Vector3.up;
@@ -46,6 +49,9 @@ namespace tarkin.hideoutcat
                 limbs[i].SetTarget(ikTargets[i]);
                 limbs[i].updateMode = UpdateMode.Script;
             }
+
+            prevFrame = new Dictionary<Transform, (Vector3, Quaternion)>();
+            StoreBoneCurrentData();
         }
 
         // lateupdate to read and write after animator
@@ -71,12 +77,6 @@ namespace tarkin.hideoutcat
 
                     smallestAnimatorHitDelta = Mathf.Min(smallestAnimatorHitDelta, animatorDrivenLimbLength - hit.distance);
 
-                    if (hit.distance > animatorDrivenLimbLength)
-                    {
-                        Debug.DrawLine(a, a + dir * (animatorDrivenLimbLength + ikRaycastOvershoot), Color.blue, default, false);
-                        continue;
-                    }
-
                     Debug.DrawLine(a, a + dir * (animatorDrivenLimbLength + ikRaycastOvershoot), Color.red, default, false);
 
                     ikTargets[i].position = hit.point;
@@ -92,18 +92,19 @@ namespace tarkin.hideoutcat
 
                     limbs[i].SolveIK(); // modifies transforms
 
-                    float _factor = factor;
                     float residual = limbs[i].GetSolveResidual();
-
-                    for (int j = 0; j < limbs[i].Bones.Length; j++)
-                    {
-                        limbs[i].Bones[j].localPosition = Vector3.Lerp(animatorPos[j], limbs[i].Bones[j].localPosition, _factor);
-                        limbs[i].Bones[j].localRotation = Quaternion.Lerp(animatorRot[j], limbs[i].Bones[j].localRotation, _factor);
-                    }
                 }
                 else
                 {
                     Debug.DrawLine(a, a + dir * (animatorDrivenLimbLength + ikRaycastOvershoot), Color.white, default, false);
+                }
+
+                for (int j = 0; j < limbs[i].Bones.Length; j++)
+                {
+                    limbs[i].Bones[j].localPosition = Vector3.Lerp(
+                        prevFrame[limbs[i].Bones[j].transform].Item1, limbs[i].Bones[j].localPosition, 0.5f);
+                    limbs[i].Bones[j].localRotation = Quaternion.Slerp(
+                        prevFrame[limbs[i].Bones[j].transform].Item2, limbs[i].Bones[j].localRotation, 0.5f);
                 }
             }
 
@@ -130,6 +131,19 @@ namespace tarkin.hideoutcat
             transform.position += transform.up * yDelta;
 
             currentUp = HandleBodyTilt();
+
+            StoreBoneCurrentData();
+        }
+
+        void StoreBoneCurrentData()
+        {
+            foreach (var limb in limbs)
+            {
+                foreach (var bone in limb.Bones)
+                {
+                    prevFrame[bone.transform] = (bone.localPosition, bone.localRotation);
+                }
+            }
         }
 
         Vector3 HandleBodyTilt()
@@ -138,7 +152,7 @@ namespace tarkin.hideoutcat
             {
                 //Debug.DrawRay(source, dir * groundCheckDistance);
 
-                if (Physics.Raycast(source, dir, out RaycastHit hit, groundCheckDistance, raycastMask))
+                if (Physics.SphereCast(source, 0.02f, dir, out RaycastHit hit, groundCheckDistance, raycastMask))
                 {
                     return hit.point;
                 }
