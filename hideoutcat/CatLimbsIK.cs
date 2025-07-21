@@ -15,6 +15,17 @@ namespace tarkin.hideoutcat
 
         [SerializeField] private float residualTolerance = 0.1f;
 
+        [Header("body tilt")]
+        [SerializeField] private Transform tiltBone;
+        private Quaternion currentTilt;
+        [Range(0f, 1f)]
+        [SerializeField] private float tiltFactor;
+
+        [SerializeField] private float tiltCorrectionSpeed = 1f;
+
+        [Range(0f, 3f)]
+        [SerializeField] private float groundCheckDistance = 1f;
+
         private Transform[] ikTargets;
 
         private float fallingSpeed;
@@ -38,6 +49,8 @@ namespace tarkin.hideoutcat
 
             float smallestAnimatorHitDelta = float.MaxValue;
 
+            Vector3 newUp = HandleBodyTilt();
+
             for (int i = 0; i < limbs.Length; i++)
             {
                 Vector3 a = limbs[i].transform.position;
@@ -45,7 +58,7 @@ namespace tarkin.hideoutcat
                 Vector3 dir = Vector3.Normalize(b - a);
                 float dist = Vector3.Distance(a, b);
 
-                IMGUIDebugDraw.OnGUIDispatcher.Instance.Enqueue(() => IMGUIDebugDraw.Draw.DrawEdge(Camera.main, a, b, 1f, Color.green));
+                Debug.DrawLine(a, b, Color.cyan);
 
                 if (Physics.Raycast(a, dir, out RaycastHit hit, dist, raycastMask))
                 {
@@ -94,15 +107,41 @@ namespace tarkin.hideoutcat
                 yDelta = Time.deltaTime * smallestAnimatorHitDelta * 5f;
             }
 
-            transform.SetPositionIndividualAxis(y: transform.position.y + yDelta);
+            transform.position += newUp * yDelta;
         }
 
-        void OnDestroy()
+        Vector3 HandleBodyTilt()
         {
-            for (int i = 0; i < limbs.Length; i++)
+            Vector3 GetGroundTouchPoint(Vector3 source)
             {
-                Destroy(ikTargets[i]?.gameObject);
+                Debug.DrawRay(source, -tiltBone.up * groundCheckDistance);
+
+                if (Physics.Raycast(source, -tiltBone.up, out RaycastHit hit, groundCheckDistance, raycastMask))
+                {
+                    return hit.point;
+                }
+
+                return source;
             }
+
+            Vector3 fl = GetGroundTouchPoint(limbs[0].transform.position);
+            Vector3 fr = GetGroundTouchPoint(limbs[1].transform.position);
+            Vector3 bl = GetGroundTouchPoint(limbs[2].transform.position);
+            Vector3 br = GetGroundTouchPoint(limbs[3].transform.position);
+
+            Vector3 sideToSide = ((fr + br) * 0.5f) - ((fl + bl) * 0.5f);
+            Vector3 backToFront = ((fl + fr) * 0.5f) - ((bl + br) * 0.5f);
+
+            Vector3 groundUp = Vector3.Cross(backToFront, sideToSide).normalized;
+            Debug.DrawRay(transform.position + Vector3.up * 0.1f, groundUp * 0.5f, Color.green);
+
+            Vector3 localGroundUp = transform.InverseTransformDirection(groundUp);
+
+            currentTilt = Quaternion.RotateTowards(currentTilt, Quaternion.FromToRotation(Vector3.up, localGroundUp), Time.deltaTime * tiltCorrectionSpeed);
+
+            tiltBone.localRotation = Quaternion.Slerp(tiltBone.localRotation, currentTilt, tiltFactor);
+
+            return groundUp;
         }
     }
 }
