@@ -11,24 +11,30 @@ namespace tarkin.hideoutcat
 
         [Range(0f, 1f)]
         [Tooltip("ik influence over animator")]
-        [SerializeField] private float factor;
+        [SerializeField] private float factor = 1f;
 
-        [SerializeField] private float residualTolerance = 0.1f;
+        [Range(0f, 0.2f)]
+        [SerializeField] private float ikRaycastOvershoot = 0.06f;
+        
+        [SerializeField] private float heightCorrectionSpeed = 15f;
+        [SerializeField] private float fallingSpeed = 0.2f;
 
         [Header("body tilt")]
         [SerializeField] private Transform tiltBone;
         private Quaternion currentTilt;
         [Range(0f, 1f)]
-        [SerializeField] private float tiltFactor;
+        [SerializeField] private float tiltFactor = 1f;
 
         [SerializeField] private float tiltCorrectionSpeed = 1f;
-
-        [Range(0f, 3f)]
+        [SerializeField] private float steepSlopeAngle = 20f;
+        
         [SerializeField] private float groundCheckDistance = 1f;
 
         private Transform[] ikTargets;
 
-        private float fallingSpeed;
+        private float currentFallingSpeed;
+
+        private Vector3 currentUp = Vector3.up;
 
         void Awake()
         {
@@ -45,25 +51,33 @@ namespace tarkin.hideoutcat
         // lateupdate to read and write after animator
         void LateUpdate()
         {
-            int hitsFound = 0;
-
             float smallestAnimatorHitDelta = float.MaxValue;
 
-            Vector3 newUp = HandleBodyTilt();
+            float slopeAngle = Vector3.Angle(currentUp, Vector3.up);
 
+            int hitsFound = 0;
             for (int i = 0; i < limbs.Length; i++)
             {
                 Vector3 a = limbs[i].transform.position;
                 Vector3 b = limbs[i].LastBone.position - limbs[i].targetOffset;
-                Vector3 dir = Vector3.Normalize(b - a);
-                float dist = Vector3.Distance(a, b);
+                float animatorDrivenLimbLength = Vector3.Distance(a, b);
 
-                Debug.DrawLine(a, b, Color.cyan);
+                // if the cat is on a slope, the raycast direction is straight down, instead of an animator-driven limb leaf
+                Vector3 dir = Vector3.Lerp((b - a).normalized, -transform.up, Mathf.Clamp01(Mathf.InverseLerp(0, steepSlopeAngle, slopeAngle))).normalized;
 
-                if (Physics.Raycast(a, dir, out RaycastHit hit, dist, raycastMask))
+                if (Physics.Raycast(a, dir, out RaycastHit hit, animatorDrivenLimbLength + ikRaycastOvershoot, raycastMask))
                 {
                     hitsFound++;
-                    smallestAnimatorHitDelta = Mathf.Min(smallestAnimatorHitDelta, dist - hit.distance);
+
+                    smallestAnimatorHitDelta = Mathf.Min(smallestAnimatorHitDelta, animatorDrivenLimbLength - hit.distance);
+
+                    if (hit.distance > animatorDrivenLimbLength)
+                    {
+                        Debug.DrawLine(a, a + dir * (animatorDrivenLimbLength + ikRaycastOvershoot), Color.blue, default, false);
+                        continue;
+                    }
+
+                    Debug.DrawLine(a, a + dir * (animatorDrivenLimbLength + ikRaycastOvershoot), Color.red, default, false);
 
                     ikTargets[i].position = hit.point;
                     ikTargets[i].rotation = transform.rotation;
@@ -80,8 +94,6 @@ namespace tarkin.hideoutcat
 
                     float _factor = factor;
                     float residual = limbs[i].GetSolveResidual();
-                    if (residual > residualTolerance)
-                        _factor = 0f;
 
                     for (int j = 0; j < limbs[i].Bones.Length; j++)
                     {
@@ -89,34 +101,44 @@ namespace tarkin.hideoutcat
                         limbs[i].Bones[j].localRotation = Quaternion.Lerp(animatorRot[j], limbs[i].Bones[j].localRotation, _factor);
                     }
                 }
+                else
+                {
+                    Debug.DrawLine(a, a + dir * (animatorDrivenLimbLength + ikRaycastOvershoot), Color.white, default, false);
+                }
             }
 
             float yDelta = 0f;
 
             bool falling = (hitsFound < 2);
 
+            if (slopeAngle > steepSlopeAngle)
+                falling = hitsFound < 4;
+
             if (falling)
             {
-                fallingSpeed += Time.deltaTime / 2f;
-                yDelta = Physics.gravity.y * fallingSpeed * Time.deltaTime;
+                currentFallingSpeed += Time.deltaTime * fallingSpeed;
+                yDelta = Physics.gravity.y * currentFallingSpeed * Time.deltaTime;
             }
             else
             {
-                fallingSpeed = 0f;
-                
-                yDelta = Time.deltaTime * smallestAnimatorHitDelta * 5f;
+                currentFallingSpeed = 0f;
+
+                if (smallestAnimatorHitDelta > 0)
+                    yDelta = Time.deltaTime * smallestAnimatorHitDelta * heightCorrectionSpeed;
             }
 
-            transform.position += newUp * yDelta;
+            transform.position += transform.up * yDelta;
+
+            currentUp = HandleBodyTilt();
         }
 
         Vector3 HandleBodyTilt()
         {
-            Vector3 GetGroundTouchPoint(Vector3 source)
+            Vector3 GetGroundTouchPoint(Vector3 source, Vector3 dir)
             {
-                Debug.DrawRay(source, -tiltBone.up * groundCheckDistance);
+                //Debug.DrawRay(source, dir * groundCheckDistance);
 
-                if (Physics.Raycast(source, -tiltBone.up, out RaycastHit hit, groundCheckDistance, raycastMask))
+                if (Physics.Raycast(source, dir, out RaycastHit hit, groundCheckDistance, raycastMask))
                 {
                     return hit.point;
                 }
@@ -124,10 +146,21 @@ namespace tarkin.hideoutcat
                 return source;
             }
 
-            Vector3 fl = GetGroundTouchPoint(limbs[0].transform.position);
-            Vector3 fr = GetGroundTouchPoint(limbs[1].transform.position);
-            Vector3 bl = GetGroundTouchPoint(limbs[2].transform.position);
-            Vector3 br = GetGroundTouchPoint(limbs[3].transform.position);
+            Vector3 offset = new Vector3(0, 0.05f, 0);
+
+            Vector3 fl = GetGroundTouchPoint(limbs[0].transform.position, Vector3.down);
+            Vector3 fr = GetGroundTouchPoint(limbs[1].transform.position, Vector3.down);
+            Vector3 bl = GetGroundTouchPoint(limbs[2].transform.position, Vector3.down);
+            Vector3 br = GetGroundTouchPoint(limbs[3].transform.position, Vector3.down);
+
+            float fmy = (fl.y + fr.y) * 0.5f;
+            fl.y = fmy;
+            fr.y = fmy;
+
+            float bmy = (bl.y + br.y) * 0.5f;
+            bl.y = bmy;
+            br.y = bmy;
+
 
             Vector3 sideToSide = ((fr + br) * 0.5f) - ((fl + bl) * 0.5f);
             Vector3 backToFront = ((fl + fr) * 0.5f) - ((bl + br) * 0.5f);
@@ -137,7 +170,7 @@ namespace tarkin.hideoutcat
 
             Vector3 localGroundUp = transform.InverseTransformDirection(groundUp);
 
-            currentTilt = Quaternion.RotateTowards(currentTilt, Quaternion.FromToRotation(Vector3.up, localGroundUp), Time.deltaTime * tiltCorrectionSpeed);
+            currentTilt = Quaternion.Slerp(currentTilt, Quaternion.FromToRotation(Vector3.up, localGroundUp), Time.deltaTime * tiltCorrectionSpeed);
 
             tiltBone.localRotation = Quaternion.Slerp(tiltBone.localRotation, currentTilt, tiltFactor);
 
