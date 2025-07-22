@@ -18,13 +18,13 @@ namespace tarkin.hideoutcat.editor
 
         public override void OnInspectorGUI()
         {
-            Node Node = (Node)target;
+            Node node = (Node)target;
 
             if (Application.isPlaying)
             {
                 if (GUILayout.Button("Set as destination", GUILayout.Height(50f)))
                 {
-                    //FindObjectOfType<Cat>().SetDestination(GraphEditor.instance.graph.FindNodeById(target.name));
+                    //FindObjectOfType<HideoutCat>().SetDestination(node);
                 }
 
                 EditorGUILayout.Space(10);

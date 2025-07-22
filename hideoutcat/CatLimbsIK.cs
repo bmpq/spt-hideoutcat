@@ -24,7 +24,7 @@ namespace tarkin.hideoutcat
         [SerializeField] private Transform tiltBone;
         private Quaternion currentTilt;
         [Range(0f, 1f)]
-        [SerializeField] private float tiltFactor = 1f;
+        public float tiltFactor = 1f;
 
         [SerializeField] private float tiltCorrectionSpeed = 1f;
         [SerializeField] private float steepSlopeAngle = 20f;
@@ -38,6 +38,8 @@ namespace tarkin.hideoutcat
         private float currentFallingSpeed;
 
         private Vector3 currentUp = Vector3.up;
+
+        public bool yControl { get; set; }
 
         void Awake()
         {
@@ -115,7 +117,7 @@ namespace tarkin.hideoutcat
             if (slopeAngle > steepSlopeAngle)
                 falling = hitsFound < 4;
 
-            if (falling)
+            if (yControl && falling)
             {
                 currentFallingSpeed += Time.deltaTime * fallingSpeed;
                 yDelta = Physics.gravity.y * currentFallingSpeed * Time.deltaTime;
@@ -128,7 +130,8 @@ namespace tarkin.hideoutcat
                     yDelta = Time.deltaTime * smallestAnimatorHitDelta * heightCorrectionSpeed;
             }
 
-            transform.position += transform.up * yDelta;
+            if (yControl)
+                transform.position += transform.up * yDelta;
 
             currentUp = HandleBodyTilt();
 
@@ -160,13 +163,12 @@ namespace tarkin.hideoutcat
                 return source;
             }
 
-            Vector3 offset = new Vector3(0, 0.05f, 0);
-
             Vector3 fl = GetGroundTouchPoint(limbs[0].transform.position, Vector3.down);
             Vector3 fr = GetGroundTouchPoint(limbs[1].transform.position, Vector3.down);
             Vector3 bl = GetGroundTouchPoint(limbs[2].transform.position, Vector3.down);
             Vector3 br = GetGroundTouchPoint(limbs[3].transform.position, Vector3.down);
 
+            // only want one axis tilt, averaging left and right limbs
             float fmy = (fl.y + fr.y) * 0.5f;
             fl.y = fmy;
             fr.y = fmy;
@@ -181,6 +183,14 @@ namespace tarkin.hideoutcat
 
             Vector3 groundUp = Vector3.Cross(backToFront, sideToSide).normalized;
             Debug.DrawRay(transform.position + Vector3.up * 0.1f, groundUp * 0.5f, Color.green);
+
+            // clamping so we dont end up with a spider cat
+            float angleWithUp = Vector3.Angle(Vector3.up, groundUp);
+            const float maxTiltAngle = 70f;
+            if (angleWithUp > maxTiltAngle)
+            {
+                groundUp = Vector3.Slerp(Vector3.up, groundUp, maxTiltAngle / angleWithUp);
+            }
 
             Vector3 localGroundUp = transform.InverseTransformDirection(groundUp);
 

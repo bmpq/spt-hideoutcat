@@ -221,8 +221,8 @@ Transform:
   m_GameObject: {fileID: 687949376}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.559, y: -0.087, z: 7.475}
-  m_LocalScale: {x: 0.32118, y: 0.32118, z: 0.32118}
+  m_LocalPosition: {x: -5.585, y: 0.077, z: 7.25}
+  m_LocalScale: {x: 0.7907607, y: 0.16, z: 2.5563035}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -339,7 +339,6 @@ GameObject:
   - component: {fileID: 1540424016}
   - component: {fileID: 1540424015}
   - component: {fileID: 1540424014}
-  - component: {fileID: 1540424017}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -399,7 +398,7 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
+  m_HDR: 0
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
@@ -414,25 +413,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1540424013}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.5724321, z: -0, w: 0.8199522}
-  m_LocalPosition: {x: -0.984, y: 1.446, z: -2.145}
+  m_LocalRotation: {x: 0.14744388, y: 0.48061347, z: -0.08234994, w: 0.860517}
+  m_LocalPosition: {x: -3.515, y: 1.867, z: -1.914}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 69.84, z: 0}
---- !u!114 &1540424017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1540424013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -2117422473, guid: ba7f0e78a5eca6645bb1fc4ab4e8388d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_LocalEulerAnglesHint: {x: 19.446, y: 58.368, z: 0}
 --- !u!1 &1761886741
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,6 +479,6 @@ CapsuleCollider:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1540424016}
   - {fileID: 1478149410}
   - {fileID: 687949380}
+  - {fileID: 1540424016}

@@ -7,15 +7,7 @@ namespace tarkin.hideoutcat.editor
     {
         public HideoutCat cat;
 
-        private Animator animator;
-
         private Vector2 motion;
-
-        void Start()
-        {
-            cat = FindObjectOfType<HideoutCat>();
-            animator = cat.GetComponentInChildren<Animator>();
-        }
 
         void Update()
         {
@@ -26,10 +18,12 @@ namespace tarkin.hideoutcat.editor
                 input.y *= 3f;
             }
 
-            motion = Vector2.MoveTowards(motion, input, Time.deltaTime * 5f);
+            cat.manualInput = input;
 
-            animator.SetFloat("Thrust", motion.y);
-            animator.SetFloat("Turn", motion.x);
+            if (Input.GetKey(KeyCode.Space))
+            {
+                cat.InitiateJump(transform.position + transform.forward + transform.up * 2f, transform.forward);
+            }
         }
     }
 }
