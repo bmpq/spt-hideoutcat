@@ -1,8 +1,8 @@
 ﻿using tarkin.hideoutcat.Pathfinding;
-using System.Collections.Generic;
-using System.Linq;
-using tarkin;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace tarkin.hideoutcat
 {
@@ -17,6 +17,10 @@ namespace tarkin.hideoutcat
 
         [SerializeField] CatLimbsIK limbsIK;
         [SerializeField] CatGraphTraverser catGraphTraverser;
+
+        [Space(10)]
+        [SerializeField] float jumpUpEndOffsetY = 0.5f;
+        [SerializeField] float jumpSpeed = 3.7f;
 
         private enum CatState
         {
@@ -43,14 +47,13 @@ namespace tarkin.hideoutcat
             None,
             WindUp,
             Airborne,
-            Landing
+            LandStart,
+            LandEnd
         }
 
         public JumpState jumpState { get; private set; }
         Vector3 ledgePos;
         Vector3 ledgeDir;
-
-        public float jumpSpeed;
 
         void Update()
         {
@@ -69,26 +72,52 @@ namespace tarkin.hideoutcat
             }
         }
 
+#if UNITY_EDITOR
+        void OnDrawGizmos()
+        {
+            Handles.Label(transform.position, jumpState.ToString());
+        }
+#endif
+
         void HandleJumping()
         {
             if (jumpState == JumpState.Airborne)
             {
-                transform.position = Vector3.MoveTowards(transform.position, ledgePos, Time.deltaTime * jumpSpeed);
-                if (transform.position == ledgePos)
+                Vector3 ledgePosWithOffset = ledgePos - new Vector3(0, jumpUpEndOffsetY, 0);
+
+                transform.position = Vector3.MoveTowards(transform.position, ledgePosWithOffset, Time.deltaTime * jumpSpeed);
+                if (transform.position == ledgePosWithOffset)
                 {
-                    jumpState = JumpState.Landing;
+                    jumpState = JumpState.LandStart;
                     animator.SetBool("JumpingUp", false);
                 }
             }
-            else if (jumpState == JumpState.Landing)
+            else if (jumpState == JumpState.LandStart)
             {
-                transform.rotation = Quaternion.LookRotation(ledgeDir);
-                jumpState = JumpState.None;
+                if (animator.IsInTransition(0) && JumpUpAir.Active && JumpUpEnd.Active)
+                {
+                    float t = animator.GetAnimatorTransitionInfo(0).normalizedTime;
+                    transform.SetPositionIndividualAxis(y: Mathf.Lerp(ledgePos.y - jumpUpEndOffsetY, ledgePos.y, t));
+                }
+                else
+                {
+                    jumpState = JumpState.LandEnd;
+                }
+            }
+            else if (jumpState == JumpState.LandEnd)
+            {
+                transform.SetPositionIndividualAxis(y: ledgePos.y);
+
+                if (!JumpUpEnd.Active)
+                    jumpState = JumpState.None;
             }
         }
 
         public void InitiateJump(Vector3 ledgePos, Vector3 ledgeDir)
         {
+            if (jumpState != JumpState.None)
+                return;
+
             jumpState = JumpState.WindUp;
 
             this.ledgePos = ledgePos;
