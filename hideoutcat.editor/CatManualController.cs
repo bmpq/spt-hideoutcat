@@ -20,7 +20,7 @@ namespace tarkin.hideoutcat.editor
 
             cat.manualInput = input;
 
-            bool ledgeFound = LedgeDetector.Detect(transform, out Vector3 ledgeCenter, out Vector3 ledgeForward);
+            bool ledgeFound = LedgeDetector.Detect(transform, cat.LedgeDetectConfig, out Vector3 ledgeCenter, out Vector3 ledgeForward);
 
             if (ledgeFound && Input.GetKeyUp(KeyCode.Space))
             {
