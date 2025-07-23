@@ -21,6 +21,7 @@ namespace tarkin.hideoutcat
         [Space(10)]
         [SerializeField] float jumpUpEndOffsetY = 0.5f;
         [SerializeField] float jumpSpeed = 3.7f;
+        [SerializeField] AnimationCurve jumpArcCurve;
 
         private enum CatState
         {
@@ -55,6 +56,9 @@ namespace tarkin.hideoutcat
         Vector3 ledgePos;
         Vector3 ledgeDir;
 
+        private Vector3 jumpStartPos;
+        private float jumpProgress;
+
         void Update()
         {
             limbsIK.yControl = jumpState == JumpState.None;
@@ -83,11 +87,30 @@ namespace tarkin.hideoutcat
         {
             if (jumpState == JumpState.Airborne)
             {
-                Vector3 ledgePosWithOffset = ledgePos - new Vector3(0, jumpUpEndOffsetY, 0);
+                Vector3 landPos = ledgePos - new Vector3(0, jumpUpEndOffsetY, 0);
 
-                transform.position = Vector3.MoveTowards(transform.position, ledgePosWithOffset, Time.deltaTime * jumpSpeed);
-                if (transform.position == ledgePosWithOffset)
+                float totalDistance = Vector3.Distance(jumpStartPos, landPos);
+
+                if (totalDistance > 0.001f)
                 {
+                    float duration = totalDistance / jumpSpeed;
+                    jumpProgress += Time.deltaTime / duration;
+                }
+                else
+                {
+                    jumpProgress = 1f;
+                }
+
+                if (jumpProgress < 1f)
+                {
+                    Vector3 currentPos = Vector3.Lerp(jumpStartPos, landPos, jumpProgress);
+                    currentPos.y += jumpArcCurve.Evaluate(jumpProgress);
+                    transform.position = currentPos;
+                }
+                else
+                {
+                    transform.position = landPos;
+
                     jumpState = JumpState.LandStart;
                     animator.SetBool("JumpingUp", false);
                 }
@@ -97,7 +120,8 @@ namespace tarkin.hideoutcat
                 if (animator.IsInTransition(0) && JumpUpAir.Active && JumpUpEnd.Active)
                 {
                     float t = animator.GetAnimatorTransitionInfo(0).normalizedTime;
-                    transform.SetPositionIndividualAxis(y: Mathf.Lerp(ledgePos.y - jumpUpEndOffsetY, ledgePos.y, t));
+                    Vector3 landPos = ledgePos - new Vector3(0, jumpUpEndOffsetY, 0);
+                    transform.SetPositionIndividualAxis(y: Mathf.Lerp(landPos.y, ledgePos.y, t));
                 }
                 else
                 {
@@ -130,6 +154,8 @@ namespace tarkin.hideoutcat
         public void TriggerAirborne()
         {
             jumpState = JumpState.Airborne;
+            jumpStartPos = transform.position;
+            jumpProgress = 0f;
         }
 
         void ResetAnimatorParameters()
