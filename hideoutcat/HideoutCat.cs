@@ -125,8 +125,6 @@ namespace tarkin.hideoutcat
                 return;
 
             movement = Vector2.zero;
-            animator.SetFloat("Thrust", 0);
-            animator.SetFloat("Turn", 0);
 
             jumpState = JumpState.WindUp;
 
@@ -134,6 +132,17 @@ namespace tarkin.hideoutcat
             jumpForward = ledgeDir;
 
             animator.SetBool("JumpingUp", true);
+
+            float horizontalDistToLedge = 
+                Mathf.Clamp01(
+                    Vector3.Distance(
+                        new Vector3(transform.position.x, 0, transform.position.z) + transform.forward * 0.3f, 
+                        new Vector3(ledgePos.x, 0, ledgePos.z)
+                    ) * 2f
+                );
+            // blend tree for the climbing animation based on the distance
+            animator.SetFloat("Thrust", horizontalDistToLedge);
+            animator.SetFloat("Turn", 0);
         }
 
         // called from mecanim clip event
