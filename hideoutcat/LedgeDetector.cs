@@ -13,6 +13,7 @@ namespace tarkin.hideoutcat
         private static float verticalOffset = 1.0f;
         private static float ledgeProbeWidth = 0.1f;
         private static float ledgeThicknessCheckDepth = 0.02f;
+        private static float angleRelativeToTransformLimit = 30f;
         private static LayerMask layerMask = 1 << 12;
 
         public static bool Detect(Transform transform, out Vector3 ledgeCenter, out Vector3 ledgeForward)
@@ -37,11 +38,13 @@ namespace tarkin.hideoutcat
             Vector3 ledgeEdge = (rightFaceHit.point - leftFaceHit.point).normalized;
             ledgeForward = Vector3.Cross(ledgeEdge, Vector3.up);
 
+            bool angleLimit = Vector3.Angle(transform.forward, ledgeForward) > angleRelativeToTransformLimit;
+            
 #if UNITY_EDITOR
-            D.raw(new Shape.Line(leftFaceHit.point, rightFaceHit.point), Color.cyan);
-            D.raw(new Shape.Arrow(ledgeCenter, Quaternion.LookRotation(ledgeForward), length: 0.1f, arrowheadScale: 3f), Color.green);
+            D.raw(new Shape.Line(leftFaceHit.point, rightFaceHit.point), angleLimit ? Color.red : Color.green);
+            D.raw(new Shape.Arrow(ledgeCenter, Quaternion.LookRotation(ledgeForward), length: 0.1f, arrowheadScale: 3f), angleLimit ? Color.red : Color.green);
 #endif
-            return true;
+            return !angleLimit;
         }
 
         private static bool FindLedgeSurface(Transform transform, out RaycastHit surfaceHit)
