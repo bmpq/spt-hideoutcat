@@ -1116,8 +1116,32 @@ MonoBehaviour:
   audio: {fileID: 0}
   limbsIK: {fileID: 2393375845104308216}
   catGraphTraverser: {fileID: 1769758885935965946}
-  jumpUpEndOffsetY: 0.5
+  jumpUpEndOffset: {x: -0.2, y: -0.4}
   jumpSpeed: 3.7
+  jumpArcCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.37643832
+      outSlope: 0.37643832
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.33333334
+      outWeight: 0.25900033
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.26910615
+      outSlope: 0
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0.3771233
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &8267818742247427661
 MonoBehaviour:
   m_ObjectHideFlags: 0

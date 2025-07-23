@@ -19,7 +19,7 @@ namespace tarkin.hideoutcat
         [SerializeField] CatGraphTraverser catGraphTraverser;
 
         [Space(10)]
-        [SerializeField] float jumpUpEndOffsetY = 0.5f;
+        [SerializeField] Vector2 jumpUpEndOffset = new Vector2(-0.2f, -0.4f);
         [SerializeField] float jumpSpeed = 3.7f;
         [SerializeField] AnimationCurve jumpArcCurve;
 
@@ -48,13 +48,12 @@ namespace tarkin.hideoutcat
             None,
             WindUp,
             Airborne,
-            LandStart,
-            LandEnd
+            Land
         }
 
         public JumpState jumpState { get; private set; }
-        Vector3 ledgePos;
-        Vector3 ledgeDir;
+        Vector3 jumpTarget;
+        Vector3 jumpForward;
 
         private Vector3 jumpStartPos;
         private float jumpProgress;
@@ -87,9 +86,7 @@ namespace tarkin.hideoutcat
         {
             if (jumpState == JumpState.Airborne)
             {
-                Vector3 landPos = ledgePos - new Vector3(0, jumpUpEndOffsetY, 0);
-
-                float totalDistance = Vector3.Distance(jumpStartPos, landPos);
+                float totalDistance = Vector3.Distance(jumpStartPos, jumpTarget);
 
                 if (totalDistance > 0.001f)
                 {
@@ -103,35 +100,20 @@ namespace tarkin.hideoutcat
 
                 if (jumpProgress < 1f)
                 {
-                    Vector3 currentPos = Vector3.Lerp(jumpStartPos, landPos, jumpProgress);
+                    Vector3 currentPos = Vector3.Lerp(jumpStartPos, jumpTarget, jumpProgress);
                     currentPos.y += jumpArcCurve.Evaluate(jumpProgress);
                     transform.position = currentPos;
                 }
                 else
                 {
-                    transform.position = landPos;
+                    transform.position = jumpTarget;
 
-                    jumpState = JumpState.LandStart;
+                    jumpState = JumpState.Land;
                     animator.SetBool("JumpingUp", false);
                 }
             }
-            else if (jumpState == JumpState.LandStart)
+            else if (jumpState == JumpState.Land)
             {
-                if (animator.IsInTransition(0) && JumpUpAir.Active && JumpUpEnd.Active)
-                {
-                    float t = animator.GetAnimatorTransitionInfo(0).normalizedTime;
-                    Vector3 landPos = ledgePos - new Vector3(0, jumpUpEndOffsetY, 0);
-                    transform.SetPositionIndividualAxis(y: Mathf.Lerp(landPos.y, ledgePos.y, t));
-                }
-                else
-                {
-                    jumpState = JumpState.LandEnd;
-                }
-            }
-            else if (jumpState == JumpState.LandEnd)
-            {
-                transform.SetPositionIndividualAxis(y: ledgePos.y);
-
                 if (!JumpUpEnd.Active)
                     jumpState = JumpState.None;
             }
@@ -142,10 +124,14 @@ namespace tarkin.hideoutcat
             if (jumpState != JumpState.None)
                 return;
 
+            movement = Vector2.zero;
+            animator.SetFloat("Thrust", 0);
+            animator.SetFloat("Turn", 0);
+
             jumpState = JumpState.WindUp;
 
-            this.ledgePos = ledgePos;
-            this.ledgeDir = ledgeDir;
+            jumpTarget = ledgePos + ledgeDir * jumpUpEndOffset.x + new Vector3(0, jumpUpEndOffset.y, 0);
+            jumpForward = ledgeDir;
 
             animator.SetBool("JumpingUp", true);
         }
