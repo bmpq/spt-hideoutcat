@@ -15,7 +15,6 @@ namespace tarkin.hideoutcat
         [SerializeField] CatPupils pupils;
         [SerializeField] CatAudio audio;
 
-        [SerializeField] CatLimbsIK limbsIK;
         [SerializeField] CatGraphTraverser catGraphTraverser;
 
         [Space(10)]
@@ -62,9 +61,6 @@ namespace tarkin.hideoutcat
 
         void Update()
         {
-            limbsIK.yControl = jumpState == JumpState.None;
-            limbsIK.tiltFactor = jumpState == JumpState.None ? 1f : 0;
-
             if (jumpState == JumpState.None)
             {
                 movement = Vector2.MoveTowards(movement, manualInput, Time.deltaTime * 5f);
