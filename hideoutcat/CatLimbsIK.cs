@@ -31,6 +31,11 @@ namespace tarkin.hideoutcat
         [SerializeField] private float groundCheckDistance = 0.5f;
         [SerializeField] private float groundCheckCastRadius = 0.05f;
 
+        [SerializeField] private float maxTiltAngle = 50f;
+        [SerializeField] private Vector3 jumpDownCheckOriginOffset = Vector3.zero;
+        [SerializeField] private Vector2 jumpDownCheckDir = Vector2.one;
+        [SerializeField] private float jumpDownCheckDistance = 1f;
+
         private HideoutCat cat;
 
         private Transform[] ikTargets;
@@ -152,6 +157,15 @@ namespace tarkin.hideoutcat
             currentTilt = Quaternion.Slerp(currentTilt, Quaternion.FromToRotation(Vector3.up, localGroundUp), Time.deltaTime * tiltCorrectionSpeed);
             tiltBone.localRotation = Quaternion.Slerp(tiltBone.localRotation, currentTilt, tiltFactor);
 
+            Vector3 downcheckOrigin = tiltBone.TransformPoint(jumpDownCheckOriginOffset);
+            Vector3 downcheckDir = tiltBone.forward * jumpDownCheckDir.x + tiltBone.up * jumpDownCheckDir.y;
+            downcheckDir.Normalize();
+
+            bool highEnough = !Physics.Raycast(downcheckOrigin, downcheckDir, jumpDownCheckDistance, raycastMask);
+#if UNITY_EDITOR
+            Debug.DrawRay(downcheckOrigin, downcheckDir * jumpDownCheckDistance, highEnough ? Color.cyan : Color.red, default, false);
+#endif
+
             if (cat.jumpState == HideoutCat.JumpState.AirborneDown)
             {
                 if (limbHits[0] || limbHits[1])
@@ -163,7 +177,9 @@ namespace tarkin.hideoutcat
             {
                 bool isTiltedForward = Vector3.Dot(tiltBone.forward, Vector3.up) < 0;
                 bool frontLimbsGrounded = (limbHits[0] && limbHits[1]);
-                if (isTiltedForward && !frontLimbsGrounded)
+
+
+                if (isTiltedForward && !frontLimbsGrounded && highEnough)
                 {
                     cat.JumpDownStart();
                 }
@@ -224,7 +240,6 @@ namespace tarkin.hideoutcat
 
             // clamping so we dont end up with a spider cat
             float angleWithUp = Vector3.Angle(Vector3.up, groundUp);
-            const float maxTiltAngle = 40f;
             if (angleWithUp > maxTiltAngle)
             {
                 groundUp = Vector3.Slerp(Vector3.up, groundUp, maxTiltAngle / angleWithUp);

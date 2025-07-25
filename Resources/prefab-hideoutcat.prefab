@@ -1137,25 +1137,25 @@ MonoBehaviour:
       time: 0
       value: 0
       inSlope: 2
-      outSlope: 0.8194761
+      outSlope: 0.27001682
       tangentMode: 1
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.11259542
+      outWeight: 0.11641221
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -0.8336046
+      inSlope: -0.24121489
       outSlope: 0
       tangentMode: 1
       weightedMode: 0
-      inWeight: 0.11068708
+      inWeight: 0.14312983
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   jumpDownGravityFactor: 0.4
-  jumpDownForwardFactor: 0.29
+  jumpDownForwardFactor: 0.5
 --- !u!114 &8267818742247427661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1212,6 +1212,10 @@ MonoBehaviour:
   tiltCorrectionSpeed: 8
   groundCheckDistance: 0.5
   groundCheckCastRadius: 0.04
+  maxTiltAngle: 50
+  jumpDownCheckOriginOffset: {x: 0, y: 0.2, z: -0.13}
+  jumpDownCheckDir: {x: 1, y: -0.69}
+  jumpDownCheckDistance: 0.62
 --- !u!114 &7354255939808837853
 MonoBehaviour:
   m_ObjectHideFlags: 0
