@@ -147,6 +147,93 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!206 &-8816319227424615001
+BlendTree:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MovementCrouched
+  m_Childs:
+  - serializedVersion: 2
+    m_Motion: {fileID: 1660282071026436910, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+    m_Threshold: 0
+    m_Position: {x: 0, y: 1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Random
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -6992221139225259631, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+    m_Threshold: 0.083333336
+    m_Position: {x: -1, y: 1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Random
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -4300123748080720382, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+    m_Threshold: 0.16666667
+    m_Position: {x: 1, y: 1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Random
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 6969506617001025737, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+    m_Threshold: 0.25
+    m_Position: {x: -1, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Random
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -7321482656315949465, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+    m_Threshold: 0.33333334
+    m_Position: {x: 1, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Random
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -7637072750202531495, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+    m_Threshold: 0.4166667
+    m_Position: {x: 0, y: -1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Random
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -8758614026253314832, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+    m_Threshold: 0.5
+    m_Position: {x: -1, y: -1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Random
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 2981918622167707125, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+    m_Threshold: 0.5833334
+    m_Position: {x: 1, y: -1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Random
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 974257327224083344, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+    m_Threshold: 0.6666667
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Random
+    m_Mirror: 0
+  m_BlendParameter: Turn
+  m_BlendParameterY: Thrust
+  m_MinThreshold: 0
+  m_MaxThreshold: 0.6666667
+  m_UseAutomaticThresholds: 1
+  m_NormalizedBlendValues: 0
+  m_BlendType: 2
 --- !u!1101 &-8798436405873887494
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -456,6 +543,21 @@ AnimatorStateTransition:
   m_InterruptionSource: 2
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!206 &-8175438540823192118
+BlendTree:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BlendTree
+  m_Childs: []
+  m_BlendParameter: Random
+  m_BlendParameterY: Random
+  m_MinThreshold: 0
+  m_MaxThreshold: 1
+  m_UseAutomaticThresholds: 1
+  m_NormalizedBlendValues: 0
+  m_BlendType: 0
 --- !u!1101 &-8010906920956472636
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -2078,7 +2180,7 @@ AnimatorStateMachine:
     m_Position: {x: 570, y: 300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7882944082287820321}
-    m_Position: {x: -350, y: -160, z: 0}
+    m_Position: {x: -340, y: -160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8549768044805564630}
     m_Position: {x: 640, y: -330, z: 0}
@@ -2639,7 +2741,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blend Tree
+  m_Name: MovementRegular
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 6748655205103625919, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
@@ -3272,6 +3374,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
+  - m_Name: Crouch
+    m_Type: 1
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -3408,6 +3516,37 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!206 &476623006830108659
+BlendTree:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MovementBlend
+  m_Childs:
+  - serializedVersion: 2
+    m_Motion: {fileID: -1009758202819893932}
+    m_Threshold: 0
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Random
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -8816319227424615001}
+    m_Threshold: 1
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Random
+    m_Mirror: 0
+  m_BlendParameter: Crouch
+  m_BlendParameterY: Random
+  m_MinThreshold: 0
+  m_MaxThreshold: 1
+  m_UseAutomaticThresholds: 1
+  m_NormalizedBlendValues: 0
+  m_BlendType: 0
 --- !u!1101 &630359907639097988
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -5460,12 +5599,12 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -1009758202819893932}
+  m_Motion: {fileID: 476623006830108659}
   m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
+  m_SpeedParameter: Random
+  m_MirrorParameter: Sitting
   m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_TimeParameter: Random
 --- !u!1102 &7988200225974922840
 AnimatorState:
   serializedVersion: 6
