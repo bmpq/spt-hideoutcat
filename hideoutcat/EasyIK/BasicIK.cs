@@ -42,6 +42,7 @@ namespace tarkin.hideoutcat.InverseKinematics
         private JointConstraint[] constraints;
 #if UNITY_EDITOR
         [Header("Editor Gizmos")]
+        public bool gizmoEnabled = true;
         [Range(0.0f, 1.0f)]
         public float gizmoSize = 0.05f;
 #endif
@@ -300,7 +301,7 @@ namespace tarkin.hideoutcat.InverseKinematics
 
         void OnDrawGizmos()
         {
-            if (!enabled) return;
+            if (!enabled || !gizmoEnabled) return;
 
             if (jointTransforms != null && jointTransforms.Length > 0)
             {

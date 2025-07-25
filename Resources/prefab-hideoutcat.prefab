@@ -200,19 +200,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.908
+      value: 15.551
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.663
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.176
+      value: -0.662
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9987692
+      value: 0.61743814
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       propertyPath: m_LocalRotation.x
@@ -220,7 +220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.049599323
+      value: -0.7866195
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       propertyPath: m_LocalRotation.z
@@ -232,7 +232,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -5.686
+      value: -103.741
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -773,6 +773,7 @@ MonoBehaviour:
   targetOffset: {x: 0, y: 0.016, z: 0}
   iterations: 16
   tolerance: -1
+  gizmoEnabled: 1
   gizmoSize: 0
 --- !u!114 &899577624782197359
 MonoBehaviour:
@@ -893,6 +894,7 @@ MonoBehaviour:
   targetOffset: {x: 0, y: 0.016, z: 0}
   iterations: 16
   tolerance: -1
+  gizmoEnabled: 1
   gizmoSize: 0
 --- !u!114 &7138253802066330250
 MonoBehaviour:
@@ -993,6 +995,7 @@ MonoBehaviour:
   targetOffset: {x: 0, y: 0.016, z: 0}
   iterations: 16
   tolerance: -1
+  gizmoEnabled: 1
   gizmoSize: 0
 --- !u!114 &3728813316821136199
 MonoBehaviour:
@@ -1114,8 +1117,17 @@ MonoBehaviour:
   eyelids: {fileID: 8742182495261012132}
   pupils: {fileID: 8517024226630987730}
   audio: {fileID: 0}
-  limbsIK: {fileID: 2393375845104308216}
   catGraphTraverser: {fileID: 1769758885935965946}
+  ledgeDetectConfig:
+    ForwardOffsetSurfaceSearch: 0.75
+    ForwardOffsetLedgeFaceCheck: 0.25
+    VerticalOffset: 1
+    LedgeProbeWidth: 0.1
+    LedgeThicknessCheckDepth: 0.02
+    AngleRelativeToTransformLimit: 30
+    LayerMask:
+      serializedVersion: 2
+      m_Bits: 4096
   jumpUpEndOffset: {x: -0.2, y: -0.4}
   jumpSpeed: 3.7
   jumpArcCurve:
@@ -1124,24 +1136,26 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.37643832
-      outSlope: 0.37643832
-      tangentMode: 0
-      weightedMode: 3
+      inSlope: 2
+      outSlope: 0.8194761
+      tangentMode: 1
+      weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.25900033
+      outWeight: 0.11259542
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -0.26910615
+      inSlope: -0.8336046
       outSlope: 0
       tangentMode: 1
-      weightedMode: 3
-      inWeight: 0.3771233
+      weightedMode: 0
+      inWeight: 0.11068708
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  jumpDownGravityFactor: 0.4
+  jumpDownForwardFactor: 0.29
 --- !u!114 &8267818742247427661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1191,14 +1205,13 @@ MonoBehaviour:
   - {fileID: 1831250094044244504}
   - {fileID: 974248443469276301}
   factor: 1
-  ikRaycastOvershoot: 0
   heightCorrectionSpeed: 15
   fallingSpeed: 0.7
   tiltBone: {fileID: 8156280373896278189}
   tiltFactor: 1
   tiltCorrectionSpeed: 8
-  steepSlopeAngle: 11
-  groundCheckDistance: 0.69
+  groundCheckDistance: 0.5
+  groundCheckCastRadius: 0.04
 --- !u!114 &7354255939808837853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1236,6 +1249,7 @@ MonoBehaviour:
   targetOffset: {x: 0, y: 0.016, z: 0}
   iterations: 15
   tolerance: -1
+  gizmoEnabled: 1
   gizmoSize: 0
 --- !u!114 &6577339390890581582
 MonoBehaviour:

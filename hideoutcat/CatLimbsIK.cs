@@ -68,6 +68,8 @@ namespace tarkin.hideoutcat
 
             float slopeAngle = Vector3.Angle(currentUp, Vector3.up);
 
+            bool[] limbHits = new bool[limbs.Length]; 
+
             int hitsFound = 0;
             for (int i = 0; i < limbs.Length; i++)
             {
@@ -80,10 +82,13 @@ namespace tarkin.hideoutcat
                 if (Physics.Raycast(a, dir, out RaycastHit hit, animatorDrivenLimbLength, raycastMask))
                 {
                     hitsFound++;
+                    limbHits[i] = true;
                     smallestAnimatorHitDelta = Mathf.Min(smallestAnimatorHitDelta, animatorDrivenLimbLength - hit.distance);
 
-                    ikTargets[i].position = hit.point;
-                    ikTargets[i].rotation = transform.rotation;
+                    ikTargets[i].position = hit.point; 
+                    // align the paw with the ground surface
+                    Vector3 pawForward = Vector3.ProjectOnPlane(transform.forward, hit.normal);
+                    ikTargets[i].rotation = Quaternion.LookRotation(pawForward, hit.normal);
 
                     Vector3[] animatorPos = new Vector3[limbs[i].Bones.Length];
                     Quaternion[] animatorRot = new Quaternion[limbs[i].Bones.Length];
@@ -105,6 +110,7 @@ namespace tarkin.hideoutcat
 #endif
                 }
 
+                // smoothing over two frames
                 for (int j = 0; j < limbs[i].Bones.Length; j++)
                 {
                     limbs[i].Bones[j].localPosition = Vector3.Lerp(
@@ -141,14 +147,32 @@ namespace tarkin.hideoutcat
                 transform.position += currentUp * yDelta;
             }
 
-            currentUp = GetGroundUp();
+            currentUp = GetGroundUp(out bool unstable);
             Vector3 localGroundUp = transform.InverseTransformDirection(currentUp);
             currentTilt = Quaternion.Slerp(currentTilt, Quaternion.FromToRotation(Vector3.up, localGroundUp), Time.deltaTime * tiltCorrectionSpeed);
             tiltBone.localRotation = Quaternion.Slerp(tiltBone.localRotation, currentTilt, tiltFactor);
 
+            if (cat.jumpState == HideoutCat.JumpState.AirborneDown)
+            {
+                if (limbHits[0] || limbHits[1])
+                {
+                    cat.JumpDownEnd();
+                }
+            }
+            else if (unstable)
+            {
+                bool isTiltedForward = Vector3.Dot(tiltBone.forward, Vector3.up) < 0;
+                bool frontLimbsGrounded = (limbHits[0] && limbHits[1]);
+                if (isTiltedForward && !frontLimbsGrounded)
+                {
+                    cat.JumpDownStart();
+                }
+            }
+
             StoreBoneCurrentData();
         }
 
+        // after ik solving
         void StoreBoneCurrentData()
         {
             foreach (var limb in limbs)
@@ -160,8 +184,10 @@ namespace tarkin.hideoutcat
             }
         }
 
-        Vector3 GetGroundUp()
+        Vector3 GetGroundUp(out bool unstable)
         {
+            unstable = false;
+
             if (cat.jumpState != HideoutCat.JumpState.None)
                 return Vector3.up;
 
@@ -202,6 +228,7 @@ namespace tarkin.hideoutcat
             if (angleWithUp > maxTiltAngle)
             {
                 groundUp = Vector3.Slerp(Vector3.up, groundUp, maxTiltAngle / angleWithUp);
+                unstable = true;
             }
 
             return groundUp;

@@ -49,6 +49,7 @@ namespace tarkin.hideoutcat
             None,
             WindUp,
             Airborne,
+            AirborneDown,
             Land
         }
 
@@ -58,6 +59,10 @@ namespace tarkin.hideoutcat
 
         private Vector3 jumpStartPos;
         private float jumpProgress;
+
+        private float jumpLandEndBlockTime;
+        [SerializeField] private float jumpDownGravityFactor = 0.4f;
+        [SerializeField] private float jumpDownForwardFactor = 0.3f;
 
         void Update()
         {
@@ -108,11 +113,19 @@ namespace tarkin.hideoutcat
 
                     jumpState = JumpState.Land;
                     animator.SetBool("JumpingUp", false);
+
+                    jumpLandEndBlockTime = 1f;
                 }
+            }
+            else if (jumpState == JumpState.AirborneDown)
+            {
+                transform.position += (Physics.gravity * jumpDownGravityFactor + transform.forward * jumpDownForwardFactor) * Time.deltaTime;
             }
             else if (jumpState == JumpState.Land)
             {
-                if (!JumpUpEnd.Active)
+                jumpLandEndBlockTime -= Time.deltaTime;
+
+                if (jumpLandEndBlockTime < 0)
                     jumpState = JumpState.None;
             }
         }
@@ -149,6 +162,27 @@ namespace tarkin.hideoutcat
             jumpState = JumpState.Airborne;
             jumpStartPos = transform.position;
             jumpProgress = 0f;
+        }
+
+        public void JumpDownStart()
+        {
+            jumpState = JumpState.WindUp;
+            animator.SetBool("JumpingDown", true);
+        }
+
+        // called from mecanim clip event
+        public void TriggerAirborneDown()
+        {
+            jumpState = JumpState.AirborneDown;
+            jumpStartPos = transform.position;
+            jumpProgress = 0f;
+        }
+
+        public void JumpDownEnd()
+        {
+            animator.SetBool("JumpingDown", false);
+            jumpState = JumpState.Land;
+            jumpLandEndBlockTime = 0.2f;
         }
 
         void ResetAnimatorParameters()
