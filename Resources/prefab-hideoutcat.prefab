@@ -689,7 +689,7 @@ MonoBehaviour:
   twistAxis: {x: 0.9817466, y: 0.04073089, z: 0.18578072}
   swingLimit: 6.4
   twistLimitMin: -134.42749
-  twistLimitMax: 14.922826
+  twistLimitMax: -5
   gizmoRadius: 0.05
   alpha: 0.25
   alwaysShowGizmo: 0
@@ -733,7 +733,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   twistAxis: {x: -0.57902706, y: 0.54981756, z: -0.60202026}
-  swingLimit: 37.2
+  swingLimit: 70
   twistLimitMin: -25.781033
   twistLimitMax: 64.94417
   gizmoRadius: 0.05
@@ -956,8 +956,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   twistAxis: {x: -0.15499103, y: -0.60901564, z: 0.77786744}
   swingLimit: 40.8
-  twistLimitMin: 190
-  twistLimitMax: 244.57945
+  twistLimitMin: -220
+  twistLimitMax: -151.68483
   gizmoRadius: 0.0513
   alpha: 0.25
   alwaysShowGizmo: 0
@@ -1147,7 +1147,8 @@ MonoBehaviour:
   - {fileID: 974248443469276301}
   factor: 1
   heightCorrectionSpeed: 15
-  fallingSpeed: 0.7
+  fallingSpeed: 0.8
+  heightCorrectionTime: 0.03
   tiltBone: {fileID: 8156280373896278189}
   tiltFactor: 1
   tiltCorrectionSpeed: 8
@@ -1158,7 +1159,7 @@ MonoBehaviour:
   jumpDownCheckDir: {x: 1, y: -0.69}
   jumpDownCheckDistance: 0.62
   showGroundNormalRaycasts: 0
-  showIKRaycasts: 0
+  showIKRaycasts: 1
   showJumpDownRaycast: 0
 --- !u!114 &3199014816685354727
 MonoBehaviour:
@@ -1243,8 +1244,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   twistAxis: {x: 0.07252801, y: -0.72826654, z: 0.6814452}
   swingLimit: 57.2
-  twistLimitMin: 175.07788
-  twistLimitMax: 213.78629
+  twistLimitMin: -210
+  twistLimitMax: -114.07055
   gizmoRadius: 0.0304
   alpha: 0.127
   alwaysShowGizmo: 0

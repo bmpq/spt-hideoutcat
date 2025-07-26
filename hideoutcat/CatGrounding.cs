@@ -18,7 +18,10 @@ namespace tarkin.hideoutcat
         [SerializeField] private float factor = 1f;
 
         [SerializeField] private float heightCorrectionSpeed = 15f;
-        [SerializeField] private float fallingSpeed = 0.2f;
+        [SerializeField] private float fallingSpeed = 0.8f;
+
+        [SerializeField] private float heightCorrectionTime = 0.03f;
+        private float inertiaVelocity = 0.0f;
 
         [Header("body tilt")]
         [SerializeField] private Transform tiltBone;
@@ -47,9 +50,7 @@ namespace tarkin.hideoutcat
 
         private Transform[] ikTargets;
 
-        private Dictionary<Transform, (Vector3, Quaternion)> prevFrame;
-
-        private float currentFallingSpeed;
+        private float currentYInertia;
 
         private Vector3 currentUp = Vector3.up;
 
@@ -66,9 +67,6 @@ namespace tarkin.hideoutcat
                 limbs[i].SetTarget(ikTargets[i]);
                 limbs[i].updateMode = UpdateMode.Script;
             }
-
-            prevFrame = new Dictionary<Transform, (Vector3, Quaternion)>();
-            StoreBoneCurrentData();
         }
 
         // lateupdate to read and write after animator
@@ -88,6 +86,9 @@ namespace tarkin.hideoutcat
                 Vector3 a = limbs[i].transform.position;
                 Vector3 b = limbs[i].LastBone.position - limbs[i].targetOffset;
                 float animatorDrivenLimbLength = Vector3.Distance(a, b);
+
+                if (i == 0)
+                    smallestAnimatorHitDelta = animatorDrivenLimbLength;
 
                 Vector3 dir = (b - a).normalized;
 
@@ -112,6 +113,13 @@ namespace tarkin.hideoutcat
 
                     limbs[i].SolveIK(); // modifies transforms
 
+                    for (int j = 0; j < limbs[i].Bones.Length; j++)
+                    {
+                        limbs[i].Bones[j].localPosition = Vector3.Lerp(
+                            animatorPos[j], limbs[i].Bones[j].localPosition, factor);
+                        limbs[i].Bones[j].localRotation = Quaternion.Slerp(
+                            animatorRot[j], limbs[i].Bones[j].localRotation, factor);
+                    }
 #if UNITY_EDITOR
                     if (showIKRaycasts)
                         Debug.DrawLine(a, a + dir * (animatorDrivenLimbLength), Color.red, default, false);
@@ -122,42 +130,32 @@ namespace tarkin.hideoutcat
                         Debug.DrawLine(a, a + dir * (animatorDrivenLimbLength), Color.white, default, false);
 #endif
                 }
-
-                // smoothing over two frames
-                for (int j = 0; j < limbs[i].Bones.Length; j++)
-                {
-                    limbs[i].Bones[j].localPosition = Vector3.Lerp(
-                        prevFrame[limbs[i].Bones[j].transform].Item1, limbs[i].Bones[j].localPosition, 0.5f);
-                    limbs[i].Bones[j].localRotation = Quaternion.Slerp(
-                        prevFrame[limbs[i].Bones[j].transform].Item2, limbs[i].Bones[j].localRotation, 0.5f);
-                }
             }
 
             if (yControl)
             {
-                float yDelta = 0f;
+                currentYInertia += Time.deltaTime * fallingSpeed * Physics.gravity.y;
 
-                bool falling = (hitsFound < 2);
-
-                if (falling)
+                if (hitsFound > 0)
                 {
-                    yDelta = Physics.gravity.y * currentFallingSpeed * Time.deltaTime;
+                    float targetInertia = 0f;
 
-                    currentFallingSpeed += Time.deltaTime * fallingSpeed;
-                    currentFallingSpeed = Mathf.Clamp(currentFallingSpeed, 0, 0.7f);
+                    if (smallestAnimatorHitDelta > 0)
+                        targetInertia = smallestAnimatorHitDelta * heightCorrectionSpeed;
+
+                    currentYInertia = Mathf.SmoothDamp(
+                        currentYInertia,
+                        targetInertia,
+                        ref inertiaVelocity,
+                        heightCorrectionTime
+                    );
                 }
                 else
                 {
-                    currentFallingSpeed = 0f;
-
-                    if (smallestAnimatorHitDelta > 0)
-                        yDelta = Time.deltaTime * smallestAnimatorHitDelta * heightCorrectionSpeed;
+                    currentUp = Vector3.up;
                 }
 
-                if (hitsFound == 0)
-                    currentUp = Vector3.up;
-
-                transform.position += currentUp * yDelta;
+                transform.position += currentUp * currentYInertia * Time.deltaTime;
             }
 
             currentUp = GetGroundUp(out bool unstable);
@@ -191,20 +189,6 @@ namespace tarkin.hideoutcat
                 if (isTiltedForward && !frontLimbsGrounded && highEnough)
                 {
                     cat.JumpDownStart();
-                }
-            }
-
-            StoreBoneCurrentData();
-        }
-
-        // after ik solving
-        void StoreBoneCurrentData()
-        {
-            foreach (var limb in limbs)
-            {
-                foreach (var bone in limb.Bones)
-                {
-                    prevFrame[bone.transform] = (bone.localPosition, bone.localRotation);
                 }
             }
         }
