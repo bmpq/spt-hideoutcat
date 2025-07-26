@@ -7,7 +7,7 @@ using Vertx.Debugging;
 
 namespace tarkin.hideoutcat
 {
-    internal class CatLimbsIK : MonoBehaviour
+    internal class CatGrounding : MonoBehaviour
     {
         [SerializeField] private LayerMask raycastMask;
 
@@ -36,6 +36,13 @@ namespace tarkin.hideoutcat
         [SerializeField] private Vector2 jumpDownCheckDir = Vector2.one;
         [SerializeField] private float jumpDownCheckDistance = 1f;
 
+#if UNITY_EDITOR
+        [Header("Debug")]
+        [SerializeField] private bool showGroundNormalRaycasts;
+        [SerializeField] private bool showIKRaycasts;
+        [SerializeField] private bool showJumpDownRaycast;
+#endif
+
         private HideoutCat cat;
 
         private Transform[] ikTargets;
@@ -48,7 +55,7 @@ namespace tarkin.hideoutcat
 
         private bool yControl;
 
-        void Awake()
+        void Start()
         {
             cat = GetComponent<HideoutCat>();
             ikTargets = new Transform[limbs.Length];
@@ -105,13 +112,14 @@ namespace tarkin.hideoutcat
 
                     limbs[i].SolveIK(); // modifies transforms
 
-                    float residual = limbs[i].GetSolveResidual();
 #if UNITY_EDITOR
-                    Debug.DrawLine(a, a + dir * (animatorDrivenLimbLength), Color.red, default, false);
+                    if (showIKRaycasts)
+                        Debug.DrawLine(a, a + dir * (animatorDrivenLimbLength), Color.red, default, false);
                 }
                 else
                 {
-                    Debug.DrawLine(a, a + dir * (animatorDrivenLimbLength), Color.white, default, false);
+                    if (showIKRaycasts)
+                        Debug.DrawLine(a, a + dir * (animatorDrivenLimbLength), Color.white, default, false);
 #endif
                 }
 
@@ -163,7 +171,8 @@ namespace tarkin.hideoutcat
 
             bool highEnough = !Physics.Raycast(downcheckOrigin, downcheckDir, jumpDownCheckDistance, raycastMask);
 #if UNITY_EDITOR
-            Debug.DrawRay(downcheckOrigin, downcheckDir * jumpDownCheckDistance, highEnough ? Color.cyan : Color.red, default, false);
+            if (showJumpDownRaycast)
+                Debug.DrawRay(downcheckOrigin, downcheckDir * jumpDownCheckDistance, highEnough ? Color.cyan : Color.red, default, false);
 #endif
 
             if (cat.jumpState == HideoutCat.JumpState.AirborneDown)
@@ -218,8 +227,11 @@ namespace tarkin.hideoutcat
                 if (Physics.SphereCast(source, groundCheckCastRadius, dir, out hit, groundCheckDistance, raycastMask))
                 {
 #if UNITY_EDITOR
-                    D.raw(new Shape.SphereCast(ray, groundCheckCastRadius, hit));
-                    D.raw(new Shape.Sphere(hit.point, 0.02f));
+                    if (showGroundNormalRaycasts)
+                    {
+                        D.raw(new Shape.SphereCast(ray, groundCheckCastRadius, hit));
+                        D.raw(new Shape.Sphere(hit.point, 0.02f));
+                    }
 #endif
                     return hit.point;
                 }

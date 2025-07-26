@@ -1,57 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3515413059203058512
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2759905700682162409}
-  - component: {fileID: 5477391558263866241}
-  m_Layer: 0
-  m_Name: LedgeDetector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &2759905700682162409
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3515413059203058512}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7050499215704064740}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5477391558263866241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3515413059203058512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6c254f42c28c7f4d90c9c759c747170, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  forwardOffsetSurfaceSearch: 0.7
-  forwardOffsetLedgeFaceCheck: 0.2
-  verticalOffset: 1
-  ledgeProbeWidth: 0.1
-  ledgeThicknessCheckDepth: 0.02
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 4096
 --- !u!1 &4148671283346462216
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,7 +481,7 @@ PrefabInstance:
     - target: {fileID: 6588840476291587600, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: ef9737ba75386774ca7318f3c997adec, type: 2}
+      objectReference: {fileID: 2100000, guid: 28cf3028c17fee6419d0b05914d6b1de, type: 2}
     - target: {fileID: 7273106286458846661, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       propertyPath: m_Layer
       value: 20
@@ -577,9 +525,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2759905700682162409}
     - targetCorrespondingSourceObject: {fileID: 2357158125395408585, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: 0
       addedObject: {fileID: 8477754880248407406}
@@ -604,7 +549,7 @@ PrefabInstance:
       addedObject: {fileID: 2393375845104308216}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7354255939808837853}
+      addedObject: {fileID: 3199014816685354727}
     - targetCorrespondingSourceObject: {fileID: -7359324546219400500, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8517024226630987730}
@@ -1044,11 +989,6 @@ MonoBehaviour:
   smoothTime: 0.2
   resetSmoothTime: 0.5
   weight: 0.603
---- !u!4 &7050499215704064740 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
-  m_PrefabInstance: {fileID: 7373200537904964879}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7219740012830784805 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 172110511649364010, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
@@ -1156,6 +1096,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   jumpDownGravityFactor: 0.4
   jumpDownForwardFactor: 0.5
+  showJumpState: 0
 --- !u!114 &8267818742247427661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1193,7 +1134,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7679683012631877726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -291193976, guid: b97fef369065ae24ca254e965ad50e19, type: 3}
+  m_Script: {fileID: -912949133, guid: b97fef369065ae24ca254e965ad50e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   raycastMask:
@@ -1211,12 +1152,15 @@ MonoBehaviour:
   tiltFactor: 1
   tiltCorrectionSpeed: 8
   groundCheckDistance: 0.5
-  groundCheckCastRadius: 0.04
+  groundCheckCastRadius: 0.05
   maxTiltAngle: 50
   jumpDownCheckOriginOffset: {x: 0, y: 0.2, z: -0.13}
   jumpDownCheckDir: {x: 1, y: -0.69}
   jumpDownCheckDistance: 0.62
---- !u!114 &7354255939808837853
+  showGroundNormalRaycasts: 0
+  showIKRaycasts: 0
+  showJumpDownRaycast: 0
+--- !u!114 &3199014816685354727
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1225,7 +1169,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7679683012631877726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 260744962, guid: 58aed44bf63b69d4ba8c013b06291847, type: 3}
+  m_Script: {fileID: -658090260, guid: b97fef369065ae24ca254e965ad50e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cat: {fileID: 4270258136006800725}

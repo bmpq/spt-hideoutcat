@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using tarkin.hideoutcat;
 
-namespace tarkin.hideoutcat.editor
+namespace tarkin.hideoutcat
 {
     internal class CatManualController : MonoBehaviour
     {
@@ -18,7 +17,7 @@ namespace tarkin.hideoutcat.editor
                 input.y *= 3f;
             }
 
-            cat.manualInput = input;
+            cat.MovementInput = input;
 
             bool ledgeFound = LedgeDetector.Detect(transform, cat.LedgeDetectConfig, out Vector3 ledgeCenter, out Vector3 ledgeForward);
 

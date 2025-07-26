@@ -41,7 +41,7 @@ namespace tarkin.hideoutcat
         private CatState _currentState = CatState.Idle;
         private CatState _prevState;
 
-        public Vector2 manualInput { get; set; }
+        public Vector2 MovementInput { get; set; }
         Vector2 movement;
 
         public enum JumpState
@@ -64,11 +64,16 @@ namespace tarkin.hideoutcat
         [SerializeField] private float jumpDownGravityFactor = 0.4f;
         [SerializeField] private float jumpDownForwardFactor = 0.3f;
 
+#if UNITY_EDITOR
+        [Header("Debug")]
+        [SerializeField] private bool showJumpState;
+#endif
+
         void Update()
         {
             if (jumpState == JumpState.None)
             {
-                movement = Vector2.MoveTowards(movement, manualInput, Time.deltaTime * 5f);
+                movement = Vector2.MoveTowards(movement, MovementInput, Time.deltaTime * 5f);
                 animator.SetFloat("Thrust", movement.y);
                 animator.SetFloat("Turn", movement.x);
             }
@@ -81,7 +86,10 @@ namespace tarkin.hideoutcat
 #if UNITY_EDITOR
         void OnDrawGizmos()
         {
-            Handles.Label(transform.position, jumpState.ToString());
+            if (showJumpState)
+            {
+                Handles.Label(transform.position, jumpState.ToString());
+            }
         }
 #endif
 
