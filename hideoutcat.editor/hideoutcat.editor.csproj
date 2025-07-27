@@ -27,6 +27,6 @@
   </ItemGroup>
 
   <Target Name="CopyDllAfterBuildEditor" AfterTargets="Build">
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(UnityProjectPath)\Assets\HideoutCat" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(UnityProjectPath)\Assets\HideoutCat\Assemblies" />
   </Target>
 </Project>

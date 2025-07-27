@@ -27,7 +27,7 @@ namespace tarkin.hideoutcat
         [SerializeField] private Transform tiltBone;
         private Quaternion currentTilt;
         [Range(0f, 1f)]
-        public float tiltFactor = 1f;
+        [SerializeField] private float tiltFactor = 1f;
 
         [SerializeField] private float tiltCorrectionSpeed = 8f;
 
@@ -45,20 +45,17 @@ namespace tarkin.hideoutcat
         [SerializeField] private bool showIKRaycasts;
         [SerializeField] private bool showJumpDownRaycast;
 #endif
-
-        private HideoutCat cat;
-
         private Transform[] ikTargets;
 
         private float currentYInertia;
-
         private Vector3 currentUp = Vector3.up;
 
-        private bool yControl;
+        public Vector3 HeightCorrectionOffset { get; private set; }
+        public bool ShouldFallForward { get; private set; }
+        public bool FrontLimbsContact { get; private set; }
 
         void Start()
         {
-            cat = GetComponent<HideoutCat>();
             ikTargets = new Transform[limbs.Length];
 
             for (int i = 0; i < ikTargets.Length; i++)
@@ -69,16 +66,13 @@ namespace tarkin.hideoutcat
             }
         }
 
-        // lateupdate to read and write after animator
-        void LateUpdate()
+        public void PerformIKAndCalculateHeightCorrection()
         {
-            yControl = cat.jumpState == HideoutCat.JumpState.None;
-
             float smallestAnimatorHitDelta = 1f;
 
             float slopeAngle = Vector3.Angle(currentUp, Vector3.up);
 
-            bool[] limbHits = new bool[limbs.Length]; 
+            bool[] limbHits = new bool[limbs.Length];
 
             int hitsFound = 0;
             for (int i = 0; i < limbs.Length; i++)
@@ -98,7 +92,7 @@ namespace tarkin.hideoutcat
                     limbHits[i] = true;
                     smallestAnimatorHitDelta = Mathf.Min(smallestAnimatorHitDelta, animatorDrivenLimbLength - hit.distance);
 
-                    ikTargets[i].position = hit.point; 
+                    ikTargets[i].position = hit.point;
                     // align the paw with the ground surface
                     Vector3 pawForward = Vector3.ProjectOnPlane(transform.forward, hit.normal);
                     ikTargets[i].rotation = Quaternion.LookRotation(pawForward, hit.normal);
@@ -132,73 +126,68 @@ namespace tarkin.hideoutcat
                 }
             }
 
-            if (yControl)
+            currentYInertia += Time.deltaTime * fallingSpeed * Physics.gravity.y;
+
+            if (hitsFound > 0)
             {
-                currentYInertia += Time.deltaTime * fallingSpeed * Physics.gravity.y;
+                float targetInertia = 0f;
 
-                if (hitsFound > 0)
-                {
-                    float targetInertia = 0f;
+                if (smallestAnimatorHitDelta > 0)
+                    targetInertia = smallestAnimatorHitDelta * heightCorrectionSpeed;
 
-                    if (smallestAnimatorHitDelta > 0)
-                        targetInertia = smallestAnimatorHitDelta * heightCorrectionSpeed;
-
-                    currentYInertia = Mathf.SmoothDamp(
-                        currentYInertia,
-                        targetInertia,
-                        ref inertiaVelocity,
-                        heightCorrectionTime
-                    );
-                }
-                else
-                {
-                    currentUp = Vector3.up;
-                }
-
-                transform.position += currentUp * currentYInertia * Time.deltaTime;
+                currentYInertia = Mathf.SmoothDamp(
+                    currentYInertia,
+                    targetInertia,
+                    ref inertiaVelocity,
+                    heightCorrectionTime
+                );
             }
+            else
+            {
+                currentUp = Vector3.up;
+            }
+
+            HeightCorrectionOffset = currentUp * currentYInertia * Time.deltaTime;
 
             currentUp = GetGroundUp(out bool unstable);
-            Vector3 localGroundUp = transform.InverseTransformDirection(currentUp);
-            currentTilt = Quaternion.Slerp(currentTilt, Quaternion.FromToRotation(Vector3.up, localGroundUp), Time.deltaTime * tiltCorrectionSpeed);
-            tiltBone.localRotation = Quaternion.Slerp(tiltBone.localRotation, currentTilt, tiltFactor);
 
-            Vector3 downcheckOrigin = tiltBone.TransformPoint(jumpDownCheckOriginOffset);
-            Vector3 downcheckDir = tiltBone.forward * jumpDownCheckDir.x + tiltBone.up * jumpDownCheckDir.y;
-            downcheckDir.Normalize();
+            FrontLimbsContact = limbHits[0] || limbHits[1];
 
-            bool highEnough = !Physics.Raycast(downcheckOrigin, downcheckDir, jumpDownCheckDistance, raycastMask);
-#if UNITY_EDITOR
-            if (showJumpDownRaycast)
-                Debug.DrawRay(downcheckOrigin, downcheckDir * jumpDownCheckDistance, highEnough ? Color.cyan : Color.red, default, false);
-#endif
-
-            if (cat.jumpState == HideoutCat.JumpState.AirborneDown)
-            {
-                if (limbHits[0] || limbHits[1])
-                {
-                    cat.JumpDownEnd();
-                }
-            }
-            else if (unstable)
+            ShouldFallForward = false;
+            if (unstable)
             {
                 bool isTiltedForward = Vector3.Dot(tiltBone.forward, Vector3.up) < 0;
                 bool frontLimbsGrounded = (limbHits[0] && limbHits[1]);
 
-
-                if (isTiltedForward && !frontLimbsGrounded && highEnough)
+                if (isTiltedForward && !frontLimbsGrounded)
                 {
-                    cat.JumpDownStart();
+                    Vector3 downcheckOrigin = tiltBone.TransformPoint(jumpDownCheckOriginOffset);
+                    Vector3 downcheckDir = tiltBone.forward * jumpDownCheckDir.x + tiltBone.up * jumpDownCheckDir.y;
+                    downcheckDir.Normalize();
+
+                    bool highEnough = !Physics.Raycast(downcheckOrigin, downcheckDir, jumpDownCheckDistance, raycastMask);
+#if UNITY_EDITOR
+                    if (showJumpDownRaycast)
+                        Debug.DrawRay(downcheckOrigin, downcheckDir * jumpDownCheckDistance, highEnough ? Color.cyan : Color.red, default, false);
+#endif
+                    if (highEnough)
+                    {
+                        ShouldFallForward = true;
+                    }
                 }
             }
+        }
+
+        public void AlignTiltToGround()
+        {
+            Vector3 localGroundUp = transform.InverseTransformDirection(currentUp);
+            currentTilt = Quaternion.Slerp(currentTilt, Quaternion.FromToRotation(Vector3.up, localGroundUp), Time.deltaTime * tiltCorrectionSpeed);
+            tiltBone.localRotation = Quaternion.Slerp(tiltBone.localRotation, currentTilt, tiltFactor);
         }
 
         Vector3 GetGroundUp(out bool unstable)
         {
             unstable = false;
-
-            if (cat.jumpState != HideoutCat.JumpState.None)
-                return Vector3.up;
 
             Vector3 GetGroundTouchPoint(Vector3 source, Vector3 dir)
             {

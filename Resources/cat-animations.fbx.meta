@@ -1856,7 +1856,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.9250815
-        functionName: TriggerAirborneDown
+        functionName: OnAirborne
         data: 
         objectReferenceParameter: {fileID: 7679683012631877726, guid: 142eb38b12bbaa44c99692dab5dd47b8, type: 3}
         floatParameter: 0
@@ -1890,7 +1890,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.80862534
+        functionName: OnAirborne
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -1950,7 +1957,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.8769763
-        functionName: TriggerAirborne
+        functionName: OnAirborne
         data: 
         objectReferenceParameter: {fileID: 7679683012631877726, guid: 142eb38b12bbaa44c99692dab5dd47b8, type: 3}
         floatParameter: 0

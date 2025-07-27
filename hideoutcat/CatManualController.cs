@@ -19,11 +19,9 @@ namespace tarkin.hideoutcat
 
             cat.MovementInput = input;
 
-            bool ledgeFound = LedgeDetector.Detect(transform, cat.LedgeDetectConfig, out Vector3 ledgeCenter, out Vector3 ledgeForward);
-
-            if (ledgeFound && Input.GetKeyUp(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                cat.InitiateJump(ledgeCenter, ledgeForward);
+                cat.RequestJumpUp();
             }
         }
     }

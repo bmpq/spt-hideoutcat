@@ -35,7 +35,7 @@
   </Target>
 
   <Target Name="CopyDllAfterBuildEditor" AfterTargets="Build">
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="T:\extract\UNITYPROJECT_EFT35392\Assets\HideoutCat" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="T:\extract\UNITYPROJECT_EFT35392\Assets\HideoutCat\Assemblies" />
   </Target>
   
 </Project>
