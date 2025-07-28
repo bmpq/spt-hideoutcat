@@ -549,6 +549,9 @@ PrefabInstance:
       addedObject: {fileID: 2393375845104308216}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 5426154022087937153}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 80241395716597603}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: -1
@@ -583,12 +586,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4357160830684876920, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3123208910493343935}
+    - targetCorrespondingSourceObject: {fileID: 4357160830684876920, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8715483757921549514}
     - targetCorrespondingSourceObject: {fileID: -2226134936142707648, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9144210261647794367}
     - targetCorrespondingSourceObject: {fileID: -2226134936142707648, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8742182495261012132}
+    - targetCorrespondingSourceObject: {fileID: -2226134936142707648, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1039500090610977662}
     - targetCorrespondingSourceObject: {fileID: 2759499767879597438, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8018396695116387870}
@@ -642,12 +651,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetLookAt: {fileID: 0}
-  targetOffset: {x: 0, y: 0, z: 0}
-  _rotationOffsetEuler: {x: -15, y: 0, z: 0}
-  customUpVector: {x: 0, y: 1, z: 0}
-  useAngleLimits: 1
-  minAngleLimits: {x: -40, y: -20, z: -20}
-  maxAngleLimits: {x: 80, y: 20, z: 20}
+  targetOffset: {x: 0, y: 0.04, z: 0}
+  worldUpVector: {x: 0, y: 1, z: 0}
   smoothTime: 0.2
   resetSmoothTime: 0.5
   weight: 1
@@ -667,6 +672,26 @@ MonoBehaviour:
   angleOpen: -42
   boneEyelidL: {fileID: 1078264573473680701}
   boneEyelidR: {fileID: 350523872686705680}
+--- !u!114 &1039500090610977662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 525215551651045711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1374408481, guid: b97fef369065ae24ca254e965ad50e19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  twistAxis: {x: -0.0059399446, y: -0.5746686, z: 0.8183647}
+  swingLimit: 60
+  twistLimitMin: -42.99582
+  twistLimitMax: 74.6578
+  gizmoRadius: 0.05
+  alpha: 0.25
+  alwaysShowGizmo: 0
+  showCurrentRotation: 1
 --- !u!4 &1078264573473680701 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7540183809665402930, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
@@ -721,6 +746,7 @@ MonoBehaviour:
   targetOffset: {x: 0, y: 0.016, z: 0}
   iterations: 16
   tolerance: -1
+  rotateLastBoneWithTargetRotation: 0
   gizmoEnabled: 1
   gizmoSize: 0
 --- !u!114 &899577624782197359
@@ -842,6 +868,7 @@ MonoBehaviour:
   targetOffset: {x: 0, y: 0.016, z: 0}
   iterations: 16
   tolerance: -1
+  rotateLastBoneWithTargetRotation: 0
   gizmoEnabled: 1
   gizmoSize: 0
 --- !u!114 &7138253802066330250
@@ -943,6 +970,7 @@ MonoBehaviour:
   targetOffset: {x: 0, y: 0.016, z: 0}
   iterations: 16
   tolerance: -1
+  rotateLastBoneWithTargetRotation: 0
   gizmoEnabled: 1
   gizmoSize: 0
 --- !u!114 &3728813316821136199
@@ -983,15 +1011,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetLookAt: {fileID: 0}
-  targetOffset: {x: 0, y: 0, z: 0}
-  _rotationOffsetEuler: {x: -15, y: 0, z: 0}
-  customUpVector: {x: 0, y: 1, z: 0}
-  useAngleLimits: 1
-  minAngleLimits: {x: -50, y: -20, z: -20}
-  maxAngleLimits: {x: 80, y: 20, z: 20}
+  targetOffset: {x: 0, y: 0.04, z: 0}
+  worldUpVector: {x: 0, y: 1, z: 0}
   smoothTime: 0.2
   resetSmoothTime: 0.5
-  weight: 0.603
+  weight: 1
+--- !u!114 &8715483757921549514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6495704018851771767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1374408481, guid: b97fef369065ae24ca254e965ad50e19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  twistAxis: {x: -0.0059399446, y: -0.5746686, z: 0.8183647}
+  swingLimit: 36
+  twistLimitMin: -42.99582
+  twistLimitMax: 11.185449
+  gizmoRadius: 0.05
+  alpha: 0.25
+  alwaysShowGizmo: 0
+  showCurrentRotation: 1
 --- !u!1 &7219740012830784805 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 172110511649364010, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
@@ -1061,8 +1105,9 @@ MonoBehaviour:
   pupils: {fileID: 8517024226630987730}
   audio: {fileID: 0}
   graphTraverser: {fileID: 1769758885935965946}
-  jumpHandler: {fileID: 80241395716597603}
+  jumpHandler: {fileID: 5426154022087937153}
   grounding: {fileID: 2393375845104308216}
+  attackHandler: {fileID: 0}
 --- !u!114 &8267818742247427661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1127,6 +1172,60 @@ MonoBehaviour:
   showGroundNormalRaycasts: 0
   showIKRaycasts: 1
   showJumpDownRaycast: 0
+--- !u!114 &5426154022087937153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7679683012631877726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1962672593, guid: b97fef369065ae24ca254e965ad50e19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 5340543037805543768}
+  jumpUpExitDuration: 1
+  jumpDownExitDuration: 0.2
+  ledgeDetectConfig:
+    ForwardOffsetSurfaceSearch: 0.75
+    ForwardOffsetLedgeFaceCheck: 0.25
+    VerticalOffset: 1
+    LedgeProbeWidth: 0.1
+    LedgeThicknessCheckDepth: 0.02
+    AngleRelativeToTransformLimit: 30
+    LayerMask:
+      serializedVersion: 2
+      m_Bits: 4096
+  jumpUpEndOffset: {x: -0.2, y: -0.4}
+  jumpSpeed: 3.7
+  jumpArcCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 0.22106853
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.11666667
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.15817782
+      outSlope: 0
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.1229167
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpDownGravityFactor: 0.4
+  jumpDownForwardFactor: 0.5
+  showJumpState: 0
 --- !u!114 &80241395716597603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1140,7 +1239,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5340543037805543768}
-  jumpStateExitTime: 1
+  jumpUpExitDuration: 1
+  jumpDownExitDuration: 1
   ledgeDetectConfig:
     ForwardOffsetSurfaceSearch: 0.75
     ForwardOffsetLedgeFaceCheck: 0.25
@@ -1217,6 +1317,7 @@ MonoBehaviour:
   targetOffset: {x: 0, y: 0.016, z: 0}
   iterations: 15
   tolerance: -1
+  rotateLastBoneWithTargetRotation: 0
   gizmoEnabled: 1
   gizmoSize: 0
 --- !u!114 &6577339390890581582

@@ -1,20 +1,20 @@
 ﻿using UnityEngine;
+using tarkin.hideoutcat.InverseKinematics;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace tarkin.hideoutcat
 {
+    [ExecuteAlways]
     public class BoneLookAt : MonoBehaviour
     {
         public Transform targetLookAt;
 
         [Space(10)]
         public Vector3 targetOffset = Vector3.zero;
-        [SerializeField] private Vector3 _rotationOffsetEuler = Vector3.zero;
-        public Vector3 customUpVector = Vector3.zero; // if zero use local
-
-        [Space(10)]
-        public bool useAngleLimits = false;
-        public Vector3 minAngleLimits = new Vector3(-45f, -45f, -45f);
-        public Vector3 maxAngleLimits = new Vector3(45f, 45f, 45f);
+        public Vector3 worldUpVector = Vector3.up;
 
         [Space(10)]
         public float smoothTime = 0.2f;
@@ -23,137 +23,109 @@ namespace tarkin.hideoutcat
         [Range(0, 1)]
         public float weight = 1f;
 
-        public Vector3 rotationOffsetEuler
-        {
-            get
-            {
-                return _rotationOffsetEuler;
-            }
-            set
-            {
-                _rotationOffsetEuler = value;
-                _rotationOffset = Quaternion.Euler(_rotationOffsetEuler);
-            }
-        }
-
-        private Quaternion _rotationOffset = Quaternion.identity;
+        private JointConstraint _jointConstraint;
 
         private Quaternion _currentRotation;
         private Quaternion _targetRotation;
-        private Vector3 _currentAngularVelocity = Vector3.zero;
-        private Quaternion _resetRotation; // Store rotation to reset to when target is null
-        private bool _wasTargetNotNull = true; // Track if target was not null in the previous frame
-        private float weightTargetNotNull = 1f;
+        private Vector3 _currentAngularVelocity;
 
-#if UNITY_EDITOR
-        void OnValidate()
+        private float _targetPresenceWeight = 0f;
+
+        void Awake()
         {
-            rotationOffsetEuler = _rotationOffsetEuler;
-        }
-#endif
+            TryGetComponent(out _jointConstraint);
 
-        void Start()
+            _currentRotation = transform.localRotation;
+        }
+
+        void OnEnable()
         {
             _currentRotation = transform.localRotation;
-            _resetRotation = transform.localRotation; // Initialize resetRotation with current rotation
+            _targetPresenceWeight = (targetLookAt != null) ? 1f : 0f;
         }
 
-        // running LateUpdate() to override Animator
+        // run after animator
         void LateUpdate()
         {
-            if (transform == null)
-            {
-                return;
-            }
+            if (!enabled) return;
 
-            // smooth target losing and acquiring
-            weightTargetNotNull = Mathf.Lerp(weightTargetNotNull, targetLookAt == null ? 0 : 1f, Time.deltaTime * 3f);
+            float targetWeight = (targetLookAt != null) ? 1f : 0f;
+            _targetPresenceWeight = Mathf.Lerp(_targetPresenceWeight, targetWeight, Time.deltaTime * 5f);
 
-            if (targetLookAt == null)
+            if (targetLookAt != null)
             {
-                if (_wasTargetNotNull) // Target just became null, store current rotation
+                Vector3 targetPosition = targetLookAt.position + targetOffset;
+                Vector3 direction = targetPosition - transform.position;
+
+                if (direction.sqrMagnitude > 0.001f)
                 {
-                    _resetRotation = transform.localRotation;
-                    _wasTargetNotNull = false;
+                    Quaternion lookAtWorldRotation = Quaternion.LookRotation(direction, worldUpVector);
+
+                    Quaternion targetLocalRotation = (transform.parent != null)
+                        ? Quaternion.Inverse(transform.parent.rotation) * lookAtWorldRotation
+                        : lookAtWorldRotation;
+
+                    if (_jointConstraint != null)
+                    {
+                        targetLocalRotation = ApplyJointConstraint(targetLocalRotation);
+                    }
+
+                    _targetRotation = targetLocalRotation;
                 }
-                _targetRotation = _resetRotation; // Reset target rotation to the stored reset rotation
             }
             else
             {
-                _wasTargetNotNull = true; // Target is not null, so set the flag for next null check
-
-                // Calculate the target rotation as before
-                Vector3 finalTargetPosition = targetLookAt.position + targetOffset;
-                Vector3 upVector = (customUpVector == Vector3.zero) ? transform.up : customUpVector;
-                Quaternion lookAtRotation = Quaternion.LookRotation(finalTargetPosition - transform.position, upVector);
-
-                Quaternion targetLocalRotation = Quaternion.identity;
-                if (transform.parent != null)
-                {
-                    targetLocalRotation = Quaternion.Inverse(transform.parent.rotation) * lookAtRotation;
-                }
-                else
-                {
-                    targetLocalRotation = lookAtRotation;
-                }
-
-                targetLocalRotation *= _rotationOffset;
-
-                if (useAngleLimits)
-                {
-                    targetLocalRotation = ClampRotation(targetLocalRotation);
-                }
-
-                _targetRotation = targetLocalRotation;
             }
 
-
-            float currentSmoothTime = (targetLookAt == null) ? resetSmoothTime : smoothTime;
-
+            float currentSmoothTime = (targetLookAt != null) ? smoothTime : resetSmoothTime;
             _currentRotation = SmoothDampQuaternion(_currentRotation, _targetRotation, ref _currentAngularVelocity, currentSmoothTime);
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, _currentRotation, weight * weightTargetNotNull);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, _currentRotation, weight * _targetPresenceWeight);
+        }
 
+        private Quaternion ApplyJointConstraint(Quaternion localRotation)
+        {
+            Vector3 axis = _jointConstraint.twistAxis.normalized;
+
+            JointConstraint.DecomposeSwingTwist(localRotation, axis, out Quaternion swing, out Quaternion twist);
+
+            swing.ToAngleAxis(out float swingAngle, out Vector3 swingAxis);
+            if (swingAngle > _jointConstraint.swingLimit)
+            {
+                swing = Quaternion.AngleAxis(_jointConstraint.swingLimit, swingAxis);
+            }
+
+            twist.ToAngleAxis(out float twistAngle, out Vector3 twistAxis_internal);
+
+            if (twistAngle > 180f) twistAngle -= 360f;
+
+            if (Vector3.Dot(twistAxis_internal, axis) < 0)
+            {
+                twistAngle *= -1f;
+            }
+
+            float clampedTwistAngle = Mathf.Clamp(twistAngle, _jointConstraint.twistLimitMin, _jointConstraint.twistLimitMax);
+            twist = Quaternion.AngleAxis(clampedTwistAngle, axis);
+
+            return swing * twist;
         }
 
         public static Quaternion SmoothDampQuaternion(Quaternion current, Quaternion target, ref Vector3 currentAngularVelocity, float smoothTime)
         {
-            // idk bro, I stole this, seems to work fine
-            float dot = Quaternion.Dot(current, target);
-            float sign = dot > 0f ? 1f : -1f;
-            target.x *= sign;
-            target.y *= sign;
-            target.z *= sign;
-            target.w *= sign;
+            if (Quaternion.Dot(current, target) < 0)
+            {
+                target = new Quaternion(-target.x, -target.y, -target.z, -target.w);
+            }
 
-            Vector3 eulerAngles = new Vector3(
-               Mathf.SmoothDampAngle(current.eulerAngles.x, target.eulerAngles.x, ref currentAngularVelocity.x, smoothTime),
-               Mathf.SmoothDampAngle(current.eulerAngles.y, target.eulerAngles.y, ref currentAngularVelocity.y, smoothTime),
-               Mathf.SmoothDampAngle(current.eulerAngles.z, target.eulerAngles.z, ref currentAngularVelocity.z, smoothTime)
-           );
+            Quaternion delta = target * Quaternion.Inverse(current);
+            delta.ToAngleAxis(out float angle, out Vector3 axis);
 
-            return Quaternion.Euler(eulerAngles);
-        }
+            if (angle > 180f) angle -= 360f;
 
-        private Quaternion ClampRotation(Quaternion targetRotation)
-        {
-            Vector3 eulerAngles = targetRotation.eulerAngles;
+            float smoothedAngle = Mathf.SmoothDampAngle(0, angle, ref currentAngularVelocity.x, smoothTime);
 
-            eulerAngles.x = NormalizeAngle(eulerAngles.x);
-            eulerAngles.y = NormalizeAngle(eulerAngles.y);
-            eulerAngles.z = NormalizeAngle(eulerAngles.z);
+            Quaternion smoothedDelta = Quaternion.AngleAxis(smoothedAngle, axis);
 
-            eulerAngles.x = Mathf.Clamp(eulerAngles.x, minAngleLimits.x, maxAngleLimits.x);
-            eulerAngles.y = Mathf.Clamp(eulerAngles.y, minAngleLimits.y, maxAngleLimits.y);
-            eulerAngles.z = Mathf.Clamp(eulerAngles.z, minAngleLimits.z, maxAngleLimits.z);
-
-            return Quaternion.Euler(eulerAngles);
-        }
-
-        private float NormalizeAngle(float angle)
-        {
-            while (angle > 180) angle -= 360;
-            while (angle < -180) angle += 360;
-            return angle;
+            return smoothedDelta * current;
         }
     }
 }
