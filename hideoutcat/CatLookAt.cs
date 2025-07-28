@@ -2,7 +2,7 @@
 
 namespace tarkin.hideoutcat
 {
-    internal class CatLookAt : MonoBehaviour
+    public class CatLookAt : MonoBehaviour
     {
         [SerializeField] BoneLookAt constraintHead;
         [SerializeField] BoneLookAt constraintNeck;
@@ -14,6 +14,11 @@ namespace tarkin.hideoutcat
 
         public bool tracking => constraintNeck != null && constraintNeck.targetLookAt != null;
         
+        void Start()
+        {
+            SetLookTarget(null);
+        }
+
         public void SetLookAtPlayer()
         {
             if (cameraMain == null)
