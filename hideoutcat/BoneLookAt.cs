@@ -31,11 +31,16 @@ namespace tarkin.hideoutcat
 
         private float _targetPresenceWeight = 0f;
 
+        private BoneLookAt parent;
+        private bool solvedThisFrame;
+
         void Awake()
         {
             TryGetComponent(out _jointConstraint);
 
             _currentRotation = transform.localRotation;
+
+            parent = transform.parent?.GetComponent<BoneLookAt>();
         }
 
         void OnEnable()
@@ -44,10 +49,25 @@ namespace tarkin.hideoutcat
             _targetPresenceWeight = (targetLookAt != null) ? 1f : 0f;
         }
 
+        void Update()
+        {
+            solvedThisFrame = false;
+        }
+
         // run after animator
         void LateUpdate()
         {
             if (!enabled) return;
+
+            Solve();
+        }
+
+        public void Solve()
+        {
+            parent?.Solve();
+
+            if (solvedThisFrame || !enabled)
+                return;
 
             float targetWeight = (targetLookAt != null) ? 1f : 0f;
             _targetPresenceWeight = Mathf.Lerp(_targetPresenceWeight, targetWeight, Time.deltaTime * 5f);
@@ -80,6 +100,8 @@ namespace tarkin.hideoutcat
             float currentSmoothTime = (targetLookAt != null) ? smoothTime : resetSmoothTime;
             _currentRotation = SmoothDampQuaternion(_currentRotation, _targetRotation, ref _currentAngularVelocity, currentSmoothTime);
             transform.localRotation = Quaternion.Slerp(transform.localRotation, _currentRotation, weight * _targetPresenceWeight);
+
+            solvedThisFrame = true;
         }
 
         private Quaternion ApplyJointConstraint(Quaternion localRotation)
