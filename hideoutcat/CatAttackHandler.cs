@@ -14,7 +14,7 @@ namespace tarkin.hideoutcat
         [SerializeField] private Transform visionOrigin;
         [SerializeField] private float visionFOV = 200f;
         [SerializeField] private float visionMaxDistance = 20f;
-        [SerializeField] private LayerMask layerMask = 1 << 12;
+        [SerializeField] private LayerMask obstacleLayerMask = 1 << 12;
 
 #if UNITY_EDITOR
         [SerializeField] private bool visualizeFOV;
@@ -45,9 +45,9 @@ namespace tarkin.hideoutcat
 
         private float stateTimer;
 
-        private int P_POUNCE_PRIMING = Animator.StringToHash("PouncePriming");
-        private int P_POUNCE = Animator.StringToHash("Pounce");
-        private int P_DISTANCE = Animator.StringToHash("Distance");
+        private readonly int P_POUNCE_PRIMING = Animator.StringToHash("PouncePriming");
+        private readonly int P_POUNCE = Animator.StringToHash("Pounce");
+        private readonly int P_DISTANCE = Animator.StringToHash("Distance");
 
 
         void Awake()
@@ -93,14 +93,24 @@ namespace tarkin.hideoutcat
                         SetState(AttackState.Track, 10f, AttackState.Search);
                     else
                     {
-                        crouchInput = stateTimer < 5f ? 0f : 1f;
+                        crouchInput = stateTimer < 4f ? 0f : 1f;
 
-                        if (stateTimer < 3f)
-                            lookAt.LookAt(transform.position + transform.forward + -transform.right * 2f);
-                        else if (stateTimer < 6f)
-                            lookAt.LookAt(transform.position + transform.forward + transform.right * 2f);
-                        else
+                        if (stateTimer > 7f)
+                        {
                             lookAt.LookAt(targetLastSeenPos);
+                            break;
+                        }
+
+                        // good luck tweaking this later lol
+                        float randomLookInterval = Mathf.InverseLerp(10f, 0f, stateTimer) * 1.1f;
+                        float randomLookRange = Mathf.InverseLerp(7f, 0f, stateTimer) * 3f;
+
+                        if ((int)(stateTimer / randomLookInterval) < (int)((stateTimer + Time.deltaTime) / randomLookInterval))
+                        {
+                            lookAt.LookAt(transform.position + transform.forward + 
+                                transform.right * Random.Range(-randomLookRange, randomLookRange) + 
+                                new Vector3(0, Random.Range(-randomLookRange, randomLookRange), 0));
+                        }
                     }
                     break;
                 case AttackState.Track:
@@ -124,7 +134,7 @@ namespace tarkin.hideoutcat
                     }
                     else
                     {
-                        SetState(AttackState.Search, 10f, AttackState.None);
+                        SetState(AttackState.Search, 8f, AttackState.None);
                     }
                     break;
                 case AttackState.Prime:
@@ -207,7 +217,7 @@ namespace tarkin.hideoutcat
             if (Vector3.Angle(visionOrigin.forward, directionToTarget.normalized) > visionFOV / 2)
                 return false;
 
-            if (Physics.Raycast(visionOrigin.position, directionToTarget.normalized, out RaycastHit hit, distanceToTargetFromEyes - 0.01f, layerMask))
+            if (Physics.Raycast(visionOrigin.position, directionToTarget.normalized, out RaycastHit hit, distanceToTargetFromEyes - 0.01f, obstacleLayerMask))
             {
                 Debug.DrawLine(visionOrigin.position, hit.point, Color.red);
 
