@@ -29,6 +29,8 @@ namespace tarkin.hideoutcat
 
         public Vector2 MovementInput { get; set; }
         Vector2 movement;
+        public float CrouchInput { get; set; }
+        float crouch;
 
         public void RequestJumpUp()
         {
@@ -46,9 +48,11 @@ namespace tarkin.hideoutcat
         void Update()
         {
             movement = Vector2.MoveTowards(movement, MovementInput, Time.deltaTime * 5f);
+            crouch = Mathf.MoveTowards(crouch, CrouchInput, Time.deltaTime * 5f);
 
             animator.SetFloat("Thrust", movement.y);
             animator.SetFloat("Turn", movement.x);
+            animator.SetFloat("Crouch", crouch);
         }
 
         // run after Animator

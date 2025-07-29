@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &727350555800614794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1283985167238512716}
+  m_Layer: 20
+  m_Name: VisionOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1283985167238512716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727350555800614794}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.16929047, y: 0.000000018626444, z: 0.000000047031772, w: 0.98556626}
+  m_LocalPosition: {x: -0, y: -0.0106, z: 0.0883}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 371784556853018992}
+  m_LocalEulerAnglesHint: {x: 19.493, y: 0, z: 0}
 --- !u!1 &4148671283346462216
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,6 +562,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7168049207267828863, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8656703990119449673}
+    - targetCorrespondingSourceObject: {fileID: 7168049207267828863, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1283985167238512716}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: -1
@@ -552,7 +586,7 @@ PrefabInstance:
       addedObject: {fileID: 5426154022087937153}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 80241395716597603}
+      addedObject: {fileID: 2613793351227145681}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3199014816685354727}
@@ -1029,7 +1063,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   twistAxis: {x: -0.0059399446, y: -0.5746686, z: 0.8183647}
-  swingLimit: 36
+  swingLimit: 67
   twistLimitMin: -42.99582
   twistLimitMax: 11.185449
   gizmoRadius: 0.05
@@ -1107,7 +1141,6 @@ MonoBehaviour:
   graphTraverser: {fileID: 1769758885935965946}
   jumpHandler: {fileID: 5426154022087937153}
   grounding: {fileID: 2393375845104308216}
-  attackHandler: {fileID: 0}
 --- !u!114 &8267818742247427661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1226,7 +1259,7 @@ MonoBehaviour:
   jumpDownGravityFactor: 0.4
   jumpDownForwardFactor: 0.5
   showJumpState: 0
---- !u!114 &80241395716597603
+--- !u!114 &2613793351227145681
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1235,51 +1268,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7679683012631877726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1962672593, guid: b97fef369065ae24ca254e965ad50e19, type: 3}
+  m_Script: {fileID: 1494105481, guid: b97fef369065ae24ca254e965ad50e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 5340543037805543768}
-  jumpUpExitDuration: 1
-  jumpDownExitDuration: 1
-  ledgeDetectConfig:
-    ForwardOffsetSurfaceSearch: 0.75
-    ForwardOffsetLedgeFaceCheck: 0.25
-    VerticalOffset: 1
-    LedgeProbeWidth: 0.1
-    LedgeThicknessCheckDepth: 0.02
-    AngleRelativeToTransformLimit: 30
-    LayerMask:
-      serializedVersion: 2
-      m_Bits: 4096
-  jumpUpEndOffset: {x: -0.2, y: -0.4}
-  jumpSpeed: 3.7
-  jumpArcCurve:
+  visionOrigin: {fileID: 1283985167238512716}
+  visionFOV: 170
+  visionMaxDistance: 20
+  layerMask:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 0.19108813
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.09375
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -0.116959125
-      outSlope: 0
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.125
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  jumpDownGravityFactor: 0.4
-  jumpDownForwardFactor: 0.5
-  showJumpState: 0
+    m_Bits: 4096
+  visualizeFOV: 0
 --- !u!114 &3199014816685354727
 MonoBehaviour:
   m_ObjectHideFlags: 0
