@@ -120,19 +120,40 @@ namespace tarkin.hideoutcat
                         lookAt.SetLookTarget(target);
                         if (Mathf.Abs(angleToTargetFromRoot) > 30f)
                         {
-                            turnInput = Mathf.Clamp(angleToTargetFromRoot / 60f, -1f, 1f);
+                            turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
                         }
 
                         if (distanceToTargetFromRoot < 0.5f)
                         {
                             SetState(AttackState.Prime, 5f, AttackState.Track);
                         }
-                        else if (distanceToTargetFromRoot > 3f)
+                        else
                         {
-                            SetState(AttackState.Approach, 5f, AttackState.Track);
+                            if (distanceToTargetFromRoot > 2.4f && distanceToTargetFromRoot < 2.5f)
+                                SetState(AttackState.Prime, 3.5f, AttackState.Search);
+                            else
+                                SetState(AttackState.Approach, 5f, AttackState.Search);
                         }
                     }
                     else
+                    {
+                        SetState(AttackState.Search, 8f, AttackState.None);
+                    }
+                    break;
+                case AttackState.Approach:
+                    crouchInput = 1f;
+                    turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
+                    if (distanceToTargetFromRoot < 0.22f)
+                        thrustInput = -1f;
+                    else if (distanceToTargetFromRoot > 0.5f && distanceToTargetFromRoot < 1.5f)
+                        thrustInput = 1f;
+                    else if (distanceToTargetFromRoot >= 1.5f)
+                    {
+                        thrustInput = distanceToTargetFromRoot;
+                        crouchInput = 0f;
+                    }
+
+                    if (distanceToTargetFromRoot > 0.22f && distanceToTargetFromRoot < 0.5f)
                     {
                         SetState(AttackState.Search, 8f, AttackState.None);
                     }
@@ -143,9 +164,15 @@ namespace tarkin.hideoutcat
                         crouchInput = 1f;
                         lookAt.SetLookTarget(target);
 
+                        if (distanceToTargetFromRoot < 0.22f)
+                        {
+                            SetState(AttackState.Approach, 2f, AttackState.Search);
+                            break;
+                        }
+
                         if (Mathf.Abs(angleToTargetFromRoot) > 10f)
                         {
-                            turnInput = Mathf.Clamp(angleToTargetFromRoot / 20f, -1f, 1f);
+                            turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
                             SetState(AttackState.Track, 10f, AttackState.Search);
                         }
                         else
