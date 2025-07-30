@@ -38,6 +38,11 @@ namespace tarkin.hideoutcat
             return constraintNeck.targetLookAt == cameraMain.transform;
         }
 
+        public void Release()
+        {
+            SetLookTarget(null);
+        }
+
         public void SetLookTarget(Transform targetLookAt)
         {
             constraintNeck.targetLookAt = targetLookAt;

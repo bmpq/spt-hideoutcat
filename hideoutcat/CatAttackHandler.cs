@@ -15,6 +15,8 @@ namespace tarkin.hideoutcat
         [SerializeField] private float visionFOV = 200f;
         [SerializeField] private float visionMaxDistance = 20f;
         [SerializeField] private LayerMask obstacleLayerMask = 1 << 12;
+        [Range(0, 0.05f)]
+        [SerializeField] private float targetMovingThreshold = 0.01f;
 
 #if UNITY_EDITOR
         [SerializeField] private bool visualizeFOV;
@@ -33,22 +35,22 @@ namespace tarkin.hideoutcat
             Pounce
         }
         public AttackState CurrentState { get; private set; }
-        private AttackState queuedState;
 
-        // enforce setting duration
-        void SetState(AttackState newState, float duration, AttackState nextState)
+        void SetState(AttackState newState)
         {
+            stateTimeElapsed = 0;
             CurrentState = newState;
-            stateTimer = duration;
-            queuedState = nextState;
+
+            if (newState == AttackState.None)
+                lookAt.Release();
         }
 
-        private float stateTimer;
+        private float stateTimeElapsed;
 
         private readonly int P_POUNCE_PRIMING = Animator.StringToHash("PouncePriming");
         private readonly int P_POUNCE = Animator.StringToHash("Pounce");
         private readonly int P_DISTANCE = Animator.StringToHash("Distance");
-
+        private readonly int P_SNIFF = Animator.StringToHash("Sniff");
 
         void Awake()
         {
@@ -59,15 +61,10 @@ namespace tarkin.hideoutcat
 
         void Update()
         {
-            stateTimer -= Time.deltaTime;
-            if (stateTimer < 0f)
-            {
-                SetState(queuedState, 1f, queuedState);
-            }
-
+            stateTimeElapsed += Time.deltaTime;
             if (target == null)
             {
-                SetState(AttackState.None, 1f, AttackState.None);
+                SetState(AttackState.None);
                 return;
             }
 
@@ -85,30 +82,33 @@ namespace tarkin.hideoutcat
             switch (CurrentState)
             {
                 case AttackState.None:
-                    if (lineOfSight)
-                        SetState(AttackState.Track, 20f, AttackState.None);
+                    if (lineOfSight && Vector3.SqrMagnitude(target.position - targetLastSeenPos) > (targetMovingThreshold * targetMovingThreshold))
+                        SetState(AttackState.Track);
                     break;
                 case AttackState.Search:
                     if (lineOfSight)
-                        SetState(AttackState.Track, 10f, AttackState.Search);
+                        SetState(AttackState.Track);
                     else
                     {
-                        crouchInput = stateTimer < 4f ? 0f : 1f;
+                        crouchInput = stateTimeElapsed < 4f ? 1f : 0f;
 
-                        if (stateTimer > 7f)
+                        if (stateTimeElapsed < 1f)
                         {
                             lookAt.LookAt(targetLastSeenPos);
                             break;
                         }
-
-                        // good luck tweaking this later lol
-                        float randomLookInterval = Mathf.InverseLerp(10f, 0f, stateTimer) * 1.1f;
-                        float randomLookRange = Mathf.InverseLerp(7f, 0f, stateTimer) * 3f;
-
-                        if ((int)(stateTimer / randomLookInterval) < (int)((stateTimer + Time.deltaTime) / randomLookInterval))
+                        else if (stateTimeElapsed > 8f)
                         {
-                            lookAt.LookAt(transform.position + transform.forward + 
-                                transform.right * Random.Range(-randomLookRange, randomLookRange) + 
+                            SetState(AttackState.None);
+                        }
+
+                        float randomLookInterval = UnityExtensions.InverseLerpUnclamped(-1f, 8f, stateTimeElapsed);
+                        float randomLookRange = UnityExtensions.InverseLerpUnclamped(-1f, 3f, stateTimeElapsed);
+
+                        if ((int)(stateTimeElapsed / randomLookInterval) > (int)((stateTimeElapsed - Time.deltaTime) / randomLookInterval))
+                        {
+                            lookAt.LookAt(transform.position + transform.forward +
+                                transform.right * Random.Range(-randomLookRange, randomLookRange) +
                                 new Vector3(0, Random.Range(-randomLookRange, randomLookRange), 0));
                         }
                     }
@@ -125,37 +125,42 @@ namespace tarkin.hideoutcat
 
                         if (distanceToTargetFromRoot < 0.5f)
                         {
-                            SetState(AttackState.Prime, 5f, AttackState.Track);
+                            SetState(AttackState.Prime);
                         }
                         else
                         {
                             if (distanceToTargetFromRoot > 2.4f && distanceToTargetFromRoot < 2.5f)
-                                SetState(AttackState.Prime, 3.5f, AttackState.Search);
+                                SetState(AttackState.Prime);
                             else
-                                SetState(AttackState.Approach, 5f, AttackState.Search);
+                                SetState(AttackState.Approach);
                         }
                     }
                     else
                     {
-                        SetState(AttackState.Search, 8f, AttackState.None);
+                        SetState(AttackState.Search);
                     }
                     break;
                 case AttackState.Approach:
                     crouchInput = 1f;
-                    turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
+                    if (Mathf.Abs(angleToTargetFromRoot) > 15f)
+                        turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
+
                     if (distanceToTargetFromRoot < 0.22f)
                         thrustInput = -1f;
-                    else if (distanceToTargetFromRoot > 0.5f && distanceToTargetFromRoot < 1.5f)
-                        thrustInput = 1f;
-                    else if (distanceToTargetFromRoot >= 1.5f)
+                    else if (Mathf.Abs(angleToTargetFromRoot) < 30f)
                     {
-                        thrustInput = distanceToTargetFromRoot;
-                        crouchInput = 0f;
+                        if (distanceToTargetFromRoot > 0.5f && distanceToTargetFromRoot < 1.5f)
+                            thrustInput = 1f;
+                        else if (distanceToTargetFromRoot >= 1.5f)
+                        {
+                            thrustInput = distanceToTargetFromRoot;
+                            crouchInput = 0f;
+                        }
                     }
 
                     if (distanceToTargetFromRoot > 0.22f && distanceToTargetFromRoot < 0.5f)
                     {
-                        SetState(AttackState.Search, 8f, AttackState.None);
+                        SetState(AttackState.Track);
                     }
                     break;
                 case AttackState.Prime:
@@ -166,14 +171,13 @@ namespace tarkin.hideoutcat
 
                         if (distanceToTargetFromRoot < 0.22f)
                         {
-                            SetState(AttackState.Approach, 2f, AttackState.Search);
+                            SetState(AttackState.Approach);
                             break;
                         }
 
                         if (Mathf.Abs(angleToTargetFromRoot) > 10f)
                         {
                             turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
-                            SetState(AttackState.Track, 10f, AttackState.Search);
                         }
                         else
                         {
@@ -184,14 +188,11 @@ namespace tarkin.hideoutcat
                                 if (distanceToTargetFromRoot < 0.35f) // if close enough, dont wait for priming
                                     return true;
 
-                                if (stateTimer > 3f)
+                                if (stateTimeElapsed < 2f)
                                     return false;
 
                                 if (distanceToTargetFromRoot < 0.5f)
                                     return true;
-
-                                if (Mathf.Abs(angleToTargetFromRoot) > 10f)
-                                    return false;
 
                                 if (distanceToTargetFromRoot > 2.4f && distanceToTargetFromRoot < 2.5f) // special long distance jump clip
                                 {
@@ -203,20 +204,38 @@ namespace tarkin.hideoutcat
 
                             if (ShouldPounce())
                             {
-                                SetState(AttackState.Pounce, 0.5f, AttackState.Prime);
+                                SetState(AttackState.Pounce);
                                 animator.SetFloat(P_DISTANCE, distanceToTargetFromRoot);
                                 animator.SetTrigger(P_POUNCE);
+                            }
+                            else
+                            {
+                                if (stateTimeElapsed > 5f)
+                                    SetState(AttackState.Track);
                             }
                         }
                     }
                     else
                     {
-                        SetState(AttackState.Search, 10f, AttackState.None);
+                        SetState(AttackState.Search);
                     }
                     break;
                 case AttackState.Pounce:
                     crouchInput = 1f;
 
+                    if (stateTimeElapsed > 0.2f)
+                    {
+                        if (distanceToTargetFromRoot < 0.4f &&
+                            Mathf.Abs(angleToTargetFromRoot) < 30f &&
+                            Vector3.SqrMagnitude(target.position - targetLastSeenPos) < (targetMovingThreshold * targetMovingThreshold))
+                        {
+                            lookAt.Release();
+                            animator.SetTrigger(P_SNIFF);
+                            SetState(AttackState.None);
+                        }
+                        else
+                            SetState(AttackState.Track);
+                    }
                     break;
             }
 
