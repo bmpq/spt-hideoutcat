@@ -47,7 +47,7 @@ namespace tarkin.hideoutcat.Pathfinding
                 _nodes = null;
 #endif
                 if (_nodes == null)
-                    _nodes = GetComponentsInChildren<Node>().ToList();
+                    _nodes = GetComponentsInChildren<Node>(true).ToList();
                 return _nodes;
             }
         }

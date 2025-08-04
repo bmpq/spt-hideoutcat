@@ -177,6 +177,7 @@ namespace tarkin.hideoutcat
 
                         if (Mathf.Abs(angleToTargetFromRoot) > 10f)
                         {
+                            animator.SetBool(P_POUNCE_PRIMING, false);
                             turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
                         }
                         else

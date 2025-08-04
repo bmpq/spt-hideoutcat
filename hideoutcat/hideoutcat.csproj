@@ -13,6 +13,15 @@
     <UnityEditorPath>T:\Unity\2022.3.43f1\Editor\Data\Managed</UnityEditorPath>
     <UnityProjectPath>T:\extract\UNITYPROJECT_EFT35392</UnityProjectPath>
     <RootNamespace>tarkin.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UNITY_EDITOR|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RUNTIME|AnyCPU'">
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,6 +49,7 @@
 
   <Target Name="CopyDllAfterBuildEditor" AfterTargets="Build">
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="T:\extract\UNITYPROJECT_EFT35392\Assets\HideoutCat\Assemblies" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFolder="T:\extract\UNITYPROJECT_EFT35392\Assets\HideoutCat\Assemblies" />
   </Target>
   
 </Project>

@@ -78,6 +78,8 @@ namespace tarkin
             }
         }
 
+        public static float InverseLerpUnclamped(float a, float b, float value) => (value - a) / (b - a);
+
         /// <summary>
         /// Checks if an event should occur based on its average interval and the elapsed time.
         /// </summary>

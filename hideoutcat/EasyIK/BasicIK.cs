@@ -28,7 +28,8 @@ namespace tarkin.hideoutcat.InverseKinematics
         public Transform ikTarget;
         public Vector3 targetOffset;
         public int iterations = 7;
-        public float tolerance = 0.01f;
+        public float tolerance = -1f;
+        public bool rotateLastBoneWithTargetRotation = false;
 
         private Transform[] jointTransforms;
         private Vector3[] jointPositions;
@@ -263,7 +264,8 @@ namespace tarkin.hideoutcat.InverseKinematics
                 }
             }
 
-            endEffector.rotation = ikTarget.rotation;
+            if (rotateLastBoneWithTargetRotation)
+                endEffector.rotation = ikTarget.rotation;
         }
         #endregion
 
