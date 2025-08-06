@@ -1,28 +1,19 @@
-﻿using UnityEngine;
+﻿using tarkin.hideoutcat.States;
+using UnityEngine;
 
 namespace tarkin.hideoutcat
 {
     internal class CatManualController : MonoBehaviour
     {
-        public HideoutCat cat;
-
-        private Vector2 motion;
-
         void Update()
         {
-            Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            CatInput input = new CatInput();
+            input.Thrust = Input.GetAxis("Vertical");
+            input.Turn = Input.GetAxis("Horizontal");
+            input.RequestJumpUp = Input.GetKeyDown(KeyCode.Space);
+            input.Crouch = Input.GetKeyDown(KeyCode.LeftControl) ? 1f : 0f;
 
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                input.y *= 3f;
-            }
-
-            cat.MovementInput = input;
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                cat.RequestJumpUp();
-            }
+            // not implemented
         }
     }
 }

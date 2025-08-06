@@ -1,4 +1,4 @@
-﻿using tarkin.hideoutcat.Pathfinding;
+﻿using tarkin.hideoutcat.States;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -6,93 +6,75 @@ using UnityEditor;
 
 namespace tarkin.hideoutcat
 {
+    [RequireComponent(typeof(CatLocomotion))]
+    [RequireComponent(typeof(CatSenses))]
+
+    [RequireComponent(typeof(CatIdleHandler))]
+    [RequireComponent(typeof(CatGraphTraverser))]
+    [RequireComponent(typeof(CatAttackHandler))]
     public class HideoutCat : MonoBehaviour
     {
-        [SerializeField] Animator animator;
+        private CatLocomotion locomotion;
 
-        [SerializeField] CatLookAt lookAt;
-        [SerializeField] CatEyelids eyelids;
-        [SerializeField] CatPupils pupils;
-        [SerializeField] CatAudio audio;
+        private CatSenses senses;
 
-        [SerializeField] CatGraphTraverser graphTraverser;
-        [SerializeField] CatJumpHandler jumpHandler;
-        [SerializeField] CatGrounding grounding;
+        private CatIdleHandler idleHandler;
+        private CatGraphTraverser graphTraverser;
+        private CatAttackHandler attackHandler;
 
-        public enum LocomotionState
+        private Transform potentialTarget;
+
+        private CatStateBase CurrentState;
+
+        void Awake()
         {
-            Grounded,
-            Jumping,
-            Landing
-        }
-        private LocomotionState locomotionState;
+            locomotion = GetComponent<CatLocomotion>();
 
-        public Vector2 MovementInput { get; set; }
-        Vector2 movement;
-        public float CrouchInput { get; set; }
-        float crouch;
+            senses = GetComponent<CatSenses>();
 
-        public void RequestJumpUp()
-        {
-            if (locomotionState != LocomotionState.Grounded)
-                return;
-
-            bool ledgeFound = LedgeDetector.Detect(transform, jumpHandler.LedgeDetectConfig, out Vector3 ledgeCenter, out Vector3 ledgeForward);
-            if (ledgeFound)
-            {
-                locomotionState = LocomotionState.Jumping;
-                jumpHandler.InitiateJumpUp(ledgeCenter, ledgeForward);
-            }
+            idleHandler = GetComponent<CatIdleHandler>();
+            graphTraverser = GetComponent<CatGraphTraverser>();
+            attackHandler = GetComponent<CatAttackHandler>();
         }
 
         void Update()
         {
-            movement = Vector2.MoveTowards(movement, MovementInput, Time.deltaTime * 5f);
-            crouch = Mathf.MoveTowards(crouch, CrouchInput, Time.deltaTime * 5f);
+            UpdateSenses();
 
-            animator.SetFloat("Thrust", movement.y);
-            animator.SetFloat("Turn", movement.x);
-            animator.SetFloat("Crouch", crouch);
-        }
-
-        // run after Animator
-        void LateUpdate()
-        {
-            Vector3 finalPosition = animator.rootPosition;
-            Quaternion finalRotation = animator.rootRotation;
-
-            grounding.PerformIKAndCalculateHeightCorrection();
-
-            switch (locomotionState)
+            if (CurrentState == null)
             {
-                case LocomotionState.Grounded:
-                    if (grounding.ShouldFallForward)
-                    {
-                        locomotionState = LocomotionState.Jumping;
-                        jumpHandler.InitiateJumpDown();
-                    }
-                    else
-                    {
-                        finalPosition += grounding.HeightCorrectionOffset;
-                        grounding.AlignTiltToGround();
-                    }
-                    break;
-                case LocomotionState.Jumping:
-                    if (grounding.FrontLimbsContact)
-                        jumpHandler.OnTouchingGround();
-                    jumpHandler.CalculateNewPosition();
-                    finalPosition = jumpHandler.CalculatedPosition;
-                    if (jumpHandler.State == CatJumpHandler.JumpState.Exiting)
-                        locomotionState = LocomotionState.Landing;
-                    break;
-                case LocomotionState.Landing:
-                    if (jumpHandler.State == CatJumpHandler.JumpState.None)
-                        locomotionState = LocomotionState.Grounded;
-                    break;
+                TransitionToState(idleHandler);
             }
 
-            transform.position = finalPosition;
-            transform.rotation = finalRotation;
+            StateTickResult result = CurrentState.Tick();
+
+            locomotion.SetInput(result.Input);
+
+            if (result.IsStateDone)
+            {
+                DecideNextState();
+            }
+        }
+
+        void UpdateSenses()
+        {
+        }
+
+        void DecideNextState()
+        {
+
+        }
+
+        void TransitionToState(CatStateBase catState)
+        {
+            if (catState == null || catState == CurrentState)
+                return;
+
+            CurrentState?.OnExitState();
+
+            CurrentState = catState;
+
+            CurrentState.OnEnterState();
         }
     }
 }
