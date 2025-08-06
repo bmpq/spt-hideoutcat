@@ -212,10 +212,10 @@ namespace tarkin.hideoutcat
                 return source + Vector3.down * groundCheckDistance;
             }
 
-            Vector3 fl = GetGroundTouchPoint(limbs[0].transform.position, -currentUp);
-            Vector3 fr = GetGroundTouchPoint(limbs[1].transform.position, -currentUp);
-            Vector3 bl = GetGroundTouchPoint(limbs[2].transform.position, -currentUp);
-            Vector3 br = GetGroundTouchPoint(limbs[3].transform.position, -currentUp);
+            Vector3 fl = GetGroundTouchPoint(limbs[0].transform.position + currentUp * groundCheckCastRadius, -currentUp);
+            Vector3 fr = GetGroundTouchPoint(limbs[1].transform.position + currentUp * groundCheckCastRadius, -currentUp);
+            Vector3 bl = GetGroundTouchPoint(limbs[2].transform.position + currentUp * groundCheckCastRadius, -currentUp);
+            Vector3 br = GetGroundTouchPoint(limbs[3].transform.position + currentUp * groundCheckCastRadius, -currentUp);
 
             Vector3 sideToSide = ((fr + br) * 0.5f) - ((fl + bl) * 0.5f);
             Vector3 backToFront = ((fl + fr) * 0.5f) - ((bl + br) * 0.5f);
