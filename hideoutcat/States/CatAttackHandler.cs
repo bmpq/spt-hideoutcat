@@ -17,6 +17,7 @@ namespace tarkin.hideoutcat.States
         [SerializeField] private float targetMovingThreshold = 0.01f;
 
         private Transform target;
+        public Transform CurrentTarget => target;
         private Vector3 targetLastSeenPos;
 
         public enum AttackSubstate
@@ -73,7 +74,7 @@ namespace tarkin.hideoutcat.States
             substateTimeElapsed += Time.deltaTime;
             if (target == null)
             {
-                SetSubstate(AttackSubstate.None);
+                SetSubstate(AttackSubstate.Search);
                 return StateTickResult.StateDone;
             }
 
