@@ -1,4 +1,6 @@
-﻿using tarkin.hideoutcat.States;
+﻿using System;
+using System.Collections.Generic;
+using tarkin.hideoutcat.States;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -22,9 +24,10 @@ namespace tarkin.hideoutcat
         private CatGraphTraverser graphTraverser;
         private CatAttackHandler attackHandler;
 
-        private Transform potentialTarget;
-
         private CatStateBase CurrentState;
+
+        public static event Action<List<Transform>> OnRequestPotentialTargets;
+        private readonly List<Transform> potentialTargets = new List<Transform>();
 
         void Awake()
         {
@@ -39,8 +42,6 @@ namespace tarkin.hideoutcat
 
         void Update()
         {
-            UpdateSenses();
-
             if (CurrentState == null)
             {
                 TransitionToState(idleHandler);
@@ -56,13 +57,23 @@ namespace tarkin.hideoutcat
             }
         }
 
-        void UpdateSenses()
-        {
-        }
-
         void DecideNextState()
         {
+            potentialTargets.Clear();
+            OnRequestPotentialTargets?.Invoke(potentialTargets); // passing the list to the subscribers to be filled
 
+            if (potentialTargets.Count > 0 && CurrentState != attackHandler)
+            {
+                foreach (var potentialTarget in potentialTargets)
+                {
+                    if (potentialTarget != null && senses.HasLineOfSight(potentialTarget, out float _))
+                    {
+                        attackHandler.SetTarget(potentialTarget);
+                        TransitionToState(attackHandler);
+                        return;
+                    }
+                }
+            }
         }
 
         void TransitionToState(CatStateBase catState)

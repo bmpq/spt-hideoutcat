@@ -7,6 +7,7 @@ using EFT.Hideout;
 using tarkin.hideoutcat.Pathfinding;
 using System.Linq;
 using UnityEngine;
+using tarkin.hideoutcat.bepinex.Patches;
 
 namespace tarkin.hideoutcat.bepinex
 {
@@ -26,14 +27,17 @@ namespace tarkin.hideoutcat.bepinex
 
             InitConfiguration();
 
-            new PatchHideoutAwake().Enable();
-            PatchHideoutAwake.OnPostfix += () => SceneLoader.Instance.LoadBundleScene("hideoutcat");
             new PatchAreaSelected().Enable();
             new PatchAvailableHideoutActions().Enable();
             new PatchPlayerPrepareWorkout().Enable();
             new PatchPlayerStopWorkout().Enable();
 
             new PatchBonusPanelUpdateView().Enable();
+
+            new Patch_GameWorld_Awake().Enable();
+            new Patch_GameWorld_Dispose().Enable();
+            new Patch_LaserBeam_Awake().Enable();
+            new Patch_LaserBeam_OnDestroy().Enable();
         }
 
         private void InitConfiguration()
