@@ -27,7 +27,8 @@ namespace tarkin.hideoutcat.States
             Track,
             Approach,
             Prime,
-            Pounce
+            Pounce,
+            Sniff
         }
         public AttackSubstate CurrentSubstate { get; private set; }
 
@@ -129,7 +130,7 @@ namespace tarkin.hideoutcat.States
                     {
                         crouchInput = 1f;
                         lookAt.SetLookTarget(target);
-                        if (Mathf.Abs(angleToTargetFromRoot) > 30f)
+                        if (Mathf.Abs(angleToTargetFromRoot) > 70f)
                         {
                             turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
                         }
@@ -138,7 +139,7 @@ namespace tarkin.hideoutcat.States
                         {
                             SetSubstate(AttackSubstate.Prime);
                         }
-                        else
+                        else if (substateTimeElapsed > 3f)
                         {
                             if (distanceToTargetFromRoot > 2.4f && distanceToTargetFromRoot < 2.5f)
                                 SetSubstate(AttackSubstate.Prime);
@@ -243,11 +244,15 @@ namespace tarkin.hideoutcat.States
                         {
                             lookAt.Release();
                             animator.SetTrigger(P_SNIFF);
-                            SetSubstate(AttackSubstate.None);
+                            SetSubstate(AttackSubstate.Sniff);
                         }
                         else
                             SetSubstate(AttackSubstate.Track);
                     }
+                    break;
+                case AttackSubstate.Sniff:
+                    if (substateTimeElapsed > 0.5f)
+                        SetSubstate(AttackSubstate.None);
                     break;
             }
 
