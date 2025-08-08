@@ -20,6 +20,10 @@ namespace tarkin.hideoutcat.States
         public Transform CurrentTarget => target;
         private Vector3 targetLastSeenPos;
 
+        float angleToTargetFromRoot;
+        float distanceToTargetFromRootXZ;
+        float distanceToTargetFromRootY;
+
         public enum AttackSubstate
         {
             None,
@@ -27,6 +31,7 @@ namespace tarkin.hideoutcat.States
             Track,
             Approach,
             Prime,
+            PrimeWall,
             Pounce,
             Sniff
         }
@@ -47,6 +52,7 @@ namespace tarkin.hideoutcat.States
         private readonly int P_POUNCE = Animator.StringToHash("Pounce");
         private readonly int P_DISTANCE = Animator.StringToHash("Distance");
         private readonly int P_SNIFF = Animator.StringToHash("Sniff");
+        private readonly int P_SITTING = Animator.StringToHash("Sitting");
 
         protected override void Awake()
         {
@@ -67,6 +73,9 @@ namespace tarkin.hideoutcat.States
 
         public override void OnExitState()
         {
+            animator.ResetTrigger(P_POUNCE);
+            animator.ResetTrigger(P_SNIFF);
+            animator.SetBool(P_POUNCE_PRIMING, false);
             lookAt.Release();
         }
 
@@ -84,8 +93,9 @@ namespace tarkin.hideoutcat.States
             Vector3 directionToTargetFromRoot = target.position - transform.position;
     
             directionToTargetFromRoot.y = 0;
-            float angleToTargetFromRoot = Vector3.SignedAngle(transform.forward, directionToTargetFromRoot, Vector3.up);
-            float distanceToTargetFromRoot = Vector3.Distance(transform.position, target.position);
+            angleToTargetFromRoot = Vector3.SignedAngle(transform.forward, directionToTargetFromRoot, Vector3.up);
+            distanceToTargetFromRootXZ = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(target.position.x, target.position.z));
+            distanceToTargetFromRootY = target.position.y - transform.position.y;
 
             float thrustInput = 0f;
             float turnInput = 0f;
@@ -135,13 +145,13 @@ namespace tarkin.hideoutcat.States
                             turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
                         }
 
-                        if (distanceToTargetFromRoot < 0.5f)
+                        if (distanceToTargetFromRootXZ < 0.5f && distanceToTargetFromRootY < 0.2f)
                         {
                             SetSubstate(AttackSubstate.Prime);
                         }
                         else if (substateTimeElapsed > 3f)
                         {
-                            if (distanceToTargetFromRoot > 2.4f && distanceToTargetFromRoot < 2.5f)
+                            if (distanceToTargetFromRootXZ > 2.4f && distanceToTargetFromRootXZ < 2.5f)
                                 SetSubstate(AttackSubstate.Prime);
                             else
                                 SetSubstate(AttackSubstate.Approach);
@@ -153,27 +163,50 @@ namespace tarkin.hideoutcat.States
                     }
                     break;
                 case AttackSubstate.Approach:
+                    animator.SetBool(P_POUNCE_PRIMING, false);
+                    animator.SetBool(P_SITTING, false);
                     crouchInput = 1f;
                     if (Mathf.Abs(angleToTargetFromRoot) > 15f)
                         turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
 
-                    if (distanceToTargetFromRoot < 0.22f)
+                    if (distanceToTargetFromRootXZ < 0.22f)
                         thrustInput = -1f;
                     else if (Mathf.Abs(angleToTargetFromRoot) < 30f)
                     {
-                        if (distanceToTargetFromRoot > 0.5f && distanceToTargetFromRoot < 1.5f)
+                        if (distanceToTargetFromRootXZ > 0.5f && distanceToTargetFromRootXZ < 1.5f)
                             thrustInput = 1f;
-                        else if (distanceToTargetFromRoot >= 1.5f)
+                        else if (distanceToTargetFromRootXZ >= 1.5f)
                         {
-                            thrustInput = distanceToTargetFromRoot;
+                            thrustInput = distanceToTargetFromRootXZ;
                             crouchInput = 0f;
                         }
                     }
 
-                    if (distanceToTargetFromRoot > 0.22f && distanceToTargetFromRoot < 0.5f)
+                    if (distanceToTargetFromRootY < 0.1f)
                     {
-                        SetSubstate(AttackSubstate.Track);
+                        if (distanceToTargetFromRootXZ > 0.22f && distanceToTargetFromRootXZ < 0.5f)
+                        {
+                            SetSubstate(AttackSubstate.Track);
+                        }
                     }
+                    else
+                    {
+                        if (distanceToTargetFromRootXZ < 0.37f)
+                        {
+                            SetSubstate(AttackSubstate.PrimeWall);
+                        }
+                        else
+                        {
+                            thrustInput = 1f;
+                        }
+                    }
+
+                    if (substateTimeElapsed > 10f)
+                    {
+                        SetSubstate(AttackSubstate.None);
+                        return StateTickResult.StateDone;
+                    }
+
                     break;
                 case AttackSubstate.Prime:
                     if (lineOfSight)
@@ -181,7 +214,7 @@ namespace tarkin.hideoutcat.States
                         crouchInput = 1f;
                         lookAt.SetLookTarget(target);
 
-                        if (distanceToTargetFromRoot < 0.22f)
+                        if (distanceToTargetFromRootXZ < 0.22f) // to walk backwards when the target is under the cat
                         {
                             SetSubstate(AttackSubstate.Approach);
                             break;
@@ -198,16 +231,16 @@ namespace tarkin.hideoutcat.States
 
                             bool ShouldPounce()
                             {
-                                if (distanceToTargetFromRoot < 0.35f) // if close enough, dont wait for priming
+                                if (distanceToTargetFromRootXZ < 0.35f) // if close enough, dont wait for priming
                                     return true;
 
                                 if (substateTimeElapsed < 2f)
                                     return false;
 
-                                if (distanceToTargetFromRoot < 0.5f)
+                                if (distanceToTargetFromRootXZ < 0.5f)
                                     return true;
 
-                                if (distanceToTargetFromRoot > 2.4f && distanceToTargetFromRoot < 2.5f) // special long distance jump clip
+                                if (distanceToTargetFromRootXZ > 2.4f && distanceToTargetFromRootXZ < 2.5f) // special long distance jump clip
                                 {
                                     return true;
                                 }
@@ -218,33 +251,57 @@ namespace tarkin.hideoutcat.States
                             if (ShouldPounce())
                             {
                                 SetSubstate(AttackSubstate.Pounce);
-                                animator.SetFloat(P_DISTANCE, distanceToTargetFromRoot);
+                                animator.SetFloat(P_DISTANCE, distanceToTargetFromRootXZ);
                                 animator.SetTrigger(P_POUNCE);
                             }
-                            else
-                            {
-                                if (substateTimeElapsed > 5f)
-                                    SetSubstate(AttackSubstate.Track);
-                            }
                         }
+
+                        if (substateTimeElapsed > 5f || distanceToTargetFromRootY > 0.2f)
+                            SetSubstate(AttackSubstate.Track);
                     }
                     else
                     {
                         SetSubstate(AttackSubstate.Search);
                     }
                     break;
+                case AttackSubstate.PrimeWall:
+                    if (distanceToTargetFromRootY < 0.2f)
+                    {
+                        animator.SetBool(P_SITTING, false);
+                        SetSubstate(AttackSubstate.Track);
+                        break;
+                    }
+                    animator.SetBool(P_SITTING, true);
+
+                    if (substateTimeElapsed > 1f && distanceToTargetFromRootXZ < 0.37f)
+                    {
+                        animator.SetFloat(P_DISTANCE, 1f); // no sniffing
+                        animator.SetTrigger(P_POUNCE);
+                        SetSubstate(AttackSubstate.Pounce);
+                    }
+                    else if (substateTimeElapsed > 5f)
+                    {
+                        SetSubstate(AttackSubstate.Track);
+                    }
+
+                    break;
                 case AttackSubstate.Pounce:
                     crouchInput = 1f;
 
                     if (substateTimeElapsed > 0.2f)
                     {
-                        if (distanceToTargetFromRoot < 0.4f &&
-                            Mathf.Abs(angleToTargetFromRoot) < 30f &&
-                            Vector3.SqrMagnitude(target.position - targetLastSeenPos) < targetMovingThreshold * targetMovingThreshold)
+                        if (Vector3.SqrMagnitude(target.position - targetLastSeenPos) < targetMovingThreshold * targetMovingThreshold)
                         {
                             lookAt.Release();
-                            animator.SetTrigger(P_SNIFF);
-                            SetSubstate(AttackSubstate.Sniff);
+                            if (distanceToTargetFromRootXZ < 0.4f && Mathf.Abs(angleToTargetFromRoot) < 30f)
+                            {
+                                animator.SetTrigger(P_SNIFF);
+                                SetSubstate(AttackSubstate.Sniff);
+                            }
+                            else
+                            {
+                                SetSubstate(AttackSubstate.None);
+                            }
                         }
                         else
                             SetSubstate(AttackSubstate.Track);
@@ -272,8 +329,24 @@ namespace tarkin.hideoutcat.States
             StateTickResult result = new StateTickResult();
             result.Input.Turn = turnInput;
             result.Input.Thrust = thrustInput;
+            result.Input.Crouch = crouchInput;
 
             return result;
         }
+
+#if UNITY_EDITOR
+        private void OnGUI()
+        {
+            if (Application.isPlaying)
+            {
+                GUILayout.BeginVertical(EditorStyles.textArea);
+                GUILayout.Label($"AttackSubState: {CurrentSubstate}", EditorStyles.miniLabel);
+                GUILayout.Label($"Angle to target: {angleToTargetFromRoot}");
+                GUILayout.Label($"DistanceToTarget Y: {distanceToTargetFromRootY}");
+                GUILayout.Label($"DistanceToTarget XZ: {distanceToTargetFromRootXZ}");
+                GUILayout.EndVertical();
+            }
+        }
+#endif
     }
 }
