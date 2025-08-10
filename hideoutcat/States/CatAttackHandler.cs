@@ -13,16 +13,15 @@ namespace tarkin.hideoutcat.States
         private CatSenses senses;
         private CatLookAt lookAt;
 
-        [Range(0, 0.05f)]
-        [SerializeField] private float targetMovingThreshold = 0.01f;
-
-        private Transform target;
-        public Transform CurrentTarget => target;
+        public Transform CurrentTarget { get; private set; }
         private Vector3 targetLastSeenPos;
+        private bool hasLineOfSight;
 
-        float angleToTargetFromRoot;
-        float distanceToTargetFromRootXZ;
-        float distanceToTargetFromRootY;
+        private float timeTargetStationary;
+
+        private float angleToTargetFromRoot;
+        private float distanceToTargetFromRootXZ;
+        private float distanceToTargetFromRootY;
 
         public enum AttackSubstate
         {
@@ -36,17 +35,42 @@ namespace tarkin.hideoutcat.States
             Sniff
         }
         public AttackSubstate CurrentSubstate { get; private set; }
-
-        void SetSubstate(AttackSubstate newSubstate)
-        {
-            substateTimeElapsed = 0;
-            CurrentSubstate = newSubstate;
-
-            if (newSubstate == AttackSubstate.None)
-                lookAt.Release();
-        }
-
+        public AttackSubstate PreviousSubstate { get; private set; }
         private float substateTimeElapsed;
+
+        [Header("General")]
+        [Range(0, 0.1f)]
+        [SerializeField] private float targetMovingThreshold = 0.01f;
+        [SerializeField] private float targetConsideredDeadTime = 1f;
+
+        [Header("Search")]
+        [SerializeField] private float searchCrouchDuration = 4f;
+        [SerializeField] private float searchGiveUpTime = 8f;
+
+        [Header("Track")]
+        [SerializeField] private float trackToApproachTime = 3f;
+        [SerializeField] private float trackTurnAngleThreshold = 70f;
+        [SerializeField] private float trackToPrimeWallDistance = 0.37f;
+
+        [Header("Approach")]
+        [SerializeField] private float approachTurnAngleThreshold = 15f;
+        [SerializeField] private float approachTooCloseDistance = 0.22f;
+        [SerializeField] private float approachIdealDistanceMin = 0.22f;
+        [SerializeField] private float approachIdealDistanceMax = 0.5f;
+        [SerializeField] private float approachWalkThreshold = 1.5f;
+        [SerializeField] private float approachGiveUpTime = 10f;
+
+        [Header("Prime")]
+        [SerializeField] private float primeTurnAngleThreshold = 10f;
+        [SerializeField] private float primeMinPounceTime = 2f;
+        [SerializeField] private float primeMaxDuration = 5f;
+        [SerializeField] private float primeClosePounceDistance = 0.35f;
+        [SerializeField] private float primeOptimalLongPounceMin = 2.4f;
+        [SerializeField] private float primeOptimalLongPounceMax = 2.5f;
+        [SerializeField] private float primeHeightDifferenceThreshold = 0.2f;
+
+        [Header("Pounce")]
+        [SerializeField] private float pounceToSniffDistance = 0.4f;
 
         private readonly int P_POUNCE_PRIMING = Animator.StringToHash("PouncePriming");
         private readonly int P_POUNCE = Animator.StringToHash("Pounce");
@@ -63,12 +87,20 @@ namespace tarkin.hideoutcat.States
 
         public void SetTarget(Transform _target)
         {
-            target = _target;
+            CurrentTarget = _target;
+            if (CurrentTarget != null)
+            {
+                targetLastSeenPos = CurrentTarget.position;
+                SetSubstate(AttackSubstate.Track);
+            }
         }
 
         public override void OnEnterState()
         {
-
+            if (CurrentTarget != null)
+                SetSubstate(AttackSubstate.Track);
+            else
+                SetSubstate(AttackSubstate.None);
         }
 
         public override void OnExitState()
@@ -76,262 +108,362 @@ namespace tarkin.hideoutcat.States
             animator.ResetTrigger(P_POUNCE);
             animator.ResetTrigger(P_SNIFF);
             animator.SetBool(P_POUNCE_PRIMING, false);
+            animator.SetBool(P_SITTING, false);
             lookAt.Release();
+            SetSubstate(AttackSubstate.None);
+        }
+
+        private void SetSubstate(AttackSubstate newSubstate)
+        {
+            if (CurrentSubstate == newSubstate) return;
+
+            PreviousSubstate = CurrentSubstate;
+            substateTimeElapsed = 0;
+            CurrentSubstate = newSubstate;
+
+            if (newSubstate == AttackSubstate.None)
+            {
+                lookAt.Release();
+            }
+            else if (newSubstate == AttackSubstate.Pounce)
+            {
+                animator.SetFloat(P_DISTANCE, distanceToTargetFromRootXZ);
+                animator.SetTrigger(P_POUNCE);
+            }
+            else if (newSubstate == AttackSubstate.Sniff)
+            {
+                animator.SetTrigger(P_SNIFF);
+            }
         }
 
         public override StateTickResult Tick()
         {
             substateTimeElapsed += Time.deltaTime;
-            if (target == null)
+
+            if (CurrentTarget == null)
             {
-                SetSubstate(AttackSubstate.Search);
+                SetSubstate(AttackSubstate.None);
                 return StateTickResult.StateDone;
             }
 
-            bool lineOfSight = senses.HasLineOfSight(target, out float distanceToTargetFromEyes);
+            UpdateTargetData();
 
-            Vector3 directionToTargetFromRoot = target.position - transform.position;
-    
-            directionToTargetFromRoot.y = 0;
-            angleToTargetFromRoot = Vector3.SignedAngle(transform.forward, directionToTargetFromRoot, Vector3.up);
-            distanceToTargetFromRootXZ = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(target.position.x, target.position.z));
-            distanceToTargetFromRootY = target.position.y - transform.position.y;
-
-            float thrustInput = 0f;
-            float turnInput = 0f;
-            float crouchInput = 0f;
-
+            CatInput input = new CatInput();
             switch (CurrentSubstate)
             {
                 case AttackSubstate.None:
-                    if (lineOfSight && Vector3.SqrMagnitude(target.position - targetLastSeenPos) > targetMovingThreshold * targetMovingThreshold)
-                        SetSubstate(AttackSubstate.Track);
-                    break;
-                case AttackSubstate.Search:
-                    if (lineOfSight)
+                    if (hasLineOfSight && !IsTargetDead())
                         SetSubstate(AttackSubstate.Track);
                     else
-                    {
-                        crouchInput = substateTimeElapsed < 4f ? 1f : 0f;
-
-                        if (substateTimeElapsed < 1f)
-                        {
-                            lookAt.LookAt(targetLastSeenPos);
-                            break;
-                        }
-                        else if (substateTimeElapsed > 8f)
-                        {
-                            SetSubstate(AttackSubstate.None);
-                        }
-
-                        float randomLookInterval = UnityExtensions.InverseLerpUnclamped(-1f, 8f, substateTimeElapsed);
-                        float randomLookRange = UnityExtensions.InverseLerpUnclamped(-1f, 3f, substateTimeElapsed);
-
-                        if ((int)(substateTimeElapsed / randomLookInterval) > (int)((substateTimeElapsed - Time.deltaTime) / randomLookInterval))
-                        {
-                            lookAt.LookAt(transform.position + transform.forward +
-                                transform.right * Random.Range(-randomLookRange, randomLookRange) +
-                                new Vector3(0, Random.Range(-randomLookRange, randomLookRange), 0));
-                        }
-                    }
-                    break;
-                case AttackSubstate.Track:
-                    if (lineOfSight)
-                    {
-                        crouchInput = 1f;
-                        lookAt.SetLookTarget(target);
-                        if (Mathf.Abs(angleToTargetFromRoot) > 70f)
-                        {
-                            turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
-                        }
-
-                        if (distanceToTargetFromRootXZ < 0.5f && distanceToTargetFromRootY < 0.2f)
-                        {
-                            SetSubstate(AttackSubstate.Prime);
-                        }
-                        else if (substateTimeElapsed > 3f)
-                        {
-                            if (distanceToTargetFromRootXZ > 2.4f && distanceToTargetFromRootXZ < 2.5f)
-                                SetSubstate(AttackSubstate.Prime);
-                            else
-                                SetSubstate(AttackSubstate.Approach);
-                        }
-                    }
-                    else
-                    {
-                        SetSubstate(AttackSubstate.Search);
-                    }
-                    break;
-                case AttackSubstate.Approach:
-                    animator.SetBool(P_POUNCE_PRIMING, false);
-                    animator.SetBool(P_SITTING, false);
-                    crouchInput = 1f;
-                    if (Mathf.Abs(angleToTargetFromRoot) > 15f)
-                        turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
-
-                    if (distanceToTargetFromRootXZ < 0.22f)
-                        thrustInput = -1f;
-                    else if (Mathf.Abs(angleToTargetFromRoot) < 30f)
-                    {
-                        if (distanceToTargetFromRootXZ > 0.5f && distanceToTargetFromRootXZ < 1.5f)
-                            thrustInput = 1f;
-                        else if (distanceToTargetFromRootXZ >= 1.5f)
-                        {
-                            thrustInput = distanceToTargetFromRootXZ;
-                            crouchInput = 0f;
-                        }
-                    }
-
-                    if (distanceToTargetFromRootY < 0.1f)
-                    {
-                        if (distanceToTargetFromRootXZ > 0.22f && distanceToTargetFromRootXZ < 0.5f)
-                        {
-                            SetSubstate(AttackSubstate.Track);
-                        }
-                    }
-                    else
-                    {
-                        if (distanceToTargetFromRootXZ < 0.37f)
-                        {
-                            SetSubstate(AttackSubstate.PrimeWall);
-                        }
-                        else
-                        {
-                            thrustInput = 1f;
-                        }
-                    }
-
-                    if (substateTimeElapsed > 10f)
-                    {
-                        SetSubstate(AttackSubstate.None);
                         return StateTickResult.StateDone;
-                    }
-
                     break;
-                case AttackSubstate.Prime:
-                    if (lineOfSight)
+
+                case AttackSubstate.Search:    input = Tick_Search(); break;
+                case AttackSubstate.Track:     input = Tick_Track(); break;
+                case AttackSubstate.Approach:  input = Tick_Approach(); break;
+                case AttackSubstate.Prime:     input = Tick_Prime(); break;
+                case AttackSubstate.PrimeWall: input = Tick_PrimeWall(); break;
+                case AttackSubstate.Pounce:    input = Tick_Pounce(); break;
+                case AttackSubstate.Sniff:     input = Tick_Sniff(); break;
+            }
+
+            UpdateSharedState();
+
+            return new StateTickResult { Input = input };
+        }
+
+        private CatInput Tick_Search()
+        {
+            if (hasLineOfSight)
+            {
+                SetSubstate(AttackSubstate.Track);
+                return new CatInput { Crouch = 1 };
+            }
+
+            if (substateTimeElapsed > searchGiveUpTime)
+            {
+                SetSubstate(AttackSubstate.None);
+                return new CatInput();
+            }
+
+            if (substateTimeElapsed < 1f)
+            {
+                lookAt.LookAt(targetLastSeenPos);
+            }
+            else
+            {
+                float randomLookInterval = UnityExtensions.InverseLerpUnclamped(-1f, 8f, substateTimeElapsed);
+                float randomLookRange = UnityExtensions.InverseLerpUnclamped(-1f, 3f, substateTimeElapsed);
+
+                if ((int)(substateTimeElapsed / randomLookInterval) > (int)((substateTimeElapsed - Time.deltaTime) / randomLookInterval))
+                {
+                    lookAt.LookAt(transform.position + transform.forward +
+                        transform.right * Random.Range(-randomLookRange, randomLookRange) +
+                        new Vector3(0, Random.Range(-randomLookRange, randomLookRange), 0));
+                }
+            }
+
+            float crouch = substateTimeElapsed < searchCrouchDuration ? 1f : 0f;
+            return new CatInput { Crouch = crouch };
+        }
+
+        private CatInput Tick_Track()
+        {
+            if (!hasLineOfSight)
+            {
+                SetSubstate(AttackSubstate.Search);
+                return new CatInput { Crouch = 1 };
+            }
+
+            lookAt.SetLookTarget(CurrentTarget);
+
+            bool isCloseAndLevel = distanceToTargetFromRootXZ < approachIdealDistanceMax && distanceToTargetFromRootY < 0.2f;
+            if (isCloseAndLevel)
+            {
+                SetSubstate(AttackSubstate.Prime);
+                return new CatInput { Crouch = 1 };
+            }
+
+            if (substateTimeElapsed > trackToApproachTime)
+            {
+                if (IsAtOptimalLongPounceRange())
+                    SetSubstate(AttackSubstate.Prime);
+                else
+                    SetSubstate(AttackSubstate.Approach);
+                return new CatInput { Crouch = 1 };
+            }
+
+            float turn = 0;
+            if (Mathf.Abs(angleToTargetFromRoot) > trackTurnAngleThreshold)
+            {
+                turn = Mathf.Sign(angleToTargetFromRoot);
+            }
+
+            return new CatInput { Turn = turn, Crouch = 1 };
+        }
+
+        private CatInput Tick_Approach()
+        {
+            if (!hasLineOfSight)
+            {
+                SetSubstate(AttackSubstate.Search);
+                return new CatInput { Crouch = 1 };
+            }
+
+            if (substateTimeElapsed > approachGiveUpTime)
+            {
+                SetSubstate(AttackSubstate.None);
+                return new CatInput();
+            }
+
+            lookAt.SetLookTarget(CurrentTarget);
+
+            float turn = 0, thrust = 0, crouch = 1;
+
+            // Target is on a higher platform (e.g., a wall)
+            if (distanceToTargetFromRootY > 0.1f)
+            {
+                if (Mathf.Abs(angleToTargetFromRoot) > approachTurnAngleThreshold)
+                {
+                    turn = Mathf.Sign(angleToTargetFromRoot);
+                }
+                else
+                {
+                    if (distanceToTargetFromRootXZ < trackToPrimeWallDistance)
                     {
-                        crouchInput = 1f;
-                        lookAt.SetLookTarget(target);
-
-                        if (distanceToTargetFromRootXZ < 0.22f) // to walk backwards when the target is under the cat
-                        {
-                            SetSubstate(AttackSubstate.Approach);
-                            break;
-                        }
-
-                        if (Mathf.Abs(angleToTargetFromRoot) > 10f)
-                        {
-                            animator.SetBool(P_POUNCE_PRIMING, false);
-                            turnInput = Mathf.Clamp(angleToTargetFromRoot, -1f, 1f);
-                        }
-                        else
-                        {
-                            animator.SetBool(P_POUNCE_PRIMING, true);
-
-                            bool ShouldPounce()
-                            {
-                                if (distanceToTargetFromRootXZ < 0.35f) // if close enough, dont wait for priming
-                                    return true;
-
-                                if (substateTimeElapsed < 2f)
-                                    return false;
-
-                                if (distanceToTargetFromRootXZ < 0.5f)
-                                    return true;
-
-                                if (distanceToTargetFromRootXZ > 2.4f && distanceToTargetFromRootXZ < 2.5f) // special long distance jump clip
-                                {
-                                    return true;
-                                }
-
-                                return false;
-                            }
-
-                            if (ShouldPounce())
-                            {
-                                SetSubstate(AttackSubstate.Pounce);
-                                animator.SetFloat(P_DISTANCE, distanceToTargetFromRootXZ);
-                                animator.SetTrigger(P_POUNCE);
-                            }
-                        }
-
-                        if (substateTimeElapsed > 5f || distanceToTargetFromRootY > 0.2f)
-                            SetSubstate(AttackSubstate.Track);
+                        SetSubstate(AttackSubstate.PrimeWall);
                     }
                     else
                     {
-                        SetSubstate(AttackSubstate.Search);
+                        thrust = 1f;
                     }
-                    break;
-                case AttackSubstate.PrimeWall:
-                    if (distanceToTargetFromRootY < 0.2f)
-                    {
-                        animator.SetBool(P_SITTING, false);
-                        SetSubstate(AttackSubstate.Track);
-                        break;
-                    }
-                    animator.SetBool(P_SITTING, true);
+                }
+            }
+            // Target is on the same level
+            else
+            {
+                if (distanceToTargetFromRootXZ > approachIdealDistanceMin && distanceToTargetFromRootXZ < approachIdealDistanceMax)
+                {
+                    SetSubstate(AttackSubstate.Track);
+                    return new CatInput { Crouch = 1 };
+                }
 
-                    if (substateTimeElapsed > 1f && distanceToTargetFromRootXZ < 0.37f)
+                if (Mathf.Abs(angleToTargetFromRoot) > approachTurnAngleThreshold)
+                {
+                    turn = Mathf.Sign(angleToTargetFromRoot);
+                }
+                else
+                {
+                    if (distanceToTargetFromRootXZ < approachTooCloseDistance)
+                        thrust = -1f; // Too close, back up
+                    else if (distanceToTargetFromRootXZ > approachWalkThreshold)
                     {
-                        animator.SetFloat(P_DISTANCE, 1f); // no sniffing
-                        animator.SetTrigger(P_POUNCE);
-                        SetSubstate(AttackSubstate.Pounce);
+                        thrust = distanceToTargetFromRootXZ; // Run
+                        crouch = 0;
                     }
-                    else if (substateTimeElapsed > 5f)
-                    {
-                        SetSubstate(AttackSubstate.Track);
-                    }
+                    else
+                        thrust = 1f; // Creep forward
+                }
+            }
 
-                    break;
-                case AttackSubstate.Pounce:
-                    crouchInput = 1f;
+            return new CatInput { Turn = turn, Thrust = thrust, Crouch = crouch };
+        }
 
-                    if (substateTimeElapsed > 0.2f)
+        private CatInput Tick_Prime()
+        {
+            if (!hasLineOfSight)
+            {
+                SetSubstate(AttackSubstate.Search);
+                return new CatInput { Crouch = 1 };
+            }
+
+            lookAt.SetLookTarget(CurrentTarget);
+            float turn = 0;
+
+            if (Mathf.Abs(angleToTargetFromRoot) <= primeTurnAngleThreshold)
+            {
+                animator.SetBool(P_POUNCE_PRIMING, true);
+
+                if (ShouldPounce())
+                {
+                    SetSubstate(AttackSubstate.Pounce);
+                    return new CatInput { Crouch = 1 };
+                }
+            }
+            else
+            {
+                turn = Mathf.Sign(angleToTargetFromRoot);
+                animator.SetBool(P_POUNCE_PRIMING, false);
+            }
+
+            if (substateTimeElapsed > primeMaxDuration || distanceToTargetFromRootY > primeHeightDifferenceThreshold)
+            {
+                SetSubstate(AttackSubstate.Track);
+                return new CatInput { Crouch = 1 };
+            }
+
+            if (distanceToTargetFromRootXZ < approachTooCloseDistance)
+            {
+                SetSubstate(AttackSubstate.Approach);
+                return new CatInput { Crouch = 1 };
+            }
+
+            return new CatInput { Turn = turn, Crouch = 1 };
+        }
+
+        private CatInput Tick_PrimeWall()
+        {
+            if (!hasLineOfSight) { SetSubstate(AttackSubstate.Search); return new CatInput(); }
+
+            if (distanceToTargetFromRootY < 0.2f)
+            {
+                SetSubstate(AttackSubstate.Track);
+                return new CatInput();
+            }
+
+            animator.SetBool(P_SITTING, true);
+
+            if (substateTimeElapsed > 1f)
+            {
+                // It's a fixed vertical pounce animation
+                SetSubstate(AttackSubstate.Pounce);
+                animator.SetFloat(P_DISTANCE, 1f);
+            }
+            else if (substateTimeElapsed > 5f) // Timeout
+            {
+                SetSubstate(AttackSubstate.Track);
+            }
+
+            return new CatInput();
+        }
+
+        private CatInput Tick_Pounce()
+        {
+            if (substateTimeElapsed > 0.5f)
+            {
+                if (IsTargetDead())
+                {
+                    lookAt.Release();
+                    if (distanceToTargetFromRootXZ < pounceToSniffDistance && Mathf.Abs(angleToTargetFromRoot) < 30f)
                     {
-                        if (Vector3.SqrMagnitude(target.position - targetLastSeenPos) < targetMovingThreshold * targetMovingThreshold)
-                        {
-                            lookAt.Release();
-                            if (distanceToTargetFromRootXZ < 0.4f && Mathf.Abs(angleToTargetFromRoot) < 30f)
-                            {
-                                animator.SetTrigger(P_SNIFF);
-                                SetSubstate(AttackSubstate.Sniff);
-                            }
-                            else
-                            {
-                                SetSubstate(AttackSubstate.None);
-                            }
-                        }
-                        else
-                            SetSubstate(AttackSubstate.Track);
+                        SetSubstate(AttackSubstate.Sniff);
                     }
-                    break;
-                case AttackSubstate.Sniff:
-                    if (substateTimeElapsed > 0.5f)
+                    else
+                    {
                         SetSubstate(AttackSubstate.None);
-                    break;
+                    }
+                }
+                else
+                {
+                    SetSubstate(AttackSubstate.Track);
+                }
+            }
+            return new CatInput { Crouch = 1 };
+        }
+
+        private bool IsTargetDead()
+        {
+            return timeTargetStationary > targetConsideredDeadTime;
+        }
+
+        private CatInput Tick_Sniff()
+        {
+            if (substateTimeElapsed > 0.5f)
+            {
+                SetSubstate(AttackSubstate.None);
+            }
+            return new CatInput();
+        }
+
+        private void UpdateTargetData()
+        {
+            hasLineOfSight = senses.HasLineOfSight(CurrentTarget, out _);
+
+            Vector3 directionToTargetFromRoot = CurrentTarget.position - transform.position;
+
+            distanceToTargetFromRootY = directionToTargetFromRoot.y;
+            directionToTargetFromRoot.y = 0;
+            distanceToTargetFromRootXZ = directionToTargetFromRoot.magnitude;
+
+            angleToTargetFromRoot = Vector3.SignedAngle(transform.forward, directionToTargetFromRoot, Vector3.up);
+
+            bool targetMoving = Vector3.SqrMagnitude(CurrentTarget.position - targetLastSeenPos) > targetMovingThreshold * targetMovingThreshold;
+            if (targetMoving)
+                timeTargetStationary = 0;
+            else
+                timeTargetStationary += Time.deltaTime;
+        }
+
+        private void UpdateSharedState()
+        {
+            if (hasLineOfSight)
+            {
+                targetLastSeenPos = CurrentTarget.position;
             }
 
             if (CurrentSubstate != AttackSubstate.Prime && CurrentSubstate != AttackSubstate.Pounce)
                 animator.SetBool(P_POUNCE_PRIMING, false);
+            if (CurrentSubstate != AttackSubstate.PrimeWall)
+                animator.SetBool(P_SITTING, false);
+        }
 
-            if (lineOfSight)
-            {
-                targetLastSeenPos = target.position;
-            }
+        private bool IsAtOptimalLongPounceRange()
+        {
+            return distanceToTargetFromRootXZ > primeOptimalLongPounceMin && distanceToTargetFromRootXZ < primeOptimalLongPounceMax;
+        }
 
-            if (CurrentSubstate == AttackSubstate.None)
-            {
-                return StateTickResult.StateDone;
-            }
+        private bool ShouldPounce()
+        {
+            if (distanceToTargetFromRootXZ < primeClosePounceDistance)
+                return true;
 
-            StateTickResult result = new StateTickResult();
-            result.Input.Turn = turnInput;
-            result.Input.Thrust = thrustInput;
-            result.Input.Crouch = crouchInput;
+            if (IsAtOptimalLongPounceRange())
+                return true;
 
-            return result;
+            if (substateTimeElapsed > primeMinPounceTime)
+                return true;
+
+            return false;
         }
 
 #if UNITY_EDITOR
@@ -340,10 +472,12 @@ namespace tarkin.hideoutcat.States
             if (Application.isPlaying)
             {
                 GUILayout.BeginVertical(EditorStyles.textArea);
-                GUILayout.Label($"AttackSubState: {CurrentSubstate}", EditorStyles.miniLabel);
-                GUILayout.Label($"Angle to target: {angleToTargetFromRoot}");
-                GUILayout.Label($"DistanceToTarget Y: {distanceToTargetFromRootY}");
-                GUILayout.Label($"DistanceToTarget XZ: {distanceToTargetFromRootXZ}");
+                GUILayout.Label($"AttackSubState: {CurrentSubstate} ({substateTimeElapsed:F2}s)");
+                GUILayout.Label($"PrevAttackSubState: {PreviousSubstate}", EditorStyles.miniLabel);
+                GUILayout.Label($"Angle to target: {angleToTargetFromRoot:F1}");
+                GUILayout.Label($"DistanceToTarget Y: {distanceToTargetFromRootY:F2}");
+                GUILayout.Label($"DistanceToTarget XZ: {distanceToTargetFromRootXZ:F2}");
+                GUILayout.Label($"Has LoS: {hasLineOfSight}");
                 GUILayout.EndVertical();
             }
         }
