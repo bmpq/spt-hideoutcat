@@ -22,6 +22,7 @@ namespace tarkin.hideoutcat
 
         private CatSenses senses;
 
+        private CatManualController manualController;
         private CatIdleHandler idleHandler;
         private CatGraphTraverser graphTraverser;
         private CatAttackHandler attackHandler;
@@ -44,6 +45,8 @@ namespace tarkin.hideoutcat
             idleHandler = GetComponent<CatIdleHandler>();
             graphTraverser = GetComponent<CatGraphTraverser>();
             attackHandler = GetComponent<CatAttackHandler>();
+
+            manualController = GetComponent<CatManualController>();
         }
 
         void Update()
@@ -70,6 +73,12 @@ namespace tarkin.hideoutcat
 
         void DecideNextState()
         {
+            if (manualController != null && manualController.isActiveAndEnabled)
+            {
+                TransitionToState(manualController);
+                return;
+            }
+
             // If we just finished an attack, the cat is now "bored" of that target.
             // Record its position at the moment of boredom.
             if (CurrentState == attackHandler && attackHandler.CurrentTarget != null)
