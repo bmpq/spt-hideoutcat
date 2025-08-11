@@ -209,16 +209,25 @@ namespace tarkin.hideoutcat.States
 
         private CatInput Tick_Track()
         {
+            bool isLevel = distanceToTargetFromRootY < 0.2f;
             if (!hasLineOfSight)
             {
-                SetSubstate(AttackSubstate.Search);
-                return new CatInput { Crouch = 1 };
+                if (!isLevel)
+                {
+                    SetSubstate(AttackSubstate.Approach);
+                    return new CatInput { Crouch = 0, RequestJumpUp = true };
+                }
+                else
+                {
+                    SetSubstate(AttackSubstate.Search);
+                    return new CatInput { Crouch = 1 };
+                }
             }
 
             lookAt.SetLookTarget(CurrentTarget);
 
-            bool isCloseAndLevel = distanceToTargetFromRootXZ < approachIdealDistanceMax && distanceToTargetFromRootY < 0.2f;
-            if (isCloseAndLevel)
+            bool isClose = distanceToTargetFromRootXZ < approachIdealDistanceMax;
+            if (isClose && isLevel)
             {
                 SetSubstate(AttackSubstate.Prime);
                 return new CatInput { Crouch = 1 };
@@ -244,12 +253,6 @@ namespace tarkin.hideoutcat.States
 
         private CatInput Tick_Approach()
         {
-            if (!hasLineOfSight)
-            {
-                SetSubstate(AttackSubstate.Search);
-                return new CatInput { Crouch = 1 };
-            }
-
             if (substateTimeElapsed > approachGiveUpTime)
             {
                 SetSubstate(AttackSubstate.None);
@@ -269,6 +272,11 @@ namespace tarkin.hideoutcat.States
                 }
                 else
                 {
+                    if (!hasLineOfSight)
+                    {
+                        return new CatInput { Crouch = 0, Thrust = 1f, RequestJumpUp = true };
+                    }
+
                     if (distanceToTargetFromRootXZ < trackToPrimeWallDistance)
                     {
                         SetSubstate(AttackSubstate.PrimeWall);
@@ -282,6 +290,12 @@ namespace tarkin.hideoutcat.States
             // Target is on the same level
             else
             {
+                if (!hasLineOfSight)
+                {
+                    SetSubstate(AttackSubstate.Search);
+                    return new CatInput { Crouch = 1 };
+                }
+
                 if (distanceToTargetFromRootXZ > approachIdealDistanceMin && distanceToTargetFromRootXZ < approachIdealDistanceMax)
                 {
                     SetSubstate(AttackSubstate.Track);
