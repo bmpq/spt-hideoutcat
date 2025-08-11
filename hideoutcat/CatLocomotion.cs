@@ -3,12 +3,20 @@ using UnityEngine;
 
 namespace tarkin.hideoutcat
 {
+    [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(CatJumpHandler))]
+    [RequireComponent(typeof(CatGrounding))]
+    [RequireComponent(typeof(CapsuleCollider))]
     internal class CatLocomotion : MonoBehaviour
     {
-        [SerializeField] Animator animator;
+        Animator animator;
 
-        [SerializeField] CatJumpHandler jumpHandler;
-        [SerializeField] CatGrounding grounding;
+        CatJumpHandler jumpHandler;
+        CatGrounding grounding;
+
+        [SerializeField] LayerMask wallLayerMask = 1 << 12;
+        [SerializeField] float skinWidth = 0.3f;
+        CapsuleCollider capsuleCollider;
 
         public enum LocomotionState
         {
@@ -24,6 +32,9 @@ namespace tarkin.hideoutcat
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            jumpHandler = GetComponent<CatJumpHandler>();
+            grounding = GetComponent<CatGrounding>();
+            capsuleCollider = GetComponent<CapsuleCollider>();
         }
 
         void RequestJumpUp()
@@ -60,7 +71,31 @@ namespace tarkin.hideoutcat
             animator.SetFloat("Crouch", smoothedInput.Crouch);
         }
 
-        // run after Animator
+        // MonoBehaviour.OnAnimatorMove() overrides animator root motion, if on the same game object with animator
+        private void OnAnimatorMove()
+        {
+            if (jumpHandler.State == CatJumpHandler.JumpState.Airborne)
+                return;
+
+            Vector3 desiredMovement = animator.deltaPosition;
+
+            if (desiredMovement.sqrMagnitude > 0)
+            {
+                Vector3 p1 = transform.position + capsuleCollider.center + Vector3.up * (capsuleCollider.height * 0.5f - capsuleCollider.radius);
+                Vector3 p2 = transform.position + capsuleCollider.center - Vector3.up * (capsuleCollider.height * 0.5f - capsuleCollider.radius);
+                float castDistance = desiredMovement.magnitude + skinWidth;
+
+                if (Physics.CapsuleCast(p1, p2, capsuleCollider.radius, desiredMovement.normalized, out RaycastHit hit, castDistance, wallLayerMask))
+                {
+                    // allow the cat to slide along the wall
+                    desiredMovement = Vector3.ProjectOnPlane(desiredMovement, hit.normal);
+                }
+            }
+
+            transform.position += desiredMovement;
+            transform.rotation *= animator.deltaRotation;
+        }
+
         void LateUpdate()
         {
             Vector3 finalPosition = transform.position;
