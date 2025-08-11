@@ -16,6 +16,7 @@ namespace tarkin.hideoutcat
 
         [SerializeField] LayerMask wallLayerMask = 1 << 12;
         [SerializeField] float skinWidth = 0.3f;
+        [SerializeField] float jumpEndTransitionLength = 0.5f;
         CapsuleCollider capsuleCollider;
 
         public enum LocomotionState
@@ -26,8 +27,12 @@ namespace tarkin.hideoutcat
         }
         public LocomotionState CurrentState { get; private set; }
 
+        private float timeSinceJumpEnded;
+
         CatInput rawInput;
         CatInput smoothedInput;
+
+        CatInput microAdjustments;
 
         private void Awake()
         {
@@ -62,9 +67,9 @@ namespace tarkin.hideoutcat
 
         private void Update()
         {
-            smoothedInput.Turn = Mathf.MoveTowards(smoothedInput.Turn, rawInput.Turn, Time.deltaTime * 5f);
-            smoothedInput.Thrust = Mathf.MoveTowards(smoothedInput.Thrust, rawInput.Thrust, Time.deltaTime * 5f);
-            smoothedInput.Crouch = Mathf.MoveTowards(smoothedInput.Crouch, rawInput.Crouch, Time.deltaTime * 5f);
+            smoothedInput.Turn = Mathf.MoveTowards(smoothedInput.Turn, rawInput.Turn + microAdjustments.Turn, Time.deltaTime * 5f);
+            smoothedInput.Thrust = Mathf.MoveTowards(smoothedInput.Thrust, rawInput.Thrust + microAdjustments.Thrust, Time.deltaTime * 5f);
+            smoothedInput.Crouch = Mathf.MoveTowards(smoothedInput.Crouch, rawInput.Crouch + microAdjustments.Crouch, Time.deltaTime * 5f);
 
             animator.SetFloat("Thrust", smoothedInput.Thrust);
             animator.SetFloat("Turn", smoothedInput.Turn);
@@ -98,6 +103,10 @@ namespace tarkin.hideoutcat
 
         void LateUpdate()
         {
+            microAdjustments = CatInput.MoveTowards(microAdjustments, CatInput.ToStop, Time.deltaTime);
+
+            timeSinceJumpEnded += Time.deltaTime;
+
             Vector3 finalPosition = transform.position;
 
             grounding.PerformIKAndCalculateHeightCorrection();
@@ -112,13 +121,17 @@ namespace tarkin.hideoutcat
                     }
                     else
                     {
-                        finalPosition += grounding.HeightCorrectionOffset;
-                        grounding.AlignTiltToGround();
+                        float factor = jumpEndTransitionLength <= 0f ? 1f : Mathf.Min(timeSinceJumpEnded / jumpEndTransitionLength, 1f);
+                        finalPosition += grounding.HeightCorrectionOffset * factor;
+                        grounding.AlignTiltToGround(factor);
+
+                        if (!grounding.BackLimbContact && (grounding.GetPawDistanceToGround(2) > 0.05f || grounding.GetPawDistanceToGround(3) > 0.05f))
+                            microAdjustments.Thrust = Mathf.MoveTowards(microAdjustments.Thrust, 1f, Time.deltaTime * 10f);
                     }
                     break;
 
                 case LocomotionState.Jumping:
-                    if (grounding.FrontLimbsContact)
+                    if (grounding.FrontLimbContact)
                         jumpHandler.OnTouchingGround();
                     jumpHandler.CalculateNewPosition();
                     finalPosition = jumpHandler.CalculatedPosition;
@@ -127,6 +140,7 @@ namespace tarkin.hideoutcat
                     break;
 
                 case LocomotionState.Landing:
+                    timeSinceJumpEnded = 0f;
                     if (jumpHandler.State == CatJumpHandler.JumpState.None)
                         CurrentState = LocomotionState.Grounded;
                     break;

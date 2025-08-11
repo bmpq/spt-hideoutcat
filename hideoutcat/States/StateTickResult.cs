@@ -1,4 +1,6 @@
-﻿namespace tarkin.hideoutcat.States
+﻿using UnityEngine;
+
+namespace tarkin.hideoutcat.States
 {
     public struct StateTickResult
     {
@@ -39,5 +41,15 @@
 
         public static CatInput ToJump => new CatInput(requestJumpUp: true);
         public static CatInput ToStop => new CatInput(0, 0, 0, false);
+
+        public static CatInput MoveTowards(CatInput current, CatInput target, float maxDelta)
+        {
+            return new CatInput(
+                thrust: Mathf.MoveTowards(current.Thrust, target.Thrust, maxDelta),
+                turn: Mathf.MoveTowards(current.Turn, target.Turn, maxDelta),
+                crouch: Mathf.MoveTowards(current.Crouch, target.Crouch, maxDelta),
+                requestJumpUp: target.RequestJumpUp
+            );
+        }
     }
 }

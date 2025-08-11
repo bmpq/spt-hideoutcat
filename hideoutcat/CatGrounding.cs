@@ -35,6 +35,8 @@ namespace tarkin.hideoutcat
         [SerializeField] private float groundCheckCastRadius = 0.05f;
 
         [SerializeField] private float maxTiltAngle = 50f;
+
+        [Header("jump down")]
         [SerializeField] private Vector3 jumpDownCheckOriginOffset = Vector3.zero;
         [SerializeField] private Vector2 jumpDownCheckDir = Vector2.one;
         [SerializeField] private float jumpDownCheckDistance = 1f;
@@ -52,7 +54,8 @@ namespace tarkin.hideoutcat
 
         public Vector3 HeightCorrectionOffset { get; private set; }
         public bool ShouldFallForward { get; private set; }
-        public bool FrontLimbsContact { get; private set; }
+        public bool BackLimbContact { get; private set; }
+        public bool FrontLimbContact { get; private set; }
 
         void Start()
         {
@@ -151,7 +154,8 @@ namespace tarkin.hideoutcat
 
             currentUp = GetGroundUp(out bool unstable);
 
-            FrontLimbsContact = limbHits[0] || limbHits[1];
+            FrontLimbContact = limbHits[0] || limbHits[1];
+            BackLimbContact = limbHits[2] || limbHits[3];
 
             ShouldFallForward = false;
             if (unstable)
@@ -178,11 +182,21 @@ namespace tarkin.hideoutcat
             }
         }
 
-        public void AlignTiltToGround()
+        public float GetPawDistanceToGround(int pawIndex)
+        {
+            Vector3 origin = limbs[pawIndex].LastBone.position;
+            if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 10f, raycastMask))
+            {
+                return hit.distance;
+            }
+            return 10f;
+        }
+
+        public void AlignTiltToGround(float factor)
         {
             Vector3 localGroundUp = transform.InverseTransformDirection(currentUp);
             currentTilt = Quaternion.Slerp(currentTilt, Quaternion.FromToRotation(Vector3.up, localGroundUp), Time.deltaTime * tiltCorrectionSpeed);
-            tiltBone.localRotation = Quaternion.Slerp(tiltBone.localRotation, currentTilt, tiltFactor);
+            tiltBone.localRotation = Quaternion.Slerp(tiltBone.localRotation, currentTilt, Mathf.Min(factor, tiltFactor));
         }
 
         Vector3 GetGroundUp(out bool unstable)
