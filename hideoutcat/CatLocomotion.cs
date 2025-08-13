@@ -109,7 +109,7 @@ namespace tarkin.hideoutcat
                         float factor = jumpEndTransitionLength <= 0f ? 1f : Mathf.Min(timeSinceJumpEnded / jumpEndTransitionLength, 1f);
                         grounding.AlignTiltToGround(factor);
 
-                        controller.Move(grounding.HeightCorrectionOffset * factor);
+                        controller.Move(grounding.HeightCorrectionOffsetNextFrame * factor);
 
                         if (!grounding.BackLimbContact && smoothedInput.Thrust < 0.8f && (grounding.GetPawDistanceToGround(2) > 0.05f || grounding.GetPawDistanceToGround(2) > 0.05f))
                             microAdjustments.Thrust = Mathf.MoveTowards(microAdjustments.Thrust, 1f, Time.deltaTime * 10f);

@@ -17,11 +17,8 @@ namespace tarkin.hideoutcat
         [Tooltip("ik influence over animator")]
         [SerializeField] private float factor = 1f;
 
-        [SerializeField] private float heightCorrectionSpeed = 15f;
-        [SerializeField] private float fallingSpeed = 0.8f;
-
-        [SerializeField] private float heightCorrectionTime = 0.03f;
-        private float inertiaVelocity = 0.0f;
+        [SerializeField] private float upForce = 1f;
+        [SerializeField] private float downForce = 1f;
 
         [Header("body tilt")]
         [SerializeField] private Transform tiltBone;
@@ -49,10 +46,10 @@ namespace tarkin.hideoutcat
 #endif
         private Transform[] ikTargets;
 
-        private float currentYInertia;
+        private float currentFallingVelocity;
         private Vector3 currentUp = Vector3.up;
 
-        public Vector3 HeightCorrectionOffset { get; private set; }
+        public Vector3 HeightCorrectionOffsetNextFrame { get; private set; }
         public bool ShouldFallForward { get; private set; }
         public bool BackLimbContact { get; private set; }
         public bool FrontLimbContact { get; private set; }
@@ -129,33 +126,30 @@ namespace tarkin.hideoutcat
                 }
             }
 
-            currentYInertia += Time.deltaTime * fallingSpeed * Physics.gravity.y;
+            FrontLimbContact = limbHits[0] || limbHits[1];
+            BackLimbContact = limbHits[2] || limbHits[3];
 
-            if (hitsFound > 0)
+            if (FrontLimbContact && BackLimbContact)
             {
-                float targetInertia = 0f;
+                HeightCorrectionOffsetNextFrame = smallestAnimatorHitDelta * upForce * currentUp;
+                currentFallingVelocity = 0f;
+            }
+            else if (!FrontLimbContact && !BackLimbContact)
+            {
+                currentFallingVelocity = Mathf.MoveTowards(
+                    currentFallingVelocity, 
+                    53f,
+                    Physics.gravity.y * downForce * Time.deltaTime);
 
-                if (smallestAnimatorHitDelta > 0)
-                    targetInertia = smallestAnimatorHitDelta * heightCorrectionSpeed;
-
-                currentYInertia = Mathf.SmoothDamp(
-                    currentYInertia,
-                    targetInertia,
-                    ref inertiaVelocity,
-                    heightCorrectionTime
-                );
+                HeightCorrectionOffsetNextFrame = currentFallingVelocity * Time.deltaTime * Vector3.up;
             }
             else
             {
-                currentUp = Vector3.up;
+                currentFallingVelocity = 0f;
+                HeightCorrectionOffsetNextFrame = Vector3.zero;
             }
 
-            HeightCorrectionOffset = currentUp * currentYInertia * Time.deltaTime;
-
             currentUp = GetGroundUp(out bool unstable);
-
-            FrontLimbContact = limbHits[0] || limbHits[1];
-            BackLimbContact = limbHits[2] || limbHits[3];
 
             ShouldFallForward = false;
             if (unstable)
