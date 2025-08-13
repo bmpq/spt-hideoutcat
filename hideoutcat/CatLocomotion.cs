@@ -6,18 +6,16 @@ namespace tarkin.hideoutcat
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(CatJumpHandler))]
     [RequireComponent(typeof(CatGrounding))]
-    [RequireComponent(typeof(CapsuleCollider))]
+    [RequireComponent(typeof(CharacterController))]
     internal class CatLocomotion : MonoBehaviour
     {
         Animator animator;
+        CharacterController controller;
 
         CatJumpHandler jumpHandler;
         CatGrounding grounding;
 
-        [SerializeField] LayerMask wallLayerMask = 1 << 12;
-        [SerializeField] float skinWidth = 0.3f;
         [SerializeField] float jumpEndTransitionLength = 0.5f;
-        CapsuleCollider capsuleCollider;
 
         public enum LocomotionState
         {
@@ -37,9 +35,10 @@ namespace tarkin.hideoutcat
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            controller = GetComponent<CharacterController>();
+
             jumpHandler = GetComponent<CatJumpHandler>();
             grounding = GetComponent<CatGrounding>();
-            capsuleCollider = GetComponent<CapsuleCollider>();
         }
 
         void RequestJumpUp()
@@ -84,20 +83,8 @@ namespace tarkin.hideoutcat
 
             Vector3 desiredMovement = animator.deltaPosition;
 
-            if (desiredMovement.sqrMagnitude > 0)
-            {
-                Vector3 p1 = transform.position + capsuleCollider.center + Vector3.up * (capsuleCollider.height * 0.5f - capsuleCollider.radius);
-                Vector3 p2 = transform.position + capsuleCollider.center - Vector3.up * (capsuleCollider.height * 0.5f - capsuleCollider.radius);
-                float castDistance = desiredMovement.magnitude + skinWidth;
+            controller.Move(desiredMovement);
 
-                if (Physics.CapsuleCast(p1, p2, capsuleCollider.radius, desiredMovement.normalized, out RaycastHit hit, castDistance, wallLayerMask))
-                {
-                    // allow the cat to slide along the wall
-                    desiredMovement = Vector3.ProjectOnPlane(desiredMovement, hit.normal);
-                }
-            }
-
-            transform.position += desiredMovement;
             transform.rotation *= animator.deltaRotation;
         }
 
@@ -106,8 +93,6 @@ namespace tarkin.hideoutcat
             microAdjustments = CatInput.MoveTowards(microAdjustments, CatInput.ToStop, Time.deltaTime);
 
             timeSinceJumpEnded += Time.deltaTime;
-
-            Vector3 finalPosition = transform.position;
 
             grounding.PerformIKAndCalculateHeightCorrection();
 
@@ -122,10 +107,11 @@ namespace tarkin.hideoutcat
                     else
                     {
                         float factor = jumpEndTransitionLength <= 0f ? 1f : Mathf.Min(timeSinceJumpEnded / jumpEndTransitionLength, 1f);
-                        finalPosition += grounding.HeightCorrectionOffset * factor;
                         grounding.AlignTiltToGround(factor);
 
-                        if (!grounding.BackLimbContact && (grounding.GetPawDistanceToGround(2) > 0.05f || grounding.GetPawDistanceToGround(3) > 0.05f))
+                        controller.Move(grounding.HeightCorrectionOffset * factor);
+
+                        if (!grounding.BackLimbContact && smoothedInput.Thrust < 0.8f && (grounding.GetPawDistanceToGround(2) > 0.05f || grounding.GetPawDistanceToGround(2) > 0.05f))
                             microAdjustments.Thrust = Mathf.MoveTowards(microAdjustments.Thrust, 1f, Time.deltaTime * 10f);
                     }
                     break;
@@ -133,8 +119,8 @@ namespace tarkin.hideoutcat
                 case LocomotionState.Jumping:
                     if (grounding.FrontLimbContact)
                         jumpHandler.OnTouchingGround();
-                    jumpHandler.CalculateNewPosition();
-                    finalPosition = jumpHandler.CalculatedPosition;
+                    jumpHandler.UpdateAirborneMovement();
+                    controller.Move(jumpHandler.FrameMovement);
                     if (jumpHandler.State == CatJumpHandler.JumpState.Exiting)
                         CurrentState = LocomotionState.Landing;
                     break;
@@ -145,8 +131,6 @@ namespace tarkin.hideoutcat
                         CurrentState = LocomotionState.Grounded;
                     break;
             }
-
-            transform.position = finalPosition;
         }
     }
 }

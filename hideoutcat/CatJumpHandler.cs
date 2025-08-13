@@ -5,10 +5,11 @@ using UnityEditor;
 
 namespace tarkin.hideoutcat
 {
-    [RequireComponent(typeof(HideoutCat))]
+    [RequireComponent(typeof(Animator))]
     public class CatJumpHandler : MonoBehaviour
     {
-        [SerializeField] private Animator animator;
+        private Animator animator;
+
         [SerializeField] private float jumpUpExitDuration = 1.0f;
         [SerializeField] private float jumpDownExitDuration = 1.0f;
 
@@ -37,13 +38,18 @@ namespace tarkin.hideoutcat
             Exiting
         }
         public JumpState State { get; private set; }
-        public Vector3 CalculatedPosition { get; private set; }
+        public Vector3 FrameMovement { get; private set; }
         public bool DirectionUp { get; private set; }
 
 #if UNITY_EDITOR
         [Header("Debug")]
         [SerializeField] private bool showJumpState;
 #endif
+
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
+        }
 
         public void InitiateJumpUp(Vector3 ledgePos, Vector3 ledgeDir)
         {
@@ -90,11 +96,13 @@ namespace tarkin.hideoutcat
             jumpProgress = 0f;
         }
 
-        public void CalculateNewPosition()
+        public void UpdateAirborneMovement()
         {
+            // reset the movement delta each frame
+            FrameMovement = Vector3.zero;
+
             if (State != JumpState.Airborne)
             {
-                CalculatedPosition = transform.position;
                 return;
             }
 
@@ -106,13 +114,14 @@ namespace tarkin.hideoutcat
 
                 if (jumpProgress < 1f)
                 {
-                    Vector3 currentPos = Vector3.Lerp(jumpStartPos, jumpTarget, jumpProgress);
-                    currentPos.y += jumpArcCurve.Evaluate(jumpProgress);
-                    CalculatedPosition = currentPos;
+                    Vector3 newPos = Vector3.Lerp(jumpStartPos, jumpTarget, jumpProgress);
+                    newPos.y += jumpArcCurve.Evaluate(jumpProgress);
+                    FrameMovement = newPos - transform.position;
                 }
                 else
                 {
-                    CalculatedPosition = jumpTarget;
+                    FrameMovement = jumpTarget - transform.position;
+
                     animator.SetBool("JumpingUp", false);
                     State = JumpState.Exiting;
                     jumpLandEndBlockTime = jumpUpExitDuration;
@@ -120,7 +129,7 @@ namespace tarkin.hideoutcat
             }
             else
             {
-                CalculatedPosition = transform.position + (Physics.gravity * jumpDownGravityFactor + transform.forward * jumpDownForwardFactor) * Time.deltaTime;
+                FrameMovement = (Physics.gravity * jumpDownGravityFactor + transform.forward * jumpDownForwardFactor) * Time.deltaTime;
             }
         }
 
