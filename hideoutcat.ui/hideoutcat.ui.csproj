@@ -2,9 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <AssemblyName>hideoutcat</AssemblyName>
-    <Version>1.0.1</Version>
-    <LangVersion>latest</LangVersion>
+    <AssemblyName>hideoutcat.ui</AssemblyName>
     <Configurations>UNITY_EDITOR;RUNTIME</Configurations>
   </PropertyGroup>
 
@@ -26,18 +24,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    
     <PackageReference Include="UnityEngine.Modules" Version="2022.3.43" IncludeAssets="compile" />
-  </ItemGroup>
-  
-  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='UNITY_EDITOR|AnyCPU'">
-    <Reference Include="$(UnityEditorPath)\UnityEditor.dll" />
-    <Reference Include="$(UnityProjectPath)\Library\ScriptAssemblies\Vertx.Debugging.Editor.dll" />
-    <Reference Include="$(UnityProjectPath)\Library\ScriptAssemblies\Vertx.Debugging.Runtime.dll" />
-    <Reference Include="$(UnityProjectPath)\Library\ScriptAssemblies\Unity.Mathematics.dll" />
+    <Reference Include="$(SPTPath)\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="$(SPTPath)\BepInEx\plugins\tarkin\IMGUIDebugDraw.dll" />
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='UNITY_EDITOR|AnyCPU'">
+    <Reference Include="$(UnityEditorPath)\UnityEditor.dll" />
+    <Reference Include="$(UnityProjectPath)\Library\ScriptAssemblies\UnityEngine.UI.dll" />
   </ItemGroup>
 
   <Target Name="CopyDllAfterBuild" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='RUNTIME|AnyCPU'">
@@ -48,5 +42,5 @@
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="T:\extract\UNITYPROJECT_EFT35392\Assets\HideoutCat\Assemblies" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFolder="T:\extract\UNITYPROJECT_EFT35392\Assets\HideoutCat\Assemblies" />
   </Target>
-  
+
 </Project>

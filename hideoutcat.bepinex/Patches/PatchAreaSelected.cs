@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using tarkin.hideoutcat.ui;
 
 namespace tarkin.hideoutcat.bepinex
 {
@@ -19,20 +20,30 @@ namespace tarkin.hideoutcat.bepinex
         // todo: find a hook when hideout unloads to clear this dictionary
         static Dictionary<AreaData, Action> unsubscribeActions = new Dictionary<AreaData, Action>();
 
+        static private CatAreaScreenSubstrate catAreaScreen;
+
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.Method(typeof(AreaScreenSubstrate), nameof(AreaScreenSubstrate.SelectArea));
         }
 
         [PatchPostfix]
-        private static void PatchPostfix(AreaData areaData)
+        private static void PatchPostfix(AreaScreenSubstrate __instance, AreaData areaData)
         {
             if (!unsubscribeActions.ContainsKey(areaData))
             {
                 unsubscribeActions[areaData] = areaData.LevelUpdated.Subscribe((silent) => OnAreaUpdated?.Invoke(areaData));
             }
 
-            OnAreaSelected.Invoke(areaData);
+            if (catAreaScreen == null)
+            {
+                GameObject prefab = AssetBundleLoader.LoadBundle("ugui").LoadAsset<GameObject>("AreaScreenSubstrateCat");
+                catAreaScreen = GameObject.Instantiate(prefab, __instance.transform.parent).GetComponent<CatAreaScreenSubstrate>();
+            }
+
+            catAreaScreen.gameObject.SetActive(areaData.Template.Type == EFT.EAreaType.Kitchen);
+
+            OnAreaSelected?.Invoke(areaData);
         }
     }
 }

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\hideoutcat\hideoutcat.csproj" />
+    <ProjectReference Include="..\hideoutcat.ui\hideoutcat.ui.csproj" />
     
     <PackageReference Include="BepInEx.Analyzers" Version="1.0.8">
       <PrivateAssets>all</PrivateAssets>
