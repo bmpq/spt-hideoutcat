@@ -19,13 +19,15 @@ namespace tarkin.hideoutcat.bepinex
 
         internal static new ManualLogSource Log;
 
-        static bool catSpawned;
+        private HideoutCat _catInstance;
 
         private void Start()
         {
             Log = base.Logger;
 
             InitConfiguration();
+
+            HideoutCat.OnCatSpawned += OnCatSpawned;
 
             new PatchAreaSelected().Enable();
             new PatchAvailableHideoutActions().Enable();
@@ -55,6 +57,24 @@ namespace tarkin.hideoutcat.bepinex
                 return false;
 
             return areaKitchen.CurrentLevel > 0;
+        }
+
+        private void OnCatSpawned(HideoutCat cat)
+        {
+            Logger.LogInfo("HideoutCat instance found!");
+            _catInstance = cat;
+            var dataController = _catInstance.PersistentData;
+
+            if (dataController == null)
+            {
+                Logger.LogError("CatDataController was not initialized on HideoutCat!");
+                return;
+            }
+
+            dataController.OnSaveRequested = SaveFileManager.Save;
+            dataController.OnLoadRequested = SaveFileManager.Load;
+
+            dataController.LoadData();
         }
     }
 }

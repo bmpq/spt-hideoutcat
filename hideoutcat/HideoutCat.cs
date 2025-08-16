@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using tarkin.hideoutcat.States;
 using UnityEngine;
 using System.Linq;
+using tarkin.hideoutcat.Persistent;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -18,6 +19,9 @@ namespace tarkin.hideoutcat
     [RequireComponent(typeof(CatAttackHandler))]
     public class HideoutCat : MonoBehaviour
     {
+        public static event Action<HideoutCat> OnCatSpawned;
+        public CatPersistentDataController PersistentData { get; private set; }
+
         private CatLocomotion locomotion;
 
         private CatSenses senses;
@@ -47,6 +51,9 @@ namespace tarkin.hideoutcat
             attackHandler = GetComponent<CatAttackHandler>();
 
             manualController = GetComponent<CatManualController>();
+
+            PersistentData = new CatPersistentDataController();
+            OnCatSpawned?.Invoke(this);
         }
 
         void Start()
@@ -59,6 +66,8 @@ namespace tarkin.hideoutcat
 
         void Update()
         {
+            PersistentData.Tick(Time.deltaTime);
+
             foreach (var key in _boredTargets.Keys.Where(k => k == null).ToList())
             {
                 _boredTargets.Remove(key);
@@ -171,6 +180,11 @@ namespace tarkin.hideoutcat
             CurrentState = newState;
 
             CurrentState.OnEnterState();
+        }
+
+        void OnDestroy()
+        {
+            PersistentData.SaveData();
         }
 
 #if UNITY_EDITOR
