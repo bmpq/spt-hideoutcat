@@ -15,8 +15,16 @@ namespace tarkin.hideoutcat.ui
     public class CatAreaScreenSubstrate : UIElement
     {
         [SerializeField] private ItemSelectionCell cell;
+        [SerializeField] private DefaultUIButton buttonFeed;
 #if RUNTIME
         private List<MongoID> _categoryFilter;
+
+        private Item selectedItem;
+
+        void Start()
+        {
+            buttonFeed.OnClick.AddListener(Feed);
+        }
 
         public override void Display()
         {
@@ -30,6 +38,8 @@ namespace tarkin.hideoutcat.ui
 
             cell.Show(null, new Func<Item, bool>(TestItem), new Action<Item>(SelectItem), _categoryFilter);
             cell.SetItemsSetAbility(true);
+
+            buttonFeed.Interactable = false;
         }
 
         private List<MongoID> GetAllItemIdsInCategory(string categoryId)
@@ -73,7 +83,9 @@ namespace tarkin.hideoutcat.ui
 
         void SelectItem(Item selectedItem)
         {
-            // placeholder for now
+            this.selectedItem = selectedItem;
+
+            buttonFeed.Interactable = selectedItem != null;
 
             if (selectedItem != null)
             {
@@ -83,6 +95,14 @@ namespace tarkin.hideoutcat.ui
             {
                 Debug.Log("Item selection cleared.");
             }
+        }
+
+        void Feed()
+        {
+            Singleton<HideoutClass>.Instance.inventoryController_0.ThrowItem(selectedItem);
+
+            cell.SetItem(null);
+            SelectItem(null);
         }
 #endif
     }

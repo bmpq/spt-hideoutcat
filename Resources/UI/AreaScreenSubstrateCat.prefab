@@ -1082,7 +1082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 467.97998, y: -36}
+  m_AnchoredPosition: {x: 469.97998, y: -36}
   m_SizeDelta: {x: 475, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &114669265286471314
@@ -1509,8 +1509,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 72.74, y: -17.605}
-  m_SizeDelta: {x: 145.48, y: 35.21}
+  m_AnchoredPosition: {x: 73.74, y: -17.605}
+  m_SizeDelta: {x: 147.48, y: 35.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222873938131257482
 CanvasRenderer:
@@ -1540,7 +1540,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Cat bowl
+  m_text: Cat Bowl
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 13c6940c98f17ed418fd93ddd7ef4c65, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 0998f71e08d91ca4395e114c83b7623e, type: 2}
@@ -2900,8 +2900,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 147.73999, y: -36}
-  m_SizeDelta: {x: 145.48, y: 35.21}
+  m_AnchoredPosition: {x: 148.73999, y: -36}
+  m_SizeDelta: {x: 147.48, y: 35.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &114364117983187686
 MonoBehaviour:
@@ -4741,7 +4741,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: -1
-  m_PreferredHeight: 210.7
+  m_PreferredHeight: 218.26
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -6484,8 +6484,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114773935380736434}
   m_HandleRect: {fileID: 224266273677656613}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.97393936
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6788,6 +6788,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   cell: {fileID: 3534030155990487903}
+  buttonFeed: {fileID: 8980880766743233044}
 --- !u!1 &1961922548363663
 GameObject:
   m_ObjectHideFlags: 0
@@ -8242,7 +8243,7 @@ GameObject:
   - component: {fileID: 7871253247377972214}
   - component: {fileID: 4644852312873781241}
   m_Layer: 5
-  m_Name: NextLevelButton (1)
+  m_Name: ButtonFeed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
