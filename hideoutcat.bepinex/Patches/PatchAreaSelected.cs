@@ -41,7 +41,12 @@ namespace tarkin.hideoutcat.bepinex
                 catAreaScreen = GameObject.Instantiate(prefab, __instance.transform.parent).GetComponent<CatAreaScreenSubstrate>();
             }
 
-            catAreaScreen.gameObject.SetActive(areaData.Template.Type == EFT.EAreaType.Kitchen);
+            bool kitchen = (areaData.Template.Type == EFT.EAreaType.Kitchen);
+
+            if (kitchen)
+                catAreaScreen.Display();
+            else 
+                catAreaScreen.Close();
 
             OnAreaSelected?.Invoke(areaData);
         }

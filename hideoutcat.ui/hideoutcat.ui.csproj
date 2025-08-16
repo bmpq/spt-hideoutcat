@@ -27,11 +27,16 @@
     
     <PackageReference Include="UnityEngine.Modules" Version="2022.3.43" IncludeAssets="compile" />
     <Reference Include="$(SPTPath)\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll" />
+    <Reference Include="$(SPTPath)\EscapeFromTarkov_Data\Managed\Sirenix.Serialization.dll" />
+    <Reference Include="$(UnityProjectPath)\Library\ScriptAssemblies\UnityEngine.UI.dll" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='UNITY_EDITOR|AnyCPU'">
     <Reference Include="$(UnityEditorPath)\UnityEditor.dll" />
-    <Reference Include="$(UnityProjectPath)\Library\ScriptAssemblies\UnityEngine.UI.dll" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='RUNTIME|AnyCPU'">
+    <Reference Include="$(SPTPath)\EscapeFromTarkov_Data\Managed\Comfort.dll" />
   </ItemGroup>
 
   <Target Name="CopyDllAfterBuild" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='RUNTIME|AnyCPU'">
