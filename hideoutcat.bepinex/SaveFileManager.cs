@@ -12,6 +12,7 @@ namespace tarkin.hideoutcat.bepinex
     {
         private const string ModDirectoryName = "tarkin";
         private const string SaveDirectoryName = "catsaves";
+        private const string GenericSaveFileName = "unknownprofile.json";
         private static readonly string SavePath;
 
         static string profileId;
@@ -23,24 +24,46 @@ namespace tarkin.hideoutcat.bepinex
 
         private static string GetPlayerSaveFilePath()
         {
-            if (string.IsNullOrEmpty(profileId))
+            if (!string.IsNullOrEmpty(profileId))
             {
-                // GamePlayerOwner.MyPlayer returns null on hideout load, so using this weird method instead
-                profileId = Singleton<ClientApplication<ISession>>.Instance.GetClientBackEndSession().Profile.Id;
-                if (string.IsNullOrEmpty(profileId))
-                {
-                    Debug.LogError("Could not get Player Profile ID. Cannot save or load.");
-                    return null;
-                }
+                return Path.Combine(SavePath, $"{profileId}.json");
             }
 
-            return Path.Combine(SavePath, $"{profileId}.json");
+            // GamePlayerOwner.MyPlayer returns null on hideout load, so using this weird method instead
+            string fetchedProfileId = Singleton<ClientApplication<ISession>>.Instance?.GetClientBackEndSession()?.Profile?.Id;
+
+            if (!string.IsNullOrEmpty(fetchedProfileId))
+            {
+                profileId = fetchedProfileId;
+                Debug.Log($"Successfully fetched profile ID: {profileId}");
+
+                string genericFilePath = Path.Combine(SavePath, GenericSaveFileName);
+                string profileFilePath = Path.Combine(SavePath, $"{profileId}.json");
+
+                // auto migrate generic save to profile-specific save
+                if (File.Exists(genericFilePath) && !File.Exists(profileFilePath))
+                {
+                    try
+                    {
+                        File.Move(genericFilePath, profileFilePath);
+                        Debug.Log($"Migrated generic save file to profile-specific save for ID '{profileId}'.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError($"Failed to migrate generic save file: {ex}");
+                    }
+                }
+
+                return profileFilePath;
+            }
+
+            Debug.LogWarning("Could not get Player Profile ID. Using generic save file as a fallback.");
+            return Path.Combine(SavePath, GenericSaveFileName);
         }
 
         public static void Save(CatSaveData saveData)
         {
             string filePath = GetPlayerSaveFilePath();
-            if (filePath == null) return;
 
             try
             {
@@ -50,7 +73,7 @@ namespace tarkin.hideoutcat.bepinex
 
                 File.WriteAllText(filePath, json);
 
-                Debug.Log($"Successfully saved cat data for profile to: {filePath}");
+                Debug.Log($"Successfully saved cat data for profile to: {Path.GetFileName(filePath)}");
             }
             catch (Exception ex)
             {
@@ -61,13 +84,12 @@ namespace tarkin.hideoutcat.bepinex
         public static CatSaveData Load()
         {
             string filePath = GetPlayerSaveFilePath();
-            if (filePath == null) return null;
 
             try
             {
                 if (!File.Exists(filePath))
                 {
-                    Debug.LogWarning("No save file found for this profile. Will start fresh.");
+                    Debug.Log($"No save file found at '{Path.GetFileName(filePath)}'. Will start fresh.");
                     return null;
                 }
 
