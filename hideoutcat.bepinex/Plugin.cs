@@ -42,6 +42,8 @@ namespace tarkin.hideoutcat.bepinex
             new Patch_LaserBeam_OnDestroy().Enable();
 
             new Patch_HideoutCameraFlashlight_SetState().Enable();
+
+            new Patch_HideoutCustomizationScreen_Init().Enable();
         }
 
         private void InitConfiguration()
