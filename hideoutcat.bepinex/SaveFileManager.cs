@@ -61,7 +61,7 @@ namespace tarkin.hideoutcat.bepinex
             return Path.Combine(SavePath, GenericSaveFileName);
         }
 
-        public static void Save(CatSaveData saveData)
+        public static void Write(CatSaveData saveData)
         {
             string filePath = GetPlayerSaveFilePath();
 
@@ -81,7 +81,7 @@ namespace tarkin.hideoutcat.bepinex
             }
         }
 
-        public static CatSaveData Load()
+        public static CatSaveData Read()
         {
             string filePath = GetPlayerSaveFilePath();
 

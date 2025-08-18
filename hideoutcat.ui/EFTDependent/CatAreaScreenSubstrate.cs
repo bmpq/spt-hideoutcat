@@ -1,6 +1,7 @@
 ﻿using EFT.UI;
 using UnityEngine;
 
+
 #if RUNTIME
 using Comfort.Common;
 using EFT;
@@ -10,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 #endif
 
-namespace tarkin.hideoutcat.ui
+namespace tarkin.hideoutcat.ui.EFTDependent
 {
     public class CatAreaScreenSubstrate : UIElement
     {

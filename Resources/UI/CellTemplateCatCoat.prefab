@@ -860,10 +860,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7479982718382090493}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 63.845, y: -5.5}
+  m_SizeDelta: {x: 54.31, y: 11}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7478823054023330901
 CanvasRenderer:
@@ -1319,10 +1319,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7479982718382090493}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 27.190002, y: -7}
+  m_SizeDelta: {x: 9, y: 8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7477845175569149433
 CanvasRenderer:
@@ -1371,9 +1371,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7480144524480836600}
+  - component: {fileID: 6021024880313302544}
   - component: {fileID: 7298648588786472619}
   - component: {fileID: 7297283804515397992}
-  - component: {fileID: 7297237378745782522}
   - component: {fileID: 7477240860478766085}
   m_Layer: 5
   m_Name: CellTemplateCatCoat
@@ -1404,6 +1404,32 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6021024880313302544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7266225169014224985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1431822761, guid: 7c3453a1b018e2842ad7619bbc61e1dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 7490055627130397260}
+  _imageMainIdle: {fileID: 7297374386708554036}
+  _imageMainSelected: {fileID: 7296981674306312089}
+  _name: {fileID: 0}
+  _layerIdle: {fileID: 7266141024491971291}
+  _overlayHover: {fileID: 7266170681164223614}
+  _layerSelected: {fileID: 7266076287671688861}
+  _lockedImage: {fileID: 7297494214302484950}
+  _lockedBorderImage: {fileID: 7297229259894766166}
+  _cellNumberObject: {fileID: 7266394418493057421}
+  _cellNumberImage: {fileID: 7297373661631225811}
+  _cellNumberIdleSprite: {fileID: 21300000, guid: 56a8abf6094d33d4ebccab260e7cfc0e, type: 2}
+  _cellNumberSelectedSprite: {fileID: 21300000, guid: 0e147350f0ee6614dabecb8e48b7fdf2, type: 2}
+  _cellNumberText: {fileID: 7297834137360888823}
 --- !u!114 &7298648588786472619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1454,38 +1480,6 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &7297237378745782522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7266225169014224985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2b5fda75d6477e4d8d3774baa930506, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _normalVersion: {fileID: 7266141024491971291}
-  _selectedVersion: {fileID: 7266076287671688861}
-  _canvasGroup: {fileID: 7490055627130397260}
-  _targetImage: {fileID: 0}
-  _hoverSprite: {fileID: 0}
-  _hoverGraphic: {fileID: 7266170681164223614}
-  _idleGraphic: {fileID: 7266036981853725186}
-  LocalizedText: {fileID: 0}
-  Interactable: 1
-  _imageIdle: {fileID: 7297374386708554036}
-  _imageSelected: {fileID: 7296981674306312089}
-  _name: {fileID: 0}
-  _lockedImage: {fileID: 7297494214302484950}
-  _lockedBorderImage: {fileID: 7297229259894766166}
-  _cellNumberObject: {fileID: 7266394418493057421}
-  _cellNumberImage: {fileID: 7297373661631225811}
-  _cellNumberIdleSprite: {fileID: 21300000, guid: 56a8abf6094d33d4ebccab260e7cfc0e, type: 2}
-  _cellNumberSelectedSprite: {fileID: 21300000, guid: 0e147350f0ee6614dabecb8e48b7fdf2, type: 2}
-  _cellNumberText: {fileID: 7297834137360888823}
-  _slotsNumberText: {fileID: 0}
 --- !u!222 &7477240860478766085
 CanvasRenderer:
   m_ObjectHideFlags: 0

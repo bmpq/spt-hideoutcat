@@ -2,7 +2,7 @@
 using SPT.Reflection.Patching;
 using System.Linq;
 using System.Reflection;
-using tarkin.hideoutcat.ui;
+using tarkin.hideoutcat.ui.EFTDependent;
 using UI.Hideout;
 using UnityEngine;
 
@@ -23,11 +23,18 @@ namespace tarkin.hideoutcat.bepinex.Patches
             HideoutCustomizationOptionsWithSlotsPanel ____optionWithSlotsPanel
         )
         {
-            if (HideoutCustomizationCat.Instance != null)
-                return;
+            Transform panelParent = ____simpleOptionPanel.transform.parent;
 
-            var catPanel = GameObject.Instantiate(AssetBundleLoader.LoadBundle("ugui").LoadAsset<GameObject>("CustomizationLayoutCat"), ____simpleOptionPanel.transform.parent).GetComponent<HideoutCustomizationCat>();
-            HideoutCustomizationCat.Instance = catPanel;
+            for (int i = 0; i < panelParent.childCount; i++)
+            {
+                if (panelParent.GetChild(i).GetComponent<HideoutCustomizationCat>() != null)
+                {
+                    // already spawned
+                    return;
+                }
+            }
+            
+            var catPanel = GameObject.Instantiate(AssetBundleLoader.LoadBundle("ugui").LoadAsset<GameObject>("CustomizationLayoutCat"), panelParent).GetComponent<HideoutCustomizationCat>();
 
             var tabCat = GameObject.Instantiate(AssetBundleLoader.LoadBundle("ugui").LoadAsset<GameObject>("CustomizationTabCat"), ____wallButton.transform.parent).GetComponent<Tab>();
             var originalTabs = ____wallButton.transform.parent.GetComponentsInChildren<Tab>().Where(t => t != tabCat).ToList();

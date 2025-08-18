@@ -1,22 +1,14 @@
 ﻿using BepInEx;
-using BepInEx.Configuration;
 using BepInEx.Logging;
-using Comfort.Common;
-using EFT;
-using EFT.Hideout;
-using tarkin.hideoutcat.Pathfinding;
-using System.Linq;
-using UnityEngine;
 using tarkin.hideoutcat.bepinex.Patches;
+using tarkin.hideoutcat.Persistent;
+using tarkin.hideoutcat.ui;
 
 namespace tarkin.hideoutcat.bepinex
 {
     [BepInPlugin("com.tarkin.hideoutcat", MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
     public class Plugin : BaseUnityPlugin
     {
-        internal static ConfigEntry<Coat> Coat;
-        internal static ConfigEntry<Color> EyeColor;
-
         internal static new ManualLogSource Log;
 
         private HideoutCat _catInstance;
@@ -25,9 +17,8 @@ namespace tarkin.hideoutcat.bepinex
         {
             Log = base.Logger;
 
-            InitConfiguration();
-
             HideoutCat.OnCatSpawned += OnCatSpawned;
+            HideoutCat.OnCatDestroyed += OnCatDestroyed;
 
             new PatchAreaSelected().Enable();
             new PatchAvailableHideoutActions().Enable();
@@ -46,37 +37,48 @@ namespace tarkin.hideoutcat.bepinex
             new Patch_HideoutCustomizationScreen_Init().Enable();
         }
 
-        private void InitConfiguration()
-        {
-            Coat = Config.Bind("", "Coat", hideoutcat.Coat.GREY, "Applies on the next hideout load");
-            EyeColor = Config.Bind("", "Eye colour", new Color(0.56f, 0.75f, 0.40f), "Applies on the next hideout load");
-        }
-
-        static bool RequirementsMet()
-        {
-            AreaData areaKitchen = Singleton<HideoutClass>.Instance.AreaDatas.FirstOrDefault(x => x.Template.Type == EFT.EAreaType.Kitchen);
-            if (areaKitchen == null)
-                return false;
-
-            return areaKitchen.CurrentLevel > 0;
-        }
-
         private void OnCatSpawned(HideoutCat cat)
         {
-            Logger.LogInfo("HideoutCat instance found!");
+            Log.LogInfo("HideoutCat instance spawned. Starting initialization sequence.");
             _catInstance = cat;
-            var dataController = _catInstance.PersistentData;
 
-            if (dataController == null)
+            var allCoats = AssetBundleLoader.LoadBundle("hideoutcat_coats").LoadAllAssets<Coat>();
+
+            CatSaveData saveData = SaveFileManager.Read();
+
+            var dataController = new CatPersistentDataController(allCoats);
+            dataController.ApplySaveData(saveData);
+
+            _catInstance.Initialize(dataController);
+
+            CatUIDataProvider.Initialize(
+                coatsLoader: () => allCoats,
+                currentCoatLoader: () => _catInstance.PersistentData.CurrentCoat,
+                coatApplier: ApplyCoat
+            );
+
+            Log.LogInfo("HideoutCat initialization complete.");
+        }
+
+        private void ApplyCoat(Coat coat)
+        {
+            if (_catInstance == null || coat == null) return;
+
+            bool success = _catInstance.PersistentData.SetCoat(coat);
+            if (success)
             {
-                Logger.LogError("CatDataController was not initialized on HideoutCat!");
-                return;
+                _catInstance.Appearance.ApplyCoatTexture(coat.MainTexture);
             }
+        }
 
-            dataController.OnSaveRequested = SaveFileManager.Save;
-            dataController.OnLoadRequested = SaveFileManager.Load;
+        private void OnCatDestroyed(HideoutCat cat)
+        {
+            CatSaveData dataToSave = cat.PersistentData.GetSaveData();
+            SaveFileManager.Write(dataToSave);
 
-            dataController.LoadData();
+            CatUIDataProvider.Reset();
+
+            _catInstance = null;
         }
     }
 }

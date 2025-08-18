@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <AssemblyName>hideoutcat</AssemblyName>
-    <Version>1.0.1</Version>
     <LangVersion>latest</LangVersion>
     <Configurations>UNITY_EDITOR;RUNTIME</Configurations>
   </PropertyGroup>

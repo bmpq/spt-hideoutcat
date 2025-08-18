@@ -1,18 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace tarkin.hideoutcat
 {
-    public enum Coat
+    [CreateAssetMenu(fileName = "CoatGrey", menuName = "ScriptableObjects/Cat Coat")]
+    public class Coat : ScriptableObject
     {
-        GREY,
-        BLACK,
-        ORANGE,
-        WHITE,
-        BROWN,
-        BICOLOR
+        public string Id;
+        public string Label;
+        public Texture2D MainTexture;
+        [TextArea]
+        public string Description;
+        public Sprite Icon;
+
+#if UNITY_EDITOR
+        void Awake() 
+        { 
+            Id = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(this));
+        }
+#endif
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using tarkin.hideoutcat.States;
+using tarkin.hideoutcat.Pathfinding;
 using UnityEngine;
 using System.Linq;
 using tarkin.hideoutcat.Persistent;
@@ -13,6 +14,7 @@ namespace tarkin.hideoutcat
 {
     [RequireComponent(typeof(CatLocomotion))]
     [RequireComponent(typeof(CatSenses))]
+    [RequireComponent(typeof(CatAppearance))]
 
     [RequireComponent(typeof(CatIdleHandler))]
     [RequireComponent(typeof(CatGraphTraverser))]
@@ -20,7 +22,10 @@ namespace tarkin.hideoutcat
     public class HideoutCat : MonoBehaviour
     {
         public static event Action<HideoutCat> OnCatSpawned;
+        public static event Action<HideoutCat> OnCatDestroyed;
         public CatPersistentDataController PersistentData { get; private set; }
+        public CatAppearance Appearance => appearance;
+        private CatAppearance appearance;
 
         private CatLocomotion locomotion;
 
@@ -40,6 +45,16 @@ namespace tarkin.hideoutcat
         [Tooltip("how far a 'boring' target must move for the cat to regain interest")]
         [SerializeField] private float _interestRegainMovementThreshold = 0.1f;
 
+        public void Initialize(CatPersistentDataController dataController)
+        {
+            this.PersistentData = dataController ?? throw new ArgumentNullException(nameof(dataController));
+
+            if (PersistentData.CurrentCoat != null)
+            {
+                Appearance.ApplyCoatTexture(PersistentData.CurrentCoat.MainTexture);
+            }
+        }
+
         void Awake()
         {
             locomotion = GetComponent<CatLocomotion>();
@@ -52,7 +67,8 @@ namespace tarkin.hideoutcat
 
             manualController = GetComponent<CatManualController>();
 
-            PersistentData = new CatPersistentDataController();
+            appearance = GetComponent<CatAppearance>();
+
             OnCatSpawned?.Invoke(this);
         }
 
@@ -184,7 +200,7 @@ namespace tarkin.hideoutcat
 
         void OnDestroy()
         {
-            PersistentData.SaveData();
+            OnCatDestroyed.Invoke(this);
         }
 
 #if UNITY_EDITOR

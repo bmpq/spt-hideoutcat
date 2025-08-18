@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-using tarkin.hideoutcat.ui;
+using tarkin.hideoutcat.ui.EFTDependent;
 
 namespace tarkin.hideoutcat.bepinex
 {
