@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using SPT.Reflection.Patching;
+using System;
 using System.Linq;
 using System.Reflection;
 using tarkin.hideoutcat.ui.EFTDependent;
@@ -23,48 +24,56 @@ namespace tarkin.hideoutcat.bepinex.Patches
             HideoutCustomizationOptionsWithSlotsPanel ____optionWithSlotsPanel
         )
         {
-            Transform panelParent = ____simpleOptionPanel.transform.parent;
-
-            for (int i = 0; i < panelParent.childCount; i++)
+            try
             {
-                if (panelParent.GetChild(i).GetComponent<HideoutCustomizationCat>() != null)
+                Transform panelParent = ____simpleOptionPanel.transform.parent;
+
+                for (int i = 0; i < panelParent.childCount; i++)
                 {
-                    // already spawned
-                    return;
+                    if (panelParent.GetChild(i).GetComponent<HideoutCustomizationCat>() != null)
+                    {
+                        // already spawned
+                        return;
+                    }
                 }
-            }
-            
-            var catPanel = GameObject.Instantiate(AssetBundleLoader.LoadBundle("ugui").LoadAsset<GameObject>("CustomizationLayoutCat"), panelParent).GetComponent<HideoutCustomizationCat>();
 
-            var tabCat = GameObject.Instantiate(AssetBundleLoader.LoadBundle("ugui").LoadAsset<GameObject>("CustomizationTabCat"), ____wallButton.transform.parent).GetComponent<Tab>();
-            var originalTabs = ____wallButton.transform.parent.GetComponentsInChildren<Tab>().Where(t => t != tabCat).ToList();
+                var catPanel = GameObject.Instantiate(AssetBundleLoader.LoadAsset<GameObject>("ugui", "CustomizationLayoutCat"), panelParent).GetComponent<HideoutCustomizationCat>();
 
-            tabCat.OnSelectionChanged += (clickedTab, wantsToBeSelected) =>
-            {
-                if (!wantsToBeSelected) return;
+                var tabCat = GameObject.Instantiate(AssetBundleLoader.LoadAsset<GameObject>("ugui", "CustomizationTabCat"), ____wallButton.transform.parent).GetComponent<Tab>();
 
-                foreach (var otherTab in originalTabs)
-                {
-                    otherTab.UpdateVisual(false);
-                }
-                tabCat.UpdateVisual(true);
+                var originalTabs = ____wallButton.transform.parent.GetComponentsInChildren<Tab>().Where(t => t != tabCat).ToList();
 
-                ____simpleOptionPanel.Close();
-                ____optionWithSlotsPanel.Close();
-                catPanel.gameObject.SetActive(true);
-            };
-
-            foreach (var originalTab in originalTabs)
-            {
-                originalTab.OnSelectionChanged += (clickedTab, wantsToBeSelected) =>
+                tabCat.OnSelectionChanged += (clickedTab, wantsToBeSelected) =>
                 {
                     if (!wantsToBeSelected) return;
-                    tabCat.UpdateVisual(false);
-                    catPanel.gameObject.SetActive(false);
-                };
-            }
 
-            catPanel.gameObject.SetActive(false);
+                    foreach (var otherTab in originalTabs)
+                    {
+                        otherTab.UpdateVisual(false);
+                    }
+                    tabCat.UpdateVisual(true);
+
+                    ____simpleOptionPanel.Close();
+                    ____optionWithSlotsPanel.Close();
+                    catPanel.gameObject.SetActive(true);
+                };
+
+                foreach (var originalTab in originalTabs)
+                {
+                    originalTab.OnSelectionChanged += (clickedTab, wantsToBeSelected) =>
+                    {
+                        if (!wantsToBeSelected) return;
+                        tabCat.UpdateVisual(false);
+                        catPanel.gameObject.SetActive(false);
+                    };
+                }
+
+                catPanel.gameObject.SetActive(false);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError(ex);
+            }
         }
     }
 }

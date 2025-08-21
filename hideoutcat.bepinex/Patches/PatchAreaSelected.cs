@@ -30,25 +30,32 @@ namespace tarkin.hideoutcat.bepinex
         [PatchPostfix]
         private static void PatchPostfix(AreaScreenSubstrate __instance, AreaData areaData)
         {
-            if (!unsubscribeActions.ContainsKey(areaData))
+            try
             {
-                unsubscribeActions[areaData] = areaData.LevelUpdated.Subscribe((silent) => OnAreaUpdated?.Invoke(areaData));
-            }
+                if (!unsubscribeActions.ContainsKey(areaData))
+                {
+                    unsubscribeActions[areaData] = areaData.LevelUpdated.Subscribe((silent) => OnAreaUpdated?.Invoke(areaData));
+                }
 
-            if (catAreaScreen == null)
+                if (catAreaScreen == null)
+                {
+                    GameObject prefab = AssetBundleLoader.LoadAsset<GameObject>("ugui", "AreaScreenSubstrateCat");
+                    catAreaScreen = GameObject.Instantiate(prefab, __instance.transform.parent).GetComponent<CatAreaScreenSubstrate>();
+                }
+
+                bool kitchen = (areaData.Template.Type == EFT.EAreaType.Kitchen);
+
+                if (kitchen)
+                    catAreaScreen.Display();
+                else
+                    catAreaScreen.Close();
+
+                OnAreaSelected?.Invoke(areaData);
+            }
+            catch (Exception ex)
             {
-                GameObject prefab = AssetBundleLoader.LoadBundle("ugui").LoadAsset<GameObject>("AreaScreenSubstrateCat");
-                catAreaScreen = GameObject.Instantiate(prefab, __instance.transform.parent).GetComponent<CatAreaScreenSubstrate>();
+                Plugin.Log.LogError(ex);
             }
-
-            bool kitchen = (areaData.Template.Type == EFT.EAreaType.Kitchen);
-
-            if (kitchen)
-                catAreaScreen.Display();
-            else 
-                catAreaScreen.Close();
-
-            OnAreaSelected?.Invoke(areaData);
         }
     }
 }

@@ -22,19 +22,13 @@ namespace tarkin.hideoutcat.bepinex
             }
         }
 
-        public void LoadBundleScene(string filename)
+        public void LoadBundleScene(AssetBundle assetBundle)
         {
-            string fullPath = Path.Combine(BepInEx.Paths.PluginPath, "tarkin", "bundles", filename);
-
-            StartCoroutine(LoadBundleSceneRoutine(fullPath));
+            StartCoroutine(LoadBundleSceneRoutine(assetBundle));
         }
 
-        IEnumerator LoadBundleSceneRoutine(string fullPath)
+        IEnumerator LoadBundleSceneRoutine(AssetBundle assetBundle)
         {
-            AssetBundleCreateRequest bundleRequest = AssetBundle.LoadFromFileAsync(fullPath);
-            yield return bundleRequest;
-
-            AssetBundle assetBundle = bundleRequest.assetBundle;
             if (assetBundle == null)
             {
                 Debug.LogError($"Error loading asset bundle!");
@@ -44,7 +38,7 @@ namespace tarkin.hideoutcat.bepinex
             string[] scenePaths = assetBundle.GetAllScenePaths();
             if (scenePaths.Length == 0)
             {
-                Debug.LogError($"'{Path.GetFileName(fullPath)}' is not a scene bundle!");
+                Debug.LogError($"'{Path.GetFileName(assetBundle.name)}' is not a scene bundle!");
                 assetBundle?.Unload(false);
                 yield break;
             }
@@ -67,35 +61,9 @@ namespace tarkin.hideoutcat.bepinex
                 yield break;
             }
 
-            ReplaceShadersToNative(loadedScene);
-
-            Debug.Log($"'{Path.GetFileName(fullPath)}': Scene loaded successfully.");
+            Debug.Log($"'{Path.GetFileName(assetBundle.name)}': Scene loaded successfully.");
 
             assetBundle.Unload(false); // the false flag unloads the bundle file data, but keeps the loaded scene/assets in memory
-        }
-
-        private static void ReplaceShadersToNative(Scene loadedScene)
-        {
-            foreach (GameObject rootGameObject in loadedScene.GetRootGameObjects())
-            {
-                foreach (var rend in rootGameObject.GetComponentsInChildren<Renderer>(true))
-                {
-                    foreach (var mat in rend.materials)
-                    {
-                        if (mat == null || mat.shader == null)
-                            continue;
-
-                        Shader nativeShader = Shader.Find(mat.shader.name);
-                        if (nativeShader != null)
-                        {
-                            mat.shader = nativeShader;
-                            Debug.Log($"Success finding native shader for {mat.shader.name} ({rend.gameObject.name})");
-                        }
-                        else
-                            Debug.LogError($"Native shader '{mat.shader.name}' not found!");
-                    }
-                }
-            }
         }
     }
 }

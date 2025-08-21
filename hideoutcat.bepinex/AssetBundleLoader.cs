@@ -31,25 +31,20 @@ namespace tarkin
             return assetBundle;
         }
 
-        public static void ReplaceShadersToNative(GameObject go)
+        public static T LoadAsset<T>(string bundleName, string objectName) where T : Object
         {
-            foreach (var rend in go.GetComponentsInChildren<Renderer>(true))
-            {
-                foreach (var mat in rend.materials)
-                {
-                    if (mat == null || mat.shader == null)
-                        continue;
+            AssetBundle bundle = LoadBundle(bundleName);
 
-                    Shader nativeShader = Shader.Find(mat.shader.name);
-                    if (nativeShader != null)
-                    {
-                        mat.shader = nativeShader;
-                        Debug.Log($"Success finding native shader for {mat.shader.name} ({rend.gameObject.name})");
-                    }
-                    else
-                        Debug.LogError($"Native shader '{mat.shader.name}' not found!");
+            var allAssets = bundle.LoadAllAssets<T>();
+            foreach (var item in allAssets)
+            {
+                if (item.name == objectName)
+                {
+                    return item;
                 }
             }
+
+            return null;
         }
     }
 }
