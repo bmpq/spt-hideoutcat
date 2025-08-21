@@ -4602,20 +4602,16 @@ PrefabInstance:
       value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2393375845104308216, guid: 142eb38b12bbaa44c99692dab5dd47b8, type: 3}
+      propertyPath: upForce
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2393375845104308216, guid: 142eb38b12bbaa44c99692dab5dd47b8, type: 3}
+      propertyPath: downForce
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2393375845104308216, guid: 142eb38b12bbaa44c99692dab5dd47b8, type: 3}
       propertyPath: fallingSpeed
       value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 2393375845104308216, guid: 142eb38b12bbaa44c99692dab5dd47b8, type: 3}
-      propertyPath: groundCheckDistance
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2393375845104308216, guid: 142eb38b12bbaa44c99692dab5dd47b8, type: 3}
-      propertyPath: tiltCorrectionSpeed
-      value: 2.98
-      objectReference: {fileID: 0}
-    - target: {fileID: 2393375845104308216, guid: 142eb38b12bbaa44c99692dab5dd47b8, type: 3}
-      propertyPath: heightCorrectionTime
-      value: 0.015
       objectReference: {fileID: 0}
     - target: {fileID: 2393375845104308216, guid: 142eb38b12bbaa44c99692dab5dd47b8, type: 3}
       propertyPath: showGroundNormalRaycasts

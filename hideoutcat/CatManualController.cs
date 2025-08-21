@@ -27,8 +27,8 @@ namespace tarkin.hideoutcat
                 input.Thrust *= 3.6f;
 
             input.Turn = Input.GetAxis("Horizontal");
-            input.RequestJumpUp = Input.GetKeyDown(KeyCode.Space);
-            input.Crouch = Input.GetKeyDown(KeyCode.LeftControl) ? 1f : 0f;
+            input.RequestJumpUp = Input.GetKey(KeyCode.Space);
+            input.Crouch = Input.GetKey(KeyCode.C) ? 1f : 0f;
 
             return new StateTickResult(input);
         }

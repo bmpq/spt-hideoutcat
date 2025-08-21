@@ -127,7 +127,9 @@ namespace tarkin.hideoutcat.States
             float turnInput = Mathf.Clamp(angleToTarget / 45f, -1f, 1f);
             float thrustInput = CalculateThrust(angleToTarget, distanceToTarget);
 
-            return new StateTickResult(new CatInput(turnInput, thrustInput));
+            bool toJump = CurrentTargetNode.position.y > transform.position.y + 0.5f;
+
+            return new StateTickResult(new CatInput(turnInput, thrustInput, requestJumpUp: toJump));
         }
 
         private StateTickResult HandleFinalTurn()

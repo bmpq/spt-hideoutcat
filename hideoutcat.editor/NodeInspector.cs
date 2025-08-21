@@ -24,7 +24,7 @@ namespace tarkin.hideoutcat.editor
             {
                 if (GUILayout.Button("Set as destination", GUILayout.Height(50f)))
                 {
-                    //FindObjectOfType<HideoutCat>().SetDestination(node);
+                    FindObjectOfType<HideoutCat>().GoToNode(node);
                 }
 
                 EditorGUILayout.Space(10);

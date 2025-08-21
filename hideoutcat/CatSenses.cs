@@ -23,7 +23,7 @@ namespace tarkin.hideoutcat
         {
             if (target == null)
             {
-                distance = 0;
+                distance = visionMaxDistance;
                 return false;
             }
 

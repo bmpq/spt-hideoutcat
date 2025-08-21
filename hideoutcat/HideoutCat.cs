@@ -45,6 +45,8 @@ namespace tarkin.hideoutcat
         [Tooltip("how far a 'boring' target must move for the cat to regain interest")]
         [SerializeField] private float _interestRegainMovementThreshold = 0.1f;
 
+        private Node _requestedDestination;
+
         public void Initialize(CatPersistentDataController dataController)
         {
             this.PersistentData = dataController ?? throw new ArgumentNullException(nameof(dataController));
@@ -78,11 +80,16 @@ namespace tarkin.hideoutcat
             {
                 TransitionToState(idleHandler);
             }
+
+            if (PersistentData == null)
+            {
+                Debug.LogWarning("No persistent data!");
+            }
         }
 
         void Update()
         {
-            PersistentData.Tick(Time.deltaTime);
+            PersistentData?.Tick(Time.deltaTime);
 
             foreach (var key in _boredTargets.Keys.Where(k => k == null).ToList())
             {
@@ -98,6 +105,22 @@ namespace tarkin.hideoutcat
             {
                 DecideNextState();
             }
+        }
+
+        public void GoToNode(Node targetNode)
+        {
+            if (targetNode == null)
+                return;
+
+            // interrupt current state
+            if (CurrentState == attackHandler)
+            {
+                _boredTargets[attackHandler.CurrentTarget] = attackHandler.CurrentTarget.position;
+                attackHandler.SetTarget(null);
+            }
+
+            graphTraverser.LayNewPath(targetNode);
+            TransitionToState(graphTraverser);
         }
 
         private bool CheckForInterrupts()
@@ -144,16 +167,7 @@ namespace tarkin.hideoutcat
                 attackHandler.SetTarget(null);
             }
 
-            var randomPatrolNode = graphTraverser.GetRandomNode();
-            if (randomPatrolNode != null)
-            {
-                graphTraverser.LayNewPath(randomPatrolNode);
-                TransitionToState(graphTraverser);
-            }
-            else
-            {
-                TransitionToState(idleHandler);
-            }
+            TransitionToState(idleHandler);
         }
 
         private Transform FindBestTarget()
@@ -200,7 +214,7 @@ namespace tarkin.hideoutcat
 
         void OnDestroy()
         {
-            OnCatDestroyed.Invoke(this);
+            OnCatDestroyed?.Invoke(this);
         }
 
 #if UNITY_EDITOR

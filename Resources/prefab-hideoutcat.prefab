@@ -1079,7 +1079,7 @@ MonoBehaviour:
   tiltCorrectionSpeed: 8
   groundCheckDistance: 0.5
   groundCheckCastRadius: 0.03
-  maxTiltAngle: 45
+  maxTiltAngle: 30
   jumpDownCheckOriginOffset: {x: 0, y: 0.2, z: -0.13}
   jumpDownCheckDir: {x: 1, y: -0.69}
   jumpDownCheckDistance: 0.62
@@ -1266,7 +1266,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 0.20941028
-  m_Radius: 0.087999776
+  m_Radius: 0.12
   m_SlopeLimit: 45
   m_StepOffset: 0.1
   m_SkinWidth: 0.01
