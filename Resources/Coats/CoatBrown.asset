@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2117905212, guid: b97fef369065ae24ca254e965ad50e19, type: 3}
+  m_Name: CoatBrown
+  m_EditorClassIdentifier: 
+  Id: e1a3d550255e8c14db20273f22be60ed
+  Label: Brown
+  MainTexture: {fileID: 2800000, guid: 90adea37cc826ca44a4112642f708b60, type: 3}
+  Description: 
+  Icon: {fileID: 21300000, guid: b656179ca01b118479aee03045b20575, type: 3}
