@@ -54,7 +54,9 @@ namespace tarkin.hideoutcat.bepinex
             CatUIDataProvider.Initialize(
                 coatsLoader: () => allCoats,
                 currentCoatLoader: () => _catInstance.PersistentData.CurrentCoat,
-                coatApplier: ApplyCoat
+                coatApplier: ApplyCoat,
+                currentCatNameLoader: () => _catInstance.PersistentData.CatName,
+                catNameSetter: _catInstance.PersistentData.SetCatName
             );
 
             Log.LogInfo("HideoutCat initialization complete.");

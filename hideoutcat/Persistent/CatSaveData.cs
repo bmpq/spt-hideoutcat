@@ -4,6 +4,7 @@ namespace tarkin.hideoutcat.Persistent
 {
     public class CatSaveData
     {
+        public string CatName { get; set; }
         public DateTime LastSaveTime { get; set; }
         public float HungerLevel { get; set; }
         public string CoatGuid { get; set; }

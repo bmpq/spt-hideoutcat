@@ -29,6 +29,8 @@ namespace tarkin.hideoutcat.ui.EFTDependent
             if (_isUiInitialized) return;
             _isUiInitialized = true;
 
+            inputName.SetTextWithoutNotify(CatUIDataProvider.GetCurrentCatName());
+
             coatCellsGroup = new MyTabGroup();
 
             Coat[] coats = CatUIDataProvider.GetCoats();
@@ -53,9 +55,9 @@ namespace tarkin.hideoutcat.ui.EFTDependent
             coatCellsGroup.OnTabSelected += OnCoatSelect;
         }
 
-        void OnValidatedTextChanged(string name) 
+        void OnValidatedTextChanged(string name)
         {
-            // todo later
+            CatUIDataProvider.SetCatName(name);
         }
 
         private void OnCoatSelect(MyTab tab)

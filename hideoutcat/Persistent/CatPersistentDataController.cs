@@ -6,7 +6,7 @@ namespace tarkin.hideoutcat.Persistent
     public class CatPersistentDataController
     {
         private Coat[] _allAvailableCoats;
-
+        public string CatName { get; private set; } = "Kuzya";
         public float CurrentHunger { get; private set; } = 50f;
         public Coat CurrentCoat { get; private set; }
 
@@ -35,6 +35,11 @@ namespace tarkin.hideoutcat.Persistent
 
             this.CurrentHunger = loadedData.HungerLevel;
 
+            if (!string.IsNullOrEmpty(loadedData.CatName))
+            {
+                this.CatName = loadedData.CatName;
+            }
+
             Coat loadedCoat = _allAvailableCoats.FirstOrDefault(c => c.Id == loadedData.CoatGuid);
 
             if (loadedCoat != null)
@@ -57,13 +62,22 @@ namespace tarkin.hideoutcat.Persistent
             return false;
         }
 
+        public void SetCatName(string name)
+        {
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                CatName = name;
+            }
+        }
+
         public CatSaveData GetSaveData()
         {
             return new CatSaveData
             {
                 LastSaveTime = DateTime.UtcNow,
                 HungerLevel = this.CurrentHunger,
-                CoatGuid = CurrentCoat?.Id
+                CoatGuid = CurrentCoat?.Id,
+                CatName = this.CatName
             };
         }
     }
