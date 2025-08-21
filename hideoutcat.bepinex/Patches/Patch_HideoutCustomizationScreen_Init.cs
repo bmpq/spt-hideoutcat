@@ -57,6 +57,7 @@ namespace tarkin.hideoutcat.bepinex.Patches
                     ____optionWithSlotsPanel.Close();
                     catPanel.gameObject.SetActive(true);
                 };
+                tabCat.GetOrAddComponent<JankTabDisableFix>();
 
                 foreach (var originalTab in originalTabs)
                 {

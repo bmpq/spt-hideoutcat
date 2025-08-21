@@ -68,6 +68,12 @@ namespace tarkin.hideoutcat.ui.EFTDependent
             }
         }
 
+        private void OnDisable()
+        {
+            // when the parent window closes, close this panel
+            gameObject.SetActive(false);
+        }
+
         void OnDestroy()
         {
             if (coatCellsGroup != null)
