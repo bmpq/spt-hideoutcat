@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hideoutcat.editor", "hideou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hideoutcat.ui", "hideoutcat.ui\hideoutcat.ui.csproj", "{E9015ADE-DDB9-4C12-BBF2-F759B111E2E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hideoutcat.scene", "hideoutcat.scene\hideoutcat.scene.csproj", "{94AC5258-1229-4B51-AC44-2376BE93F71B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		RUNTIME|Any CPU = RUNTIME|Any CPU
@@ -31,6 +33,10 @@ Global
 		{E9015ADE-DDB9-4C12-BBF2-F759B111E2E8}.RUNTIME|Any CPU.Build.0 = RUNTIME|Any CPU
 		{E9015ADE-DDB9-4C12-BBF2-F759B111E2E8}.UNITY_EDITOR|Any CPU.ActiveCfg = UNITY_EDITOR|Any CPU
 		{E9015ADE-DDB9-4C12-BBF2-F759B111E2E8}.UNITY_EDITOR|Any CPU.Build.0 = UNITY_EDITOR|Any CPU
+		{94AC5258-1229-4B51-AC44-2376BE93F71B}.RUNTIME|Any CPU.ActiveCfg = RUNTIME|Any CPU
+		{94AC5258-1229-4B51-AC44-2376BE93F71B}.RUNTIME|Any CPU.Build.0 = RUNTIME|Any CPU
+		{94AC5258-1229-4B51-AC44-2376BE93F71B}.UNITY_EDITOR|Any CPU.ActiveCfg = UNITY_EDITOR|Any CPU
+		{94AC5258-1229-4B51-AC44-2376BE93F71B}.UNITY_EDITOR|Any CPU.Build.0 = UNITY_EDITOR|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

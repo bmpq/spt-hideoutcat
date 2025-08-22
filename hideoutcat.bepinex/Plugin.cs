@@ -2,6 +2,7 @@
 using BepInEx.Logging;
 using tarkin.hideoutcat.bepinex.Patches;
 using tarkin.hideoutcat.Persistent;
+using tarkin.hideoutcat.scene;
 using tarkin.hideoutcat.ui;
 
 namespace tarkin.hideoutcat.bepinex
@@ -15,6 +16,7 @@ namespace tarkin.hideoutcat.bepinex
 
         private void Start()
         {
+            var forceLoad = (typeof(SceneryDisabler), typeof(CatUIDataProvider));
             Log = base.Logger;
 
             HideoutCat.OnCatSpawned += OnCatSpawned;
