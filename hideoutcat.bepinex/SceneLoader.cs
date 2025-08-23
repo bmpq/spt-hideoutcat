@@ -22,12 +22,12 @@ namespace tarkin.hideoutcat.bepinex
             }
         }
 
-        public void LoadBundleScene(AssetBundle assetBundle)
+        public void LoadBundleScene(AssetBundle assetBundle, bool dontDestroyOnLoad = false)
         {
-            StartCoroutine(LoadBundleSceneRoutine(assetBundle));
+            StartCoroutine(LoadBundleSceneRoutine(assetBundle, dontDestroyOnLoad));
         }
 
-        IEnumerator LoadBundleSceneRoutine(AssetBundle assetBundle)
+        IEnumerator LoadBundleSceneRoutine(AssetBundle assetBundle, bool dontDestroyOnLoad)
         {
             if (assetBundle == null)
             {
@@ -63,7 +63,18 @@ namespace tarkin.hideoutcat.bepinex
 
             Debug.Log($"'{Path.GetFileName(assetBundle.name)}': Scene loaded successfully.");
 
+            if (dontDestroyOnLoad)
+                DontDestroyOnLoadScene(loadedScene);
+
             assetBundle.Unload(false); // the false flag unloads the bundle file data, but keeps the loaded scene/assets in memory
+        }
+
+        private static void DontDestroyOnLoadScene(Scene loadedScene)
+        {
+            foreach (GameObject rootGameObject in loadedScene.GetRootGameObjects())
+            {
+                DontDestroyOnLoad(rootGameObject);
+            }
         }
     }
 }

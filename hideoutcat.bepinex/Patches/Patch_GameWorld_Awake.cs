@@ -18,8 +18,11 @@ namespace tarkin.hideoutcat.bepinex.Patches
         {
             try
             {
-                SceneLoader.Instance.LoadBundleScene(AssetBundleLoader.LoadBundle("hideoutcat"));
-                var lasersManager = new GameObject("Lasers Manager").AddComponent<LasersManager>();
+                if (__instance is HideoutGameWorld)
+                {
+                    SceneLoader.Instance.LoadBundleScene(AssetBundleLoader.LoadBundle("hideoutcat_scene"));
+                    var lasersManager = new GameObject("Lasers Manager").AddComponent<LasersManager>();
+                }
             }
             catch { }
         }

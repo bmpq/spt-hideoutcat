@@ -1,5 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
+using EFT.HealthSystem;
+using EFT.InventoryLogic;
 using tarkin.hideoutcat.bepinex.Patches;
 using tarkin.hideoutcat.Persistent;
 using tarkin.hideoutcat.scene;
@@ -19,6 +21,10 @@ namespace tarkin.hideoutcat.bepinex
             var forceLoad = (typeof(SceneryDisabler), typeof(CatUIDataProvider));
             Log = base.Logger;
 
+            Log.LogError("prewarmed");
+            AssetBundleLoader.LoadBundle("hideoutcat_coats");
+            AssetBundleLoader.LoadBundle("hideoutcat");
+
             HideoutCat.OnCatSpawned += OnCatSpawned;
             HideoutCat.OnCatDestroyed += OnCatDestroyed;
 
@@ -29,6 +35,8 @@ namespace tarkin.hideoutcat.bepinex
 
             new PatchBonusPanelUpdateView().Enable();
 
+            new Patch_EnvironmentUI_Awake().Enable();
+
             new Patch_GameWorld_Awake().Enable();
             new Patch_GameWorld_Dispose().Enable();
             new Patch_LaserBeam_Awake().Enable();
@@ -37,6 +45,15 @@ namespace tarkin.hideoutcat.bepinex
             new Patch_HideoutCameraFlashlight_SetState().Enable();
 
             new Patch_HideoutCustomizationScreen_Init().Enable();
+
+            new Patch_Generic<CW2.Animations.PhysicsSimulator>(nameof(CW2.Animations.PhysicsSimulator.Awake)).Enable();
+            Patch_Generic<CW2.Animations.PhysicsSimulator>.OnPostfix += (instance) => 
+            {
+                for (int i = 0; i < instance.transform.childCount; i++)
+                {
+                    instance.transform.GetChild(i).gameObject.SetActive(false);
+                }
+            };
         }
 
         private void OnCatSpawned(HideoutCat cat)
