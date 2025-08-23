@@ -6,6 +6,7 @@ using tarkin.hideoutcat.bepinex.Patches;
 using tarkin.hideoutcat.Persistent;
 using tarkin.hideoutcat.scene;
 using tarkin.hideoutcat.ui;
+using UnityEngine;
 
 namespace tarkin.hideoutcat.bepinex
 {
@@ -29,7 +30,7 @@ namespace tarkin.hideoutcat.bepinex
             HideoutCat.OnCatDestroyed += OnCatDestroyed;
 
             new PatchAreaSelected().Enable();
-            new PatchAvailableHideoutActions().Enable();
+            new Patch_GetActionsClass_GetAvailableHideoutActions().Enable();
             new PatchPlayerPrepareWorkout().Enable();
             new PatchPlayerStopWorkout().Enable();
 
@@ -67,6 +68,9 @@ namespace tarkin.hideoutcat.bepinex
 
             var dataController = new CatPersistentDataController(allCoats);
             dataController.ApplySaveData(saveData);
+
+            InteractableCat interactableReceiver = new GameObject("EFTInteractable").AddComponent<InteractableCat>();
+            interactableReceiver.transform.SetParent(cat.transform, false);
 
             _catInstance.Initialize(dataController);
 

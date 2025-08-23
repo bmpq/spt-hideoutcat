@@ -32,5 +32,10 @@ namespace tarkin.hideoutcat
 
             return new StateTickResult(input);
         }
+
+        public override bool IsPettable()
+        {
+            return Mathf.Abs(animator.GetFloat("Thrust")) < 0.3f;
+        }
     }
 }

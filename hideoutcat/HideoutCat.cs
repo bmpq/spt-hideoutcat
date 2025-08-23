@@ -36,7 +36,7 @@ namespace tarkin.hideoutcat
         private CatGraphTraverser graphTraverser;
         private CatAttackHandler attackHandler;
 
-        private CatStateBase CurrentState;
+        public CatStateBase CurrentState { get; private set; }
 
         public static event Action<List<Transform>> OnRequestPotentialTargets;
         private readonly List<Transform> potentialTargets = new List<Transform>();

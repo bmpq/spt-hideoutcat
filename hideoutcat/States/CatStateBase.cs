@@ -16,5 +16,15 @@ namespace tarkin.hideoutcat.States
 
         public abstract void OnEnterState();
         public abstract void OnExitState();
+
+        public virtual bool IsPettable()
+        {
+            return false;
+        }
+
+        public virtual void Pet()
+        {
+            animator.SetTrigger("Caress");
+        }
     }
 }
