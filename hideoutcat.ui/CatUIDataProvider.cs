@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if RUNTIME
+using EFT.InventoryLogic;
+using EFT.UI;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,12 +14,22 @@ namespace tarkin.hideoutcat.ui
         private static Action<Coat> _coatApplier;
         private static Func<string> _currentCatNameLoader;
         private static Action<string> _catNameSetter;
+        private static Func<float> _currentBowlStateLoader;
+        private static Action<Item> _catFeeder;
 
         private static List<Action> _readyCallbacks = new List<Action>();
 
         public static bool IsReady { get; private set; }
 
-        public static void Initialize(Func<Coat[]> coatsLoader, Func<Coat> currentCoatLoader, Action<Coat> coatApplier, Func<string> currentCatNameLoader, Action<string> catNameSetter)
+        public static void Initialize(
+            Func<Coat[]> coatsLoader, 
+            Func<Coat> currentCoatLoader, 
+            Action<Coat> coatApplier, 
+            Func<string> currentCatNameLoader, 
+            Action<string> catNameSetter,
+            Func<float> currentFoodBowlStateLoader,
+            Action<Item> catFeeder
+            )
         {
             if (IsReady) return;
 
@@ -25,6 +38,8 @@ namespace tarkin.hideoutcat.ui
             _coatApplier = coatApplier ?? throw new ArgumentNullException(nameof(coatApplier));
             _currentCatNameLoader = currentCatNameLoader ?? throw new ArgumentNullException(nameof(currentCatNameLoader));
             _catNameSetter = catNameSetter ?? throw new ArgumentNullException(nameof(catNameSetter));
+            _catFeeder = catFeeder ?? throw new ArgumentNullException(nameof(catFeeder));
+            _currentBowlStateLoader = currentFoodBowlStateLoader ?? throw new ArgumentNullException(nameof(catFeeder));
 
             IsReady = true;
 
@@ -99,6 +114,16 @@ namespace tarkin.hideoutcat.ui
             _catNameSetter(name);
         }
 
+        public static float GetFoodBowlLevel()
+        {
+            return _currentBowlStateLoader();
+        }
+
+        public static void Feed(Item item)
+        {
+            _catFeeder(item);
+        }
+
         public static void Reset()
         {
             IsReady = false;
@@ -107,7 +132,10 @@ namespace tarkin.hideoutcat.ui
             _coatApplier = null;
             _currentCatNameLoader = null;
             _catNameSetter = null;
+            _currentBowlStateLoader = null;
+            _catFeeder = null;
             _readyCallbacks.Clear();
         }
     }
 }
+#endif

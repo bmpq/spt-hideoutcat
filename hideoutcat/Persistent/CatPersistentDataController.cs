@@ -8,6 +8,7 @@ namespace tarkin.hideoutcat.Persistent
         private Coat[] _allAvailableCoats;
         public string CatName { get; private set; } = "Kuzya";
         public float CurrentHunger { get; private set; } = 50f;
+        public float CurrentFoodBowl { get; private set; } = 0f;
         public Coat CurrentCoat { get; private set; }
 
         private float hungerSpeedIdle = 0.01f;
@@ -29,11 +30,12 @@ namespace tarkin.hideoutcat.Persistent
         {
             if (loadedData == null)
             {
-                UnityEngine.Debug.Log("No cat save data found, using default coat.");
+                UnityEngine.Debug.Log("No cat save data found, using default data.");
                 return;
             }
 
             this.CurrentHunger = loadedData.HungerLevel;
+            this.CurrentFoodBowl = loadedData.FoodBowlLevel;
 
             if (!string.IsNullOrEmpty(loadedData.CatName))
             {
@@ -70,12 +72,18 @@ namespace tarkin.hideoutcat.Persistent
             }
         }
 
+        public void AddFoodToBowl(float amount)
+        {
+            CurrentFoodBowl += amount;
+        }
+
         public CatSaveData GetSaveData()
         {
             return new CatSaveData
             {
                 LastSaveTime = DateTime.UtcNow,
                 HungerLevel = this.CurrentHunger,
+                FoodBowlLevel = this.CurrentFoodBowl,
                 CoatGuid = CurrentCoat?.Id,
                 CatName = this.CatName
             };

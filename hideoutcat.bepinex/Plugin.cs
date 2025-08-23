@@ -58,7 +58,9 @@ namespace tarkin.hideoutcat.bepinex
                 currentCoatLoader: () => _catInstance.PersistentData.CurrentCoat,
                 coatApplier: ApplyCoat,
                 currentCatNameLoader: () => _catInstance.PersistentData.CatName,
-                catNameSetter: _catInstance.PersistentData.SetCatName
+                catNameSetter: _catInstance.PersistentData.SetCatName,
+                currentFoodBowlStateLoader: () => _catInstance.PersistentData.CurrentFoodBowl,
+                catFeeder: OnFeed
             );
 
             Log.LogInfo("HideoutCat initialization complete.");
@@ -72,6 +74,22 @@ namespace tarkin.hideoutcat.bepinex
             if (success)
             {
                 _catInstance.Appearance.ApplyCoatTexture(coat.MainTexture);
+            }
+        }
+
+        private void OnFeed(Item item)
+        {
+            FoodItemClass food = item as FoodItemClass;
+            if (food == null) return;
+            if (food.HealthEffectsComponent?.HealthEffects == null) return;
+
+            if (food.HealthEffectsComponent.HealthEffects.TryGetValue(EHealthFactorType.Energy, out GClass1373 effect))
+            {
+                float delta = effect.Value * food.FoodDrinkComponent.RelativeValue;
+
+                _catInstance?.PersistentData?.AddFoodToBowl(delta);
+
+                NotificationManagerClass.DisplayMessageNotification($"Added food to bowl!!! added {delta} energy");
             }
         }
 

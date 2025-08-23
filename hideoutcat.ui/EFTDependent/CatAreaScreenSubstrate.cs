@@ -100,6 +100,8 @@ namespace tarkin.hideoutcat.ui.EFTDependent
 
         void Feed()
         {
+            CatUIDataProvider.Feed(selectedItem);
+
             Singleton<HideoutClass>.Instance.inventoryController_0.ThrowItem(selectedItem);
 
             cell.SetItem(null);
