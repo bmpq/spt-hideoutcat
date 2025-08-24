@@ -17,27 +17,38 @@ namespace tarkin.hideoutcat.bepinex.Patches
         private static GameObject laserEmitterObject;
         private static bool isCreatingLaser = false;
 
+        private static bool cycle = false;
+
         protected override MethodBase GetTargetMethod()
         {
             return AccessTools.Method(typeof(HideoutCameraFlashlight), nameof(HideoutCameraFlashlight.SetState));
         }
 
-        [PatchPostfix]
-        private static void PatchPostfix(HideoutCameraFlashlight __instance, bool active)
+        [PatchPrefix]
+        private static bool PatchPrefix(HideoutCameraFlashlight __instance, bool active)
         {
-            if (laserEmitterObject == null && !isCreatingLaser)
+            if (!active)
             {
-                if (active)
-                {
-                    CreateLaserEmitterAsync(__instance.gameObject.transform);
-                }
-                return;
+                laserEmitterObject?.SetActive(false);
+                return true;
             }
 
-            if (laserEmitterObject != null)
+            if (!cycle) // on every other toggle on, it will turn on the laser pointer instead of the flashlight
             {
-                laserEmitterObject.SetActive(active);
+                cycle = true;
+                return true;
             }
+
+            if (laserEmitterObject == null && !isCreatingLaser)
+            {
+                CreateLaserEmitterAsync(__instance.gameObject.transform);
+            }
+
+            laserEmitterObject?.SetActive(true);
+
+            cycle = false;
+
+            return false;
         }
 
         private static async void CreateLaserEmitterAsync(Transform parent)
