@@ -15,6 +15,9 @@ namespace tarkin.hideoutcat
         CatJumpHandler jumpHandler;
         CatGrounding grounding;
 
+        [SerializeField] Transform spineCharacterCenter;
+        [SerializeField] Vector3 spineCharacterCenterOffset;
+
         [SerializeField] float jumpEndTransitionLength = 0.5f;
 
         public enum LocomotionState
@@ -73,6 +76,11 @@ namespace tarkin.hideoutcat
             animator.SetFloat("Thrust", smoothedInput.Thrust);
             animator.SetFloat("Turn", smoothedInput.Turn);
             animator.SetFloat("Crouch", smoothedInput.Crouch);
+
+            if (spineCharacterCenter != null)
+            {
+                controller.center = transform.InverseTransformPoint(spineCharacterCenter.position) + spineCharacterCenterOffset;
+            }
         }
 
         // MonoBehaviour.OnAnimatorMove() overrides animator root motion, if on the same game object with animator

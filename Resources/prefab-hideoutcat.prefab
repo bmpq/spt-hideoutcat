@@ -998,6 +998,11 @@ MonoBehaviour:
   alpha: 0.25
   alwaysShowGizmo: 0
   showCurrentRotation: 1
+--- !u!4 &7548775061432471232 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8173896712083346481, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+  m_PrefabInstance: {fileID: 7373200537904964879}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7679683012631877726 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
@@ -1098,6 +1103,8 @@ MonoBehaviour:
   m_Script: {fileID: -1910309109, guid: b97fef369065ae24ca254e965ad50e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spineCharacterCenter: {fileID: 7548775061432471232}
+  spineCharacterCenterOffset: {x: 0, y: -0.03, z: 0}
   jumpEndTransitionLength: 0.5
 --- !u!114 &5426154022087937153
 MonoBehaviour:
@@ -1164,6 +1171,11 @@ MonoBehaviour:
   m_Script: {fileID: -658090260, guid: b97fef369065ae24ca254e965ad50e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputKeyAxisCrouch: Joystick Axis 3
+  inputCrouchFactor: -1
+  inputKeyAxisSprint: Joystick Axis 3
+  inputSprintFactor: 1
+  inputKeyAxisJump: Jump
 --- !u!114 &2215669570502471629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1259,14 +1271,14 @@ CharacterController:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 262144
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 0.20941028
-  m_Radius: 0.12
+  m_Height: 0
+  m_Radius: 0.1
   m_SlopeLimit: 45
   m_StepOffset: 0.1
   m_SkinWidth: 0.01
