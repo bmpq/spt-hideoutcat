@@ -6,6 +6,9 @@
 textures/
 *.fbx
 
+.bin/
+.obj/
+
 # User-specific files
 *.rsuser
 *.suo

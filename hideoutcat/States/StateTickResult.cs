@@ -11,6 +11,7 @@ namespace tarkin.hideoutcat.States
         public StateTickResult(CatInput input)
         {
             Input = input;
+            IsStateDone = false;
         }
 
         public static StateTickResult StateDone
