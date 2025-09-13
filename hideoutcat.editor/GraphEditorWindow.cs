@@ -44,27 +44,11 @@ namespace tarkin.hideoutcat.editor
 
         public void OnGUI()
         {
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Import from JSON"))
-            {
-                LegacyJsonHandler.ImportJson();
-
-            }
-            EditorGUILayout.EndHorizontal();
-            GUILayout.Space(10);
-
             if (graphEditor == null)
             {
                 EditorGUILayout.HelpBox($"No active graph", MessageType.Warning);
                 return;
             }
-
-            if (GUILayout.Button("Force Refresh"))
-            {
-                //
-            }
-
-            GUILayout.Space(10);
 
             EditorGUILayout.HelpBox($"(Left Click) on a ball to select node, (SHIFT + Left Click) to start connecting, (CTRL + Left Click) to create new node (auto connect to nearest)", MessageType.Info);
 
@@ -162,7 +146,6 @@ namespace tarkin.hideoutcat.editor
                 if (alpha <= 0)
                     continue;
 
-
                 if (Handles.Button(Node.transform.position, Quaternion.identity, handleSize * alpha, handleSize, Handles.SphereHandleCap))
                 {
                     if (Event.current.shift)
@@ -255,15 +238,9 @@ namespace tarkin.hideoutcat.editor
                 if (!node.gameObject.activeInHierarchy)
                     continue;
 
-                if (node.areaType != EAreaType.NotSet)
+                if (node.purpose != Purpose.None)
                 {
-                    Handles.Label(node.transform.position + Vector3.up * 0.1f, $"{node.areaType} (L{node.areaLevel})", EditorStyles.helpBox);
-                }
-
-                if (node.pose != Node.Pose.None)
-                {
-                    Handles.color = Color.white;
-                    Handles.Label(node.transform.position + Vector3.up * 0.13f, node.pose.ToString(), EditorStyles.miniButtonLeft);
+                    Handles.Label(node.transform.position + Vector3.up * 0.1f, $"{node.purpose}", EditorStyles.helpBox);
                 }
 
                 Handles.color = Color.blue;
@@ -287,11 +264,6 @@ namespace tarkin.hideoutcat.editor
                         Handles.DrawLine(node.transform.position, connection.transform.position);
 
                         Vector3 direction = (connection.transform.position - node.transform.position).normalized;
-                        if (node.forwardJump)
-                        {
-                            Handles.color = new Color(0f, 0f, 1f);
-                            Handles.DrawSolidDisc(node.transform.position + new Vector3(0, 0.2f, 0), Vector3.up, 0.1f);
-                        }
 
                         Handles.color = Color.blue;
                         Vector3 arrowHeadPoint = connection.transform.position - direction * 0.5f;

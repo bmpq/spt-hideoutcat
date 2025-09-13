@@ -4,37 +4,11 @@ using UnityEngine;
 
 namespace tarkin.hideoutcat.Pathfinding
 {
-    public enum EAreaType
+    public enum Purpose
     {
-        NotSet = -1,
-        Vents,
-        Security,
-        WaterCloset,
-        Stash,
-        Generator,
-        Heating,
-        WaterCollector,
-        MedStation,
-        Kitchen,
-        RestSpace,
-        Workbench,
-        IntelligenceCenter,
-        ShootingRange,
-        Library,
-        ScavCase,
-        Illumination,
-        PlaceOfFame,
-        AirFilteringUnit,
-        SolarPower,
-        BoozeGenerator,
-        BitcoinFarm,
-        ChristmasIllumination,
-        EmergencyWall,
-        Gym,
-        WeaponStand,
-        WeaponStandSecondary,
-        EquipmentPresetsStand,
-        CircleOfCultists
+        None,
+        Food,
+        Toilet
     }
 
     public class Graph : MonoBehaviour
@@ -54,29 +28,61 @@ namespace tarkin.hideoutcat.Pathfinding
 
         private List<Node> _nodes;
 
-        public Node FindNodeById(string id)
+        public Node WorldPosToClosestNode(Vector3 worldPos)
         {
-            return Nodes.Find(n => n.name == id);
+            if (Nodes == null || Nodes.Count == 0)
+            {
+                return null;
+            }
+
+            Node closestNode = null;
+            float minSqrDistance = float.MaxValue;
+
+            foreach (var node in Nodes)
+            {
+                float sqrDistance = (node.position - worldPos).sqrMagnitude;
+                if (sqrDistance < minSqrDistance)
+                {
+                    minSqrDistance = sqrDistance;
+                    closestNode = node;
+                }
+            }
+            return closestNode;
         }
 
-        public Node FindNodeByName(string name)
+        public Node FindClosestNodeWithPurpose(Node startNode, Purpose purpose)
         {
-            return Nodes.Find(n => n.name == name);
-        }
+            if (startNode.purpose == purpose)
+            {
+                return startNode;
+            }
 
-        public Node GetNodeClosestAny(Vector3 worldPos)
-        {
-            return Nodes
-                .OrderBy(t => (t.position - worldPos).sqrMagnitude)
-                .FirstOrDefault();
-        }
+            Queue<Node> queue = new Queue<Node>();
+            HashSet<Node> visitedNodes = new HashSet<Node>();
 
-        public Node GetNodeClosestWaypoint(Vector3 worldPos)
-        {
-            return Nodes
-                .Where(t => t.areaType == EAreaType.NotSet)
-                .OrderBy(t => (t.position - worldPos).sqrMagnitude)
-                .FirstOrDefault();
+            queue.Enqueue(startNode);
+            visitedNodes.Add(startNode);
+
+            while (queue.Count > 0)
+            {
+                Node current = queue.Dequeue();
+
+                foreach (Node neighbor in current.connectedTo)
+                {
+                    if (!visitedNodes.Contains(neighbor))
+                    {
+                        if (neighbor.purpose == purpose)
+                        {
+                            return neighbor;
+                        }
+
+                        visitedNodes.Add(neighbor);
+                        queue.Enqueue(neighbor);
+                    }
+                }
+            }
+
+            return null;
         }
 
         public List<Node> FindPathBFS(Node startNode, Node endNode)
@@ -127,25 +133,6 @@ namespace tarkin.hideoutcat.Pathfinding
 
             path.Reverse();
             return path;
-        }
-
-        public List<Node> FindDeadEndNodesByAreaTypeAndLevel(EAreaType areaType, int areaLevel)
-        {
-            Debug.Log($"requesting deadend node for {areaType} (level {areaLevel})");
-
-            List<Node> deadEndNodes = new List<Node>();
-
-            foreach (Node node in Nodes)
-            {
-                if (node.pose != Node.Pose.None)
-                {
-                    if (node.areaType == areaType && node.areaLevel == areaLevel)
-                    {
-                        deadEndNodes.Add(node);
-                    }
-                }
-            }
-            return deadEndNodes;
         }
     }
 }

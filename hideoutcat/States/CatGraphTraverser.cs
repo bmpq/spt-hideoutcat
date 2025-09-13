@@ -10,8 +10,7 @@ namespace tarkin.hideoutcat.States
     {
         private enum TraverserState 
         { 
-            Moving, 
-            TurningAtDestination, 
+            Moving,
             Done 
         }
         private TraverserState _currentState = TraverserState.Done;
@@ -60,9 +59,6 @@ namespace tarkin.hideoutcat.States
                 case TraverserState.Moving:
                     return HandleMovement();
 
-                case TraverserState.TurningAtDestination:
-                    return HandleFinalTurn();
-
                 default:
                     // failsafe case
                     StopAndForgetPath();
@@ -78,7 +74,7 @@ namespace tarkin.hideoutcat.States
                 return;
             }
 
-            Node startNode = pathfindingGraph.GetNodeClosestWaypoint(transform.position);
+            Node startNode = pathfindingGraph.WorldPosToClosestNode(transform.position);
             _currentPath = pathfindingGraph.FindPathBFS(startNode, targetNode);
 
             if (_currentPath == null || _currentPath.Count == 0)
@@ -132,23 +128,6 @@ namespace tarkin.hideoutcat.States
             return new StateTickResult(new CatInput(turnInput, thrustInput, requestJumpUp: toJump));
         }
 
-        private StateTickResult HandleFinalTurn()
-        {
-            Node destinationNode = CurrentTargetNode;
-            float angleDifference = Mathf.DeltaAngle(transform.eulerAngles.y, destinationNode.poseRotation);
-
-            if (Mathf.Abs(angleDifference) < finalTurnThreshold)
-            {
-                CompletePath();
-                return StateTickResult.StateDone;
-            }
-            else
-            {
-                float turnInput = Mathf.Sign(angleDifference);
-                return new StateTickResult(new CatInput(turn: turnInput, thrust: 0f));
-            }
-        }
-
         private void ProcessNodeArrival()
         {
             Node reachedNode = CurrentTargetNode;
@@ -158,15 +137,7 @@ namespace tarkin.hideoutcat.States
 
             if (isFinalNode)
             {
-                if (reachedNode.pose != Node.Pose.None)
-                {
-                    _currentState = TraverserState.TurningAtDestination;
-                    Debug.Log("Reached final node. Now turning to face pose.");
-                }
-                else
-                {
-                    CompletePath();
-                }
+                CompletePath();
             }
             else
             {
