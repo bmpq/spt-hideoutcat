@@ -30,13 +30,15 @@ namespace tarkin.hideoutcat.editor
 
         private void OnSelectionChange()
         {
+            graphEditor = null;
             foreach (var item in Selection.gameObjects)
             {
                 Graph _ = item.GetComponentInParent<Graph>();
-                if (_ == null)
-                    continue;
-                graphEditor = _;
-                break;
+                if (_ != null)
+                {
+                    graphEditor = _;
+                    break;
+                }
             }
 
             Repaint();
@@ -63,112 +65,93 @@ namespace tarkin.hideoutcat.editor
 
         private void OnSceneGUI(SceneView sceneView)
         {
-            if (Event.current.type == EventType.MouseDrag)
-            {
-                return;
-            }
-
             if (graphEditor == null)
                 return;
 
             Node[] Nodes = graphEditor.GetComponentsInChildren<Node>();
-            if (Nodes == null || Nodes.Length == 0) return;
+            if (Nodes == null) return;
 
-            if (Event.current.keyCode == KeyCode.Escape)
-            {
-                _connectionSourceNode = null;
-            }
-            //
-            // Ctrl + Click to create new node
-            if (Event.current.control && Event.current.type == EventType.MouseDown && Event.current.button == 0)
-            {
-                CreateNewNodeAtMousePosition(Nodes);
-                Event.current.Use(); // Consume the event to prevent default behavior
-                return; // Early return to avoid node selection/connection logic
-            }
+            HandleInput(Nodes);
 
             DrawNodesInfo(Nodes);
-            DrawNodesConnections(Nodes);
-
             DrawNodeButtons(Nodes);
+            DrawNodesConnections(Nodes);
             DrawConnectionRemoveButtons(Nodes);
-
-            if (_connectionSourceNode != null)
-            {
-                Handles.color = Color.yellow;
-                Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
-                Plane plane = new Plane(Vector3.up, Vector3.zero);
-                float distance;
-                Vector3 worldMousePosition = Vector3.zero;
-                if (plane.Raycast(ray, out distance))
-                {
-                    worldMousePosition = ray.GetPoint(distance);
-                }
-                Handles.DrawLine(_connectionSourceNode.transform.position, worldMousePosition);
-            }
+            DrawPendingConnection();
 
             SceneView.RepaintAll();
         }
 
-
-        private static bool WorldToGUIPoint(Vector3 query, out Vector2 point, out float distance, Camera camera)
+        private void HandleInput(Node[] nodes)
         {
-            Vector3 viewPos = camera.WorldToViewportPoint(query);
-            distance = viewPos.z;
-            if (distance < 0)
+            if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Escape)
             {
-                point = Vector2.zero;
-                return false;
+                if (_connectionSourceNode != null)
+                {
+                    _connectionSourceNode = null;
+                    Event.current.Use();
+                }
             }
 
-            var viewScreenVector = new Vector2(viewPos.x, 1 - viewPos.y);
-            viewScreenVector /= EditorGUIUtility.pixelsPerPoint;
-            point = new Vector2(viewScreenVector.x * camera.pixelWidth, viewScreenVector.y * camera.pixelHeight);
-            return true;
+            if (GUIUtility.hotControl != 0 || Event.current.alt)
+            {
+                return;
+            }
+
+            if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
+            {
+                if (Event.current.control)
+                {
+                    CreateNewNodeAtMousePosition(nodes);
+                    Event.current.Use();
+                }
+            }
+        }
+
+        private void DrawPendingConnection()
+        {
+            if (_connectionSourceNode == null) return;
+
+            Handles.color = Color.yellow;
+            Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
+            Plane plane = new Plane(Vector3.up, _connectionSourceNode.transform.position);
+            if (plane.Raycast(ray, out float distance))
+            {
+                Vector3 worldMousePosition = ray.GetPoint(distance);
+                Handles.DrawLine(_connectionSourceNode.transform.position, worldMousePosition);
+            }
         }
 
         private void DrawNodeButtons(Node[] nodes)
         {
-            var view = SceneView.lastActiveSceneView;
-
-            foreach (Node Node in nodes)
+            foreach (Node node in nodes)
             {
-                float distToSceneViewCamera = Vector3.Distance(view.camera.transform.position, Node.transform.position);
+                if (!node.gameObject.activeInHierarchy) continue;
 
                 Handles.color = Color.green;
-                float handleSize = HandleUtility.GetHandleSize(Node.transform.position) * 0.25f;
+                float handleSize = HandleUtility.GetHandleSize(node.transform.position) * 0.5f;
 
-                if (!WorldToGUIPoint(Node.transform.position, out Vector2 screenPos, out float distance, SceneView.currentDrawingSceneView?.camera))
-                    continue;
-                float alpha;
-                float iconSize = GizmoUtility.iconSize * 1000;
-                alpha = 1 - Mathf.InverseLerp(iconSize * 0.75f, iconSize, distance);
-                if (alpha <= 0)
-                    continue;
-
-                if (Handles.Button(Node.transform.position, Quaternion.identity, handleSize * alpha, handleSize, Handles.SphereHandleCap))
+                if (Handles.Button(node.transform.position, Quaternion.identity, handleSize, handleSize, Handles.SphereHandleCap))
                 {
                     if (Event.current.shift)
                     {
                         if (_connectionSourceNode == null)
                         {
-                            _connectionSourceNode = Node;
+                            _connectionSourceNode = node;
                         }
-                        else if (_connectionSourceNode != Node)
+                        else if (_connectionSourceNode != node)
                         {
-                            ConnectNodes(_connectionSourceNode, Node);
+                            ConnectNodes(_connectionSourceNode, node);
                             _connectionSourceNode = null;
-                            HandleUtility.Repaint();
                         }
                         else
                         {
                             _connectionSourceNode = null;
-                            Repaint();
                         }
                     }
                     else
                     {
-                        Selection.activeGameObject = Node.gameObject;
+                        Selection.activeGameObject = node.gameObject;
                     }
                 }
             }
@@ -176,50 +159,29 @@ namespace tarkin.hideoutcat.editor
 
         private void DrawConnectionRemoveButtons(Node[] nodes)
         {
-            var view = SceneView.lastActiveSceneView;
-
-            // Use a list to store disconnection actions to avoid modifying the collection during iteration
             List<(Node, Node)> nodesToDisconnect = new List<(Node, Node)>();
 
-            foreach (Node Node in nodes)
+            foreach (Node node in nodes)
             {
-                if (!Node.gameObject.activeInHierarchy)
-                    continue;
+                if (!node.gameObject.activeInHierarchy || node.connectedTo == null) continue;
 
-                if (Node.connectedTo != null)
+                foreach (Node connectedNode in new List<Node>(node.connectedTo))
                 {
-                    // Create a copy of the connections list to iterate over
-                    List<Node> connectionsCopy = new List<Node>(Node.connectedTo);
-                    foreach (Node connectedNode in connectionsCopy)
+                    if (connectedNode == null || !connectedNode.gameObject.activeInHierarchy) continue;
+
+                    if (node.GetInstanceID() > connectedNode.GetInstanceID()) continue;
+
+                    Vector3 midpoint = (node.transform.position + connectedNode.transform.position) / 2f;
+                    float handleSize = HandleUtility.GetHandleSize(midpoint) * 0.1f;
+
+                    float distToCam = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, midpoint);
+                    float alpha = Mathf.Clamp01(1 - (distToCam / 20f));
+                    if (alpha <= 0.1f) continue;
+
+                    Handles.color = new Color(1, 0, 0, alpha);
+                    if (Handles.Button(midpoint, Quaternion.identity, handleSize, handleSize, Handles.CubeHandleCap))
                     {
-                        if (connectedNode != null && connectedNode.gameObject.activeInHierarchy)
-                        {
-                            // Calculate midpoint for the disconnect button
-                            Vector3 midpoint = (Node.transform.position + connectedNode.transform.position) / 2f;
-                            float handleSize = HandleUtility.GetHandleSize(midpoint) * 0.1f;
-
-                            float distToSceneViewCamera = Vector3.Distance(view.camera.transform.position, midpoint);
-                            if (distToSceneViewCamera > 10f)
-                                continue;
-
-                            if (!WorldToGUIPoint(midpoint, out Vector2 screenPos, out float distance, SceneView.currentDrawingSceneView?.camera))
-                                continue;
-                            float alpha;
-                            float iconSize = GizmoUtility.iconSize * 1000;
-                            float cursorDistance = Vector2.Distance(screenPos, Event.current.mousePosition);
-                            alpha = 1 - Mathf.InverseLerp(iconSize * 0.75f, iconSize, distance);
-                            alpha *= Mathf.Clamp01(1f - (cursorDistance / 200f));
-                            if (alpha <= 0)
-                                continue;
-
-                            // Draw the disconnect button
-                            Handles.color = Color.red;
-                            if (Handles.Button(midpoint, Quaternion.identity, handleSize * alpha, handleSize, Handles.CubeHandleCap))
-                            {
-                                // Add the nodes to the disconnection list
-                                nodesToDisconnect.Add((Node, connectedNode));
-                            }
-                        }
+                        nodesToDisconnect.Add((node, connectedNode));
                     }
                 }
             }
@@ -264,11 +226,8 @@ namespace tarkin.hideoutcat.editor
                         Handles.DrawLine(node.transform.position, connection.transform.position);
 
                         Vector3 direction = (connection.transform.position - node.transform.position).normalized;
-
-                        Handles.color = Color.blue;
                         Vector3 arrowHeadPoint = connection.transform.position - direction * 0.5f;
-                        Handles.DrawLine(arrowHeadPoint + Quaternion.Euler(0, 45, 0) * (-direction * 0.2f), arrowHeadPoint);
-                        Handles.DrawLine(arrowHeadPoint + Quaternion.Euler(0, -45, 0) * (-direction * 0.2f), arrowHeadPoint);
+                        Handles.ArrowHandleCap(0, arrowHeadPoint, Quaternion.LookRotation(direction), 0.4f, EventType.Repaint);
                     }
                 }
             }
@@ -276,123 +235,99 @@ namespace tarkin.hideoutcat.editor
 
         private void CreateNewNodeAtMousePosition(Node[] existingNodes)
         {
-            if (existingNodes.Length == 0)
+            Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
+            Plane plane = new Plane(Vector3.up, graphEditor.transform.position);
+            if (!plane.Raycast(ray, out float distance)) return;
+
+            Vector3 worldMousePosition = ray.GetPoint(distance);
+
+            Node newNode = CreateNode(worldMousePosition);
+            Selection.activeGameObject = newNode.gameObject;
+
+            // Auto-connect to nearest node
+            if (existingNodes != null && existingNodes.Length > 0)
             {
-                Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
-                Plane plane = new Plane(Vector3.up, Vector3.zero);
-                float distance;
-                if (plane.Raycast(ray, out distance))
+                Node closestNode = null;
+                float minSqrDist = float.MaxValue;
+
+                foreach (Node node in existingNodes)
                 {
-                    Vector3 worldMousePosition = ray.GetPoint(distance);
-                    Node newNode = CreateNode(worldMousePosition);
-                    Selection.activeGameObject = newNode.gameObject;
-                }
-                return;
-            }
-
-            Node closestNode = null;
-            float minScreenDistSq = float.MaxValue;
-            Vector2 mouseScreenPos = Event.current.mousePosition;
-
-            foreach (Node node in existingNodes)
-            {
-                if (!node.gameObject.activeInHierarchy)
-                    continue;
-
-                Vector2 nodeScreenPos = HandleUtility.WorldToGUIPoint(node.transform.position);
-                float distSq = Vector2.SqrMagnitude(mouseScreenPos - nodeScreenPos);
-                if (distSq < minScreenDistSq)
-                {
-                    minScreenDistSq = distSq;
-                    closestNode = node;
-                }
-            }
-
-            if (closestNode != null)
-            {
-                Ray ray = HandleUtility.GUIPointToWorldRay(mouseScreenPos);
-                Plane plane = new Plane(Vector3.up, new Vector3(0, closestNode.transform.position.y, 0));
-                float distance;
-                if (plane.Raycast(ray, out distance))
-                {
-                    Vector3 worldMousePosition = ray.GetPoint(distance);
-                    Node newNode = CreateNode(worldMousePosition);
-                    if (newNode != null && closestNode != null)
+                    if (!node.gameObject.activeInHierarchy) continue;
+                    float sqrDist = (node.transform.position - worldMousePosition).sqrMagnitude;
+                    if (sqrDist < minSqrDist)
                     {
-                        newNode.gameObject.transform.SetParent(closestNode.transform.parent, true);
-                        ConnectNodes(closestNode, newNode);
-                        Selection.activeGameObject = newNode.gameObject;
+                        minSqrDist = sqrDist;
+                        closestNode = node;
                     }
+                }
+
+                if (closestNode != null)
+                {
+                    ConnectNodes(closestNode, newNode);
                 }
             }
         }
 
         private Node CreateNode(Vector3 position)
         {
-            GameObject newNodeGO = new GameObject();
-            Undo.RegisterCreatedObjectUndo(newNodeGO, "Create Node");
-
-            newNodeGO.transform.position = position;
-            newNodeGO.transform.SetParent(graphEditor.transform);
-
-            Node newNode = newNodeGO.AddComponent<Node>();
-            if (newNode != null)
-            {
-                return newNode;
-            }
-            return null;
+            var go = new GameObject("Node", typeof(Node));
+            Undo.RegisterCreatedObjectUndo(go, "Create Node");
+            go.transform.position = position;
+            go.transform.SetParent(graphEditor.transform);
+            return go.GetComponent<Node>();
         }
 
-
-        private void ConnectNodes(Node sourceNode, Node targetNode)
+        private void ConnectNodes(Node nodeA, Node nodeB)
         {
-            if (sourceNode == null || targetNode == null) return;
+            if (nodeA == null || nodeB == null || nodeA == nodeB) return;
 
-            SerializedObject serializedSourceNode = new SerializedObject(sourceNode);
-            SerializedProperty sourceConnectionsProperty = serializedSourceNode.FindProperty("connectedTo");
+            if (nodeA.connectedTo == null)
+                nodeA.connectedTo = new List<Node>();
+            if (nodeB.connectedTo == null)
+                nodeB.connectedTo = new List<Node>();
 
-            bool sourceAlreadyConnected = false;
-            for (int i = 0; i < sourceConnectionsProperty.arraySize; ++i)
+            Undo.RecordObjects(new Object[] { nodeA, nodeB }, "Connect Nodes");
+            bool changed = false;
+            if (!nodeA.connectedTo.Contains(nodeB))
             {
-                if (sourceConnectionsProperty.GetArrayElementAtIndex(i).objectReferenceValue == targetNode)
-                {
-                    sourceAlreadyConnected = true;
-                    break;
-                }
+                nodeA.connectedTo.Add(nodeB);
+                changed = true;
+            }
+            if (!nodeB.connectedTo.Contains(nodeA))
+            {
+                nodeB.connectedTo.Add(nodeA);
+                changed = true;
             }
 
-            if (!sourceAlreadyConnected)
+            if (changed)
             {
-                int newIndex = sourceConnectionsProperty.arraySize;
-                sourceConnectionsProperty.arraySize++;
-                sourceConnectionsProperty.GetArrayElementAtIndex(newIndex).objectReferenceValue = targetNode;
-                serializedSourceNode.ApplyModifiedProperties();
-                Debug.Log($"Connected {sourceNode.name} to {targetNode.name}");
-            }
-            else
-            {
-                Debug.LogWarning($"Nodes {sourceNode.name} and {targetNode.name} are already connected (source to target).");
+                EditorUtility.SetDirty(nodeA);
+                EditorUtility.SetDirty(nodeB);
             }
         }
 
         private void DisconnectNodes(Node nodeA, Node nodeB)
         {
-            Undo.RecordObject(nodeA, "Disconnect Nodes");
-            Undo.RecordObject(nodeB, "Disconnect Nodes");
+            if (nodeA == null || nodeB == null) return;
+            Undo.RecordObjects(new Object[] { nodeA, nodeB }, "Disconnect Nodes");
 
+            bool changed = false;
             if (nodeA.connectedTo.Contains(nodeB))
             {
                 nodeA.connectedTo.Remove(nodeB);
+                changed = true;
             }
             if (nodeB.connectedTo.Contains(nodeA))
             {
                 nodeB.connectedTo.Remove(nodeA);
+                changed = true;
             }
 
-            EditorUtility.SetDirty(nodeA);  // Important: Mark objects as dirty for undo/redo
-            EditorUtility.SetDirty(nodeB);
-
-            Debug.Log($"Disconnected {nodeA.name} from {nodeB.name}");
+            if (changed)
+            {
+                EditorUtility.SetDirty(nodeA);
+                EditorUtility.SetDirty(nodeB);
+            }
         }
     }
 }
