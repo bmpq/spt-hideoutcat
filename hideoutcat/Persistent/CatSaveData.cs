@@ -9,5 +9,6 @@ namespace tarkin.hideoutcat.Persistent
         public float HungerLevel { get; set; }
         public float FoodBowlLevel { get; set; }
         public string CoatGuid { get; set; }
+        public float Energy { get; set; }
     }
 }

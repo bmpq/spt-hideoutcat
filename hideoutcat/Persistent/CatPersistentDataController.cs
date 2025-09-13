@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using UnityEngine;
 
 namespace tarkin.hideoutcat.Persistent
 {
@@ -7,11 +8,13 @@ namespace tarkin.hideoutcat.Persistent
     {
         private Coat[] _allAvailableCoats;
         public string CatName { get; private set; } = "Kuzya";
-        public float CurrentHunger { get; private set; } = 50f;
+        public float FedLevel { get; private set; } = 50f;
         public float CurrentFoodBowl { get; private set; } = 0f;
         public Coat CurrentCoat { get; private set; }
+        public float Energy { get; private set; }
 
         private float hungerSpeedIdle = 0.01f;
+        private float energyDrainIdle = 0.005f;
 
         public CatPersistentDataController(Coat[] allAvailableCoats)
         {
@@ -22,8 +25,16 @@ namespace tarkin.hideoutcat.Persistent
 
         public void Tick(float deltaTime)
         {
-            CurrentHunger -= deltaTime * hungerSpeedIdle;
-            if (CurrentHunger < 0) CurrentHunger = 0;
+            FedLevel -= deltaTime * hungerSpeedIdle;
+            if (FedLevel < 0) FedLevel = 0;
+
+            Energy -= deltaTime * energyDrainIdle;
+            if (Energy < 0) Energy = 0;
+        }
+
+        public void RestoreEnergy(float amount)
+        {
+            Energy = Mathf.Clamp(Energy + amount, 0f, 100f);
         }
 
         public void ApplySaveData(CatSaveData loadedData)
@@ -34,7 +45,7 @@ namespace tarkin.hideoutcat.Persistent
                 return;
             }
 
-            this.CurrentHunger = loadedData.HungerLevel;
+            this.FedLevel = loadedData.HungerLevel;
             this.CurrentFoodBowl = loadedData.FoodBowlLevel;
 
             if (!string.IsNullOrEmpty(loadedData.CatName))
@@ -82,10 +93,11 @@ namespace tarkin.hideoutcat.Persistent
             return new CatSaveData
             {
                 LastSaveTime = DateTime.UtcNow,
-                HungerLevel = this.CurrentHunger,
+                HungerLevel = this.FedLevel,
                 FoodBowlLevel = this.CurrentFoodBowl,
                 CoatGuid = CurrentCoat?.Id,
-                CatName = this.CatName
+                CatName = this.CatName,
+                Energy = this.Energy
             };
         }
     }

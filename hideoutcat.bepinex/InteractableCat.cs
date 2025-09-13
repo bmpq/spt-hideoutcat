@@ -1,4 +1,5 @@
 ﻿using EFT.Interactive;
+using tarkin.hideoutcat.States;
 using UnityEngine;
 
 namespace tarkin.hideoutcat.bepinex
@@ -31,6 +32,10 @@ namespace tarkin.hideoutcat.bepinex
 
         public bool IsSleeping()
         {
+            if (cat.CurrentState is CatStateResting catStateResting)
+            {
+                return catStateResting.isSleeping;
+            }
             return false;
         }
 
@@ -41,7 +46,10 @@ namespace tarkin.hideoutcat.bepinex
 
         public void WakeUp()
         {
-
+            if (cat.CurrentState is CatStateResting catStateResting) 
+            {
+                catStateResting.WakeUp();
+            }
         }
     }
 }
