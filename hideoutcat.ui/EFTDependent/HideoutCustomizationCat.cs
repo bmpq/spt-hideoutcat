@@ -1,19 +1,27 @@
-﻿using EFT.UI;
-using UnityEngine;
+﻿using UnityEngine;
 using tarkin.hideoutcat.ui.Generic;
 using System.Collections.Generic;
+using TMPro;
+
+#if EFT_RUNTIME
+using EFT.UI;
+#endif
 
 namespace tarkin.hideoutcat.ui.EFTDependent
 {
     public class HideoutCustomizationCat : MonoBehaviour
     {
+#if !EFT_RUNTIME
+        [SerializeField] private TMP_InputField inputName;
+#else
         [SerializeField] private ValidationInputField inputName;
+#endif
 
         [Space(10)]
         [SerializeField] private RectTransform containerCoatCells;
         [SerializeField] private MyHideoutCustomizationCell prefabCoatCell;
 
-#if RUNTIME
+#if EFT_RUNTIME
         private MyTabGroup coatCellsGroup;
         private readonly Dictionary<MyHideoutCustomizationCell, Coat> coatCells = new Dictionary<MyHideoutCustomizationCell, Coat>();
         private bool _isUiInitialized = false;

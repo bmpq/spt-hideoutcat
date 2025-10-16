@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Coat
-  m_Shader: {fileID: 4800000, guid: 58c6c66c9429fac43876a64032a3111d, type: 3}
+  m_Shader: {fileID: 4800000, guid: 4127ae24272fbdf48a2a82a80a89ec35, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -48,7 +48,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 93c139aa8b2902b4c913b2cfd2e4c9e9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4bc917d2cdbb29a41a83a4bab3377b40, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -96,6 +96,8 @@ Material:
     - _Specular: 0.271
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _StencilType: 1
+    - _ThermalVisionOn: 0
     - _UVSec: 0
     - _Units: 0
     - _ZWrite: 1

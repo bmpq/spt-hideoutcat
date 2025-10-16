@@ -1,10 +1,12 @@
-﻿using EFT.UI;
-using UnityEngine;
+﻿using UnityEngine;
 
+using Sirenix.OdinInspector;
+using UnityEngine.EventSystems;
 
-#if RUNTIME
+#if EFT_RUNTIME
 using Comfort.Common;
 using EFT;
+using EFT.UI;
 using EFT.InventoryLogic;
 using System;
 using System.Collections.Generic;
@@ -13,11 +15,17 @@ using System.Linq;
 
 namespace tarkin.hideoutcat.ui.EFTDependent
 {
-    public class CatAreaScreenSubstrate : UIElement
+    public class CatAreaScreenSubstrate :
+#if !EFT_RUNTIME
+        SerializedMonoBehaviour {
+        [SerializeField] private SerializedMonoBehaviour cell;
+        [SerializeField] private IPointerEnterHandler buttonFeed;
+#else
+        UIElement
     {
         [SerializeField] private ItemSelectionCell cell;
         [SerializeField] private DefaultUIButton buttonFeed;
-#if RUNTIME
+
         private List<MongoID> _categoryFilter;
 
         private Item selectedItem;
@@ -102,7 +110,7 @@ namespace tarkin.hideoutcat.ui.EFTDependent
         {
             CatUIDataProvider.Feed(selectedItem);
 
-            Singleton<HideoutClass>.Instance.inventoryController_0.ThrowItem(selectedItem);
+            Singleton<HideoutClass>.Instance.InventoryController_0.ThrowItem(selectedItem);
 
             cell.SetItem(null);
             SelectItem(null);

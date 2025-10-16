@@ -104,7 +104,7 @@ namespace tarkin.hideoutcat.bepinex
             if (food == null) return;
             if (food.HealthEffectsComponent?.HealthEffects == null) return;
 
-            if (food.HealthEffectsComponent.HealthEffects.TryGetValue(EHealthFactorType.Energy, out GClass1373 effect))
+            if (food.HealthEffectsComponent.HealthEffects.TryGetValue(EHealthFactorType.Energy, out var effect))
             {
                 float delta = effect.Value * food.FoodDrinkComponent.RelativeValue;
 

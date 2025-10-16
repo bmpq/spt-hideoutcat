@@ -4,6 +4,7 @@ namespace tarkin.hideoutcat.ui.EFTDependent
 {
     public class JankTabDisableFix : MonoBehaviour
     {
+#if EFT_RUNTIME
         private Tab tab;
         void Awake()
         {
@@ -14,5 +15,6 @@ namespace tarkin.hideoutcat.ui.EFTDependent
         {
             tab.Deselect();
         }
+#endif
     }
 }

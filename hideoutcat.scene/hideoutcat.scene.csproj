@@ -3,20 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <AssemblyName>hideoutcat.scene</AssemblyName>
-    <Configurations>UNITY_EDITOR;RUNTIME</Configurations>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <SPTPath>E:\Games\SPT_3.11</SPTPath>
-    <UnityEditorPath>T:\Unity\2022.3.43f1\Editor\Data\Managed</UnityEditorPath>
-    <UnityProjectPath>T:\extract\UNITYPROJECT_EFT35392</UnityProjectPath>
     <RootNamespace>tarkin.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UNITY_EDITOR|AnyCPU'">
-    <DebugType>portable</DebugType>
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,21 +13,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    
-    <PackageReference Include="UnityEngine.Modules" Version="2022.3.43" IncludeAssets="compile" />
-    <Reference Include="$(SPTPath)\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll" />
-    <Reference Include="$(SPTPath)\EscapeFromTarkov_Data\Managed\Sirenix.Serialization.dll" />
+
+    <Reference Include="$(SPTPath)\EscapeFromTarkov_Data\Managed\*.dll" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='UNITY_EDITOR|AnyCPU'">
-    <Reference Include="$(UnityEditorPath)\UnityEditor.dll" />
-  </ItemGroup>
-  
-  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='RUNTIME|AnyCPU'">
-    <Reference Include="$(SPTPath)\EscapeFromTarkov_Data\Managed\Comfort.dll" />
-  </ItemGroup>
-
-  <Target Name="CopyDllAfterBuild" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='RUNTIME|AnyCPU'">
+  <Target Name="CopyDllAfterBuild" AfterTargets="Build">
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(SPTPath)\BepInEx\plugins\tarkin" />
   </Target>
 

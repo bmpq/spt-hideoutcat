@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 2117905212, guid: b97fef369065ae24ca254e965ad50e19, type: 3}
+  m_Script: {fileID: 11500000, guid: 35da41e874a4870418301359cfbc6d0e, type: 3}
   m_Name: CoatBicolor
   m_EditorClassIdentifier: 
   Id: c60925a929cbc84448db243f7057aaad

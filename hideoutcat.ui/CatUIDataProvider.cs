@@ -1,4 +1,4 @@
-﻿#if RUNTIME
+﻿#if RELEASE
 using EFT.InventoryLogic;
 using EFT.UI;
 using System;
