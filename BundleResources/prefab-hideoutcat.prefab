@@ -858,6 +858,11 @@ MonoBehaviour:
   alpha: 0.25
   alwaysShowGizmo: 0
   showCurrentRotation: 1
+--- !u!4 &4989074840533061514 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2553013160261233285, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
+  m_PrefabInstance: {fileID: 7373200537904964879}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5667824913918788565 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2952943440095504090, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
@@ -998,11 +1003,6 @@ MonoBehaviour:
   alpha: 0.25
   alwaysShowGizmo: 0
   showCurrentRotation: 1
---- !u!4 &7548775061432471232 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8173896712083346481, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
-  m_PrefabInstance: {fileID: 7373200537904964879}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7679683012631877726 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 178e367ecae226a4ea0ae1561437b61e, type: 3}
@@ -1103,7 +1103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841c0987c271f3f42bb576ffa643ad66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spineCharacterCenter: {fileID: 7548775061432471232}
+  spineCharacterCenter: {fileID: 4989074840533061514}
   spineCharacterCenterOffset: {x: 0, y: -0.03, z: 0}
   jumpEndTransitionLength: 0.5
 --- !u!114 &5426154022087937153
@@ -1271,7 +1271,7 @@ CharacterController:
   m_StepOffset: 0.1
   m_SkinWidth: 0.01
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.25, z: 0}
+  m_Center: {x: -0.0050361278, y: 0.19765857, z: -0.07332152}
 --- !u!114 &3262842489558422757
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -35,6 +35,13 @@ namespace tarkin.hideoutcat
 
         CatInput microAdjustments;
 
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            GetComponent<CharacterController>().center = transform.InverseTransformPoint(spineCharacterCenter.position) + spineCharacterCenterOffset;
+        }
+#endif
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
