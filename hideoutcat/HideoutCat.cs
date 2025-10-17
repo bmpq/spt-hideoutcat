@@ -51,9 +51,9 @@ namespace tarkin.hideoutcat
         {
             this.PersistentData = dataController ?? throw new ArgumentNullException(nameof(dataController));
 
-            if (PersistentData.CurrentCoat != null)
+            foreach (var component in GetComponents<IPersistentDataDependent>())
             {
-                Appearance.ApplyCoatTexture(PersistentData.CurrentCoat.MainTexture);
+                component.OnPersistentDataLoad(dataController);
             }
         }
 

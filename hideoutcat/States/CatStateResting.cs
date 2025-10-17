@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using tarkin.hideoutcat.Persistent;
+using UnityEngine;
 
 namespace tarkin.hideoutcat.States
 {
-    public class CatStateResting : CatStateBase
+    public class CatStateResting : CatStateBase, IPersistentDataDependent
     {
         [SerializeField] private float sleepEnergyRestoreRate = 5f;
         [SerializeField] private float minTimeAsleep = 10f;
@@ -12,6 +13,8 @@ namespace tarkin.hideoutcat.States
         private readonly int P_LYING_BELLY = Animator.StringToHash("LyingBelly");
         private readonly int P_SLEEPING = Animator.StringToHash("Sleeping");
 
+        private readonly int P_STRETCH = Animator.StringToHash("Stretch");
+
         public bool isSleeping { get; private set; }
 
         private float timeLyingAwake;
@@ -19,7 +22,7 @@ namespace tarkin.hideoutcat.States
 
         bool interruptedSleep;
 
-        void Start()
+        public void OnPersistentDataLoad(CatPersistentDataController data)
         {
 
         }
@@ -41,7 +44,7 @@ namespace tarkin.hideoutcat.States
             animator.SetBool(P_LYING_BELLY, false);
         }
 
-        public void WakeUp()
+        public void ForceWakeUp()
         {
             interruptedSleep = true;
             isSleeping = false;
@@ -53,7 +56,7 @@ namespace tarkin.hideoutcat.States
             if (isSleeping)
             {
                 timeAsleep += Time.deltaTime;
-                PersistentData.RestoreEnergy(sleepEnergyRestoreRate * Time.deltaTime);
+                cat.PersistentData.RestoreEnergy(sleepEnergyRestoreRate * Time.deltaTime);
             }
             else
             {
@@ -65,12 +68,12 @@ namespace tarkin.hideoutcat.States
                 }
             }
 
-            if (PersistentData.Energy >= 95f && timeAsleep > minTimeAsleep)
+            if (interruptedSleep)
             {
                 return StateTickResult.StateDone;
             }
-            
-            if (interruptedSleep)
+
+            if (cat.PersistentData.Energy >= 95f && timeAsleep > minTimeAsleep)
             {
                 return StateTickResult.StateDone;
             }

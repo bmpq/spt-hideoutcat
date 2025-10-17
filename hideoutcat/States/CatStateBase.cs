@@ -8,7 +8,6 @@ namespace tarkin.hideoutcat.States
     {
         protected HideoutCat cat;
         protected Animator animator;
-        protected CatPersistentDataController PersistentData => cat.PersistentData;
 
         protected virtual void Awake()
         {
