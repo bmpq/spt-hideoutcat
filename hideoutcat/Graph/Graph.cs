@@ -4,13 +4,6 @@ using UnityEngine;
 
 namespace tarkin.hideoutcat.Pathfinding
 {
-    public enum Purpose
-    {
-        None,
-        Food,
-        Toilet
-    }
-
     public class Graph : MonoBehaviour
     {
         public List<Node> Nodes
@@ -48,41 +41,6 @@ namespace tarkin.hideoutcat.Pathfinding
                 }
             }
             return closestNode;
-        }
-
-        public Node FindClosestNodeWithPurpose(Node startNode, Purpose purpose)
-        {
-            if (startNode.purpose == purpose)
-            {
-                return startNode;
-            }
-
-            Queue<Node> queue = new Queue<Node>();
-            HashSet<Node> visitedNodes = new HashSet<Node>();
-
-            queue.Enqueue(startNode);
-            visitedNodes.Add(startNode);
-
-            while (queue.Count > 0)
-            {
-                Node current = queue.Dequeue();
-
-                foreach (Node neighbor in current.connectedTo)
-                {
-                    if (!visitedNodes.Contains(neighbor))
-                    {
-                        if (neighbor.purpose == purpose)
-                        {
-                            return neighbor;
-                        }
-
-                        visitedNodes.Add(neighbor);
-                        queue.Enqueue(neighbor);
-                    }
-                }
-            }
-
-            return null;
         }
 
         public List<Node> FindPathBFS(Node startNode, Node endNode)

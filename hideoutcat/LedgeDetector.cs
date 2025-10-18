@@ -59,7 +59,7 @@ namespace tarkin.hideoutcat
 
             bool angleLimitExceeded = Vector3.Angle(transform.forward, ledgeForward) > config.AngleRelativeToTransformLimit;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && VERTX
             Color lineColor = angleLimitExceeded ? Color.red : Color.green;
             D.raw(new Shape.Line(leftFaceHit.point, rightFaceHit.point), lineColor);
             D.raw(new Shape.Arrow(ledgeCenter, Quaternion.LookRotation(ledgeForward), length: 0.1f, arrowheadScale: 3f), lineColor);

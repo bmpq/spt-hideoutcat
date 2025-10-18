@@ -8,6 +8,6 @@ namespace tarkin.hideoutcat.Persistent
 {
     internal interface IPersistentDataDependent
     {
-        void OnPersistentDataLoad(CatPersistentDataController data);
+        void SetPersistentData(CatPersistentDataController data);
     }
 }

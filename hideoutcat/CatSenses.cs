@@ -27,7 +27,12 @@ namespace tarkin.hideoutcat
                 return false;
             }
 
-            Vector3 directionToTarget = target.position - visionOrigin.position;
+            return HasLineOfSight(target.position, out distance);
+        }
+
+        public bool HasLineOfSight(Vector3 targetPos, out float distance)
+        {
+            Vector3 directionToTarget = targetPos - visionOrigin.position;
             distance = directionToTarget.magnitude;
 
             if (distance > visionMaxDistance)

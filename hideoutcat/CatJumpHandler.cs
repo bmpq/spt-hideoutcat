@@ -14,7 +14,7 @@ namespace tarkin.hideoutcat
         [SerializeField] private float jumpDownExitDuration = 1.0f;
 
         [Space(10)]
-        [SerializeField] LedgeDetector.Config ledgeDetectConfig = LedgeDetector.Config.Default;
+        [SerializeField] LedgeDetector.Config ledgeDetectConfig = LedgeDetector.Config.Default; // won't deserialize and will fallback to default, without https://github.com/xiaoxiao921/FixPluginTypesSerialization
         public LedgeDetector.Config LedgeDetectConfig => ledgeDetectConfig;
         [SerializeField] Vector2 jumpUpEndOffset = new Vector2(-0.2f, -0.4f);
         [SerializeField] float jumpSpeed = 3.7f;

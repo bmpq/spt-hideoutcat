@@ -6,21 +6,24 @@ namespace tarkin.hideoutcat.States
     [RequireComponent(typeof(HideoutCat))]
     public abstract class CatStateBase : MonoBehaviour
     {
-        protected HideoutCat cat;
         protected Animator animator;
 
         protected virtual void Awake()
         {
-            cat = GetComponent<HideoutCat>();
             animator = GetComponent<Animator>();
         }
 
-        public abstract StateTickResult Tick();
+        public abstract StateTickResult Tick(float timeElapsedInCurrentState);
 
         public abstract void OnEnterState();
         public abstract void OnExitState();
 
         public virtual bool IsPettable()
+        {
+            return false;
+        }
+
+        public virtual bool CanLookAtPlayer()
         {
             return false;
         }

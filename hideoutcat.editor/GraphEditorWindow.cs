@@ -73,10 +73,10 @@ namespace tarkin.hideoutcat.editor
 
             HandleInput(Nodes);
 
-            DrawNodesInfo(Nodes);
             DrawNodeButtons(Nodes);
             DrawNodesConnections(Nodes);
             DrawConnectionRemoveButtons(Nodes);
+            DrawNodesInfo(Nodes);
             DrawPendingConnection();
 
             SceneView.RepaintAll();
@@ -199,11 +199,6 @@ namespace tarkin.hideoutcat.editor
             {
                 if (!node.gameObject.activeInHierarchy)
                     continue;
-
-                if (node.purpose != Purpose.None)
-                {
-                    Handles.Label(node.transform.position + Vector3.up * 0.1f, $"{node.purpose}", EditorStyles.helpBox);
-                }
 
                 Handles.color = Color.blue;
                 Handles.DrawWireDisc(node.transform.position, Vector3.up, 0.2f);

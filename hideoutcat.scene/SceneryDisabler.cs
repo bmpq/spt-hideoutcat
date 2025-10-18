@@ -9,7 +9,6 @@ namespace tarkin.hideoutcat.scene
     {
         public string targetSceneName = "bunker_2";
 
-        [TextArea(5, 15)]
         public List<string> pathsToDisable;
 
         public bool destroyInstead = false;

@@ -12,9 +12,12 @@ namespace tarkin.hideoutcat.Persistent
         public float CurrentFoodBowl { get; private set; } = 0f;
         public Coat CurrentCoat { get; private set; }
         public float Energy { get; private set; }
+        public float Bladder { get; private set; }
 
         private float hungerSpeedIdle = 0.01f;
         private float energyDrainIdle = 0.005f;
+
+        public event Action<float> OnFoodBowlFoodAdded;
 
         public CatPersistentDataController(Coat[] allAvailableCoats)
         {
@@ -86,6 +89,15 @@ namespace tarkin.hideoutcat.Persistent
         public void AddFoodToBowl(float amount)
         {
             CurrentFoodBowl += amount;
+
+            OnFoodBowlFoodAdded?.Invoke(CurrentFoodBowl);
+        }
+
+        public void Eat(float amount)
+        {
+            CurrentFoodBowl -= amount;
+            FedLevel += amount;
+            Bladder += amount;
         }
 
         public CatSaveData GetSaveData()
@@ -97,7 +109,8 @@ namespace tarkin.hideoutcat.Persistent
                 FoodBowlLevel = this.CurrentFoodBowl,
                 CoatGuid = CurrentCoat?.Id,
                 CatName = this.CatName,
-                Energy = this.Energy
+                Energy = this.Energy,
+                Bladder = this.Bladder
             };
         }
     }

@@ -10,5 +10,6 @@ namespace tarkin.hideoutcat.Persistent
         public float FoodBowlLevel { get; set; }
         public string CoatGuid { get; set; }
         public float Energy { get; set; }
+        public float Bladder { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace tarkin.hideoutcat
             mainRenderer.materials[0].mainTexture = coatTex;
         }
 
-        public void OnPersistentDataLoad(CatPersistentDataController data)
+        public void SetPersistentData(CatPersistentDataController data)
         {
             ApplyCoatTexture(data.CurrentCoat.MainTexture);
         }

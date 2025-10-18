@@ -22,9 +22,12 @@
             lookAt.Release();
         }
 
-        public override StateTickResult Tick()
+        public override StateTickResult Tick(float timeInStateElapsed)
         {
-            return StateTickResult.StateDone;
+            if (timeInStateElapsed > 10f) 
+                return StateTickResult.StateDone;
+
+            return new StateTickResult(CatInput.ToStop);
         }
     }
 }

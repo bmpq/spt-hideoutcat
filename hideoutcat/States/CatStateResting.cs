@@ -22,9 +22,11 @@ namespace tarkin.hideoutcat.States
 
         bool interruptedSleep;
 
-        public void OnPersistentDataLoad(CatPersistentDataController data)
-        {
+        CatPersistentDataController _data;
 
+        public void SetPersistentData(CatPersistentDataController data)
+        {
+            _data = data;
         }
 
         public override void OnEnterState()
@@ -51,12 +53,12 @@ namespace tarkin.hideoutcat.States
             animator.SetBool(P_SLEEPING, false);
         }
 
-        public override StateTickResult Tick()
+        public override StateTickResult Tick(float _)
         {
             if (isSleeping)
             {
                 timeAsleep += Time.deltaTime;
-                cat.PersistentData.RestoreEnergy(sleepEnergyRestoreRate * Time.deltaTime);
+                _data.RestoreEnergy(sleepEnergyRestoreRate * Time.deltaTime);
             }
             else
             {
@@ -73,7 +75,7 @@ namespace tarkin.hideoutcat.States
                 return StateTickResult.StateDone;
             }
 
-            if (cat.PersistentData.Energy >= 95f && timeAsleep > minTimeAsleep)
+            if (_data.Energy >= 95f && timeAsleep > minTimeAsleep)
             {
                 return StateTickResult.StateDone;
             }

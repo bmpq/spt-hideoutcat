@@ -20,20 +20,6 @@ namespace tarkin.hideoutcat.editor
         {
             Node node = (Node)target;
 
-            if (Application.isPlaying)
-            {
-                if (GUILayout.Button("Set as destination", GUILayout.Height(50f)))
-                {
-                    FindObjectOfType<HideoutCat>().GoToNode(node);
-                }
-
-                EditorGUILayout.Space(10);
-            }
-            else
-            {
-                //TeleportCat(Node);
-            }
-
             DrawDefaultInspector();
         }
     }

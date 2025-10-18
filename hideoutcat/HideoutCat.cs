@@ -5,6 +5,7 @@ using tarkin.hideoutcat.Pathfinding;
 using UnityEngine;
 using System.Linq;
 using tarkin.hideoutcat.Persistent;
+using tarkin.hideoutcat.Environment;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -28,15 +29,12 @@ namespace tarkin.hideoutcat
         private CatAppearance appearance;
 
         private CatLocomotion locomotion;
-
         private CatSenses senses;
 
         private CatManualController manualController;
-        private CatIdleHandler idleHandler;
-        private CatGraphTraverser graphTraverser;
-        private CatAttackHandler attackHandler;
 
         public CatStateBase CurrentState { get; private set; }
+        private float timeElapsedInCurrentState;
 
         public static event Action<List<Transform>> OnRequestPotentialTargets;
         private readonly List<Transform> potentialTargets = new List<Transform>();
@@ -45,7 +43,7 @@ namespace tarkin.hideoutcat
         [Tooltip("how far a 'boring' target must move for the cat to regain interest")]
         [SerializeField] private float _interestRegainMovementThreshold = 0.1f;
 
-        private Node _requestedDestination;
+        [SerializeField] private FoodBowl foodBowl;
 
         public void Initialize(CatPersistentDataController dataController)
         {
@@ -53,21 +51,18 @@ namespace tarkin.hideoutcat
 
             foreach (var component in GetComponents<IPersistentDataDependent>())
             {
-                component.OnPersistentDataLoad(dataController);
+                component.SetPersistentData(dataController);
             }
+
+            dataController.OnFoodBowlFoodAdded += foodBowl.SetLevel;
         }
 
         void Awake()
         {
             locomotion = GetComponent<CatLocomotion>();
+            manualController = GetComponent<CatManualController>();
 
             senses = GetComponent<CatSenses>();
-
-            idleHandler = GetComponent<CatIdleHandler>();
-            graphTraverser = GetComponent<CatGraphTraverser>();
-            attackHandler = GetComponent<CatAttackHandler>();
-
-            manualController = GetComponent<CatManualController>();
 
             appearance = GetComponent<CatAppearance>();
 
@@ -78,7 +73,7 @@ namespace tarkin.hideoutcat
         {
             if (CurrentState == null)
             {
-                TransitionToState(idleHandler);
+                TransitionToState<CatIdleHandler>();
             }
 
             if (PersistentData == null)
@@ -98,29 +93,17 @@ namespace tarkin.hideoutcat
 
             CheckForInterrupts();
 
-            StateTickResult result = CurrentState.Tick();
+            StateTickResult result = CurrentState.Tick(timeElapsedInCurrentState);
             locomotion.SetInput(result.Input);
 
             if (result.IsStateDone)
             {
                 DecideNextState();
             }
-        }
-
-        public void GoToNode(Node targetNode)
-        {
-            if (targetNode == null)
-                return;
-
-            // interrupt current state
-            if (CurrentState == attackHandler)
+            else
             {
-                _boredTargets[attackHandler.CurrentTarget] = attackHandler.CurrentTarget.position;
-                attackHandler.SetTarget(null);
+                timeElapsedInCurrentState += Time.deltaTime;
             }
-
-            graphTraverser.LayNewPath(targetNode);
-            TransitionToState(graphTraverser);
         }
 
         private bool CheckForInterrupts()
@@ -130,14 +113,14 @@ namespace tarkin.hideoutcat
             {
                 if (CurrentState != manualController)
                 {
-                    TransitionToState(manualController);
+                    TransitionToState<CatManualController>();
                     return true;
                 }
                 return false;
             }
 
             // don't interrupt an attack, let it finish
-            if (CurrentState == attackHandler)
+            if (CurrentState is CatAttackHandler)
             {
                 return false;
             }
@@ -150,8 +133,7 @@ namespace tarkin.hideoutcat
                 Transform bestTarget = FindBestTarget();
                 if (bestTarget != null)
                 {
-                    attackHandler.SetTarget(bestTarget);
-                    TransitionToState(attackHandler);
+                    TransitionToState<CatAttackHandler>().SetTarget(bestTarget);
                     return true;
                 }
             }
@@ -161,13 +143,33 @@ namespace tarkin.hideoutcat
 
         void DecideNextState()
         {
-            if (CurrentState == attackHandler && attackHandler.CurrentTarget != null)
+            if (CurrentState is CatAttackHandler attackHandler && attackHandler.CurrentTarget != null)
             {
                 _boredTargets[attackHandler.CurrentTarget] = attackHandler.CurrentTarget.position;
                 attackHandler.SetTarget(null);
             }
 
-            TransitionToState(idleHandler);
+            if (IsHungry())
+            {
+                if (senses.HasLineOfSight(foodBowl.transform.position, out float _))
+                {
+                    if (PersistentData.CurrentFoodBowl > 5f)
+                    {
+                        TransitionToState<CatStateMoveTowardsTarget>().SetTarget(foodBowl.transform.position);
+                    }
+                }
+                else
+                {
+                    TransitionToState<CatGraphTraverser>().LayNewPath(foodBowl.transform.position);
+                }
+            }
+
+            TransitionToState<CatIdleHandler>();
+        }
+
+        bool IsHungry()
+        {
+            return PersistentData.FedLevel < 30f;
         }
 
         private Transform FindBestTarget()
@@ -200,16 +202,33 @@ namespace tarkin.hideoutcat
             return null;
         }
 
-        void TransitionToState(CatStateBase newState)
+        T TransitionToState<T>() where T : CatStateBase
         {
-            if (newState == null || newState == CurrentState)
-                return;
+            T newState = GetComponent<T>();
+            if (newState == null)
+                newState = gameObject.AddComponent<T>();
+
+            if (CurrentState == newState)
+                return newState;
+
+            // special exit logic for AttackHandler
+            if (CurrentState is CatAttackHandler attackHandler)
+            {
+                _boredTargets[attackHandler.CurrentTarget] = attackHandler.CurrentTarget.position;
+                attackHandler.SetTarget(null);
+            }
 
             CurrentState?.OnExitState();
 
             CurrentState = newState;
+            timeElapsedInCurrentState = 0f;
+
+            if (newState is IPersistentDataDependent dependent)
+                dependent.SetPersistentData(PersistentData);
 
             CurrentState.OnEnterState();
+
+            return newState;
         }
 
         void OnDestroy()

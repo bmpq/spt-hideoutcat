@@ -5,8 +5,6 @@ namespace tarkin.hideoutcat.Pathfinding
 {
     public class Node : MonoBehaviour
     {
-        public Purpose purpose;
-
         public List<Node> connectedTo;
 
         public Vector3 position

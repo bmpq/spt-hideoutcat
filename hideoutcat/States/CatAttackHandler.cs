@@ -136,7 +136,7 @@ namespace tarkin.hideoutcat.States
             }
         }
 
-        public override StateTickResult Tick()
+        public override StateTickResult Tick(float _)
         {
             substateTimeElapsed += Time.deltaTime;
 

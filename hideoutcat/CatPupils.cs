@@ -3,7 +3,7 @@
 namespace tarkin.hideoutcat
 {
     [RequireComponent(typeof(SkinnedMeshRenderer))]
-    internal class CatPupils : MonoBehaviour
+    public class CatPupils : MonoBehaviour
     {
         private Material matEyeInstance;
 

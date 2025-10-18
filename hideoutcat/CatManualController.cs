@@ -21,7 +21,7 @@ namespace tarkin.hideoutcat
         {
         }
 
-        public override StateTickResult Tick()
+        public override StateTickResult Tick(float _)
         {
             if (!isActiveAndEnabled)
                 return StateTickResult.StateDone;

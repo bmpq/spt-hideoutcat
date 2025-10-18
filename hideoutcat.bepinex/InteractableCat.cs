@@ -48,7 +48,7 @@ namespace tarkin.hideoutcat.bepinex
         {
             if (cat.CurrentState is CatStateResting catStateResting) 
             {
-                catStateResting.WakeUp();
+                catStateResting.ForceWakeUp();
             }
         }
     }

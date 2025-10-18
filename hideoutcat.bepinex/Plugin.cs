@@ -19,7 +19,7 @@ namespace tarkin.hideoutcat.bepinex
 
         private void Start()
         {
-            var forceLoad = (typeof(SceneryDisabler), typeof(CatUIDataProvider));
+            var forceLoad = (typeof(SceneryDisabler), typeof(CatUIDataProvider), typeof(HideoutCat));
             Log = base.Logger;
 
             Log.LogError("prewarmed");

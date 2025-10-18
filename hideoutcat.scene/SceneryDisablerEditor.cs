@@ -2,149 +2,260 @@
 
 using UnityEngine;
 using UnityEditor;
-using UnityEditorInternal;
-using System.Collections.Generic;
-using System.Text;
+using UnityEditor.SceneManagement;
 using System.Linq;
 
 namespace tarkin.hideoutcat.scene
 {
-    [CustomEditor(typeof(SceneryDisabler))]
-    public class SceneryDisablerEditor : Editor
+    public class SceneryDisablerWindow : EditorWindow
     {
-        private SerializedProperty propTargetSceneName;
-        private SerializedProperty propPathsToDisable;
-        private SerializedProperty propDestroyInstead;
+        private SceneryDisabler disablerInstance;
+        private SerializedObject serializedDisabler;
+        private SerializedProperty pathsToDisableProp;
 
-        private ReorderableList reorderableList;
+        private Vector2 scrollPosition;
+        private int hiddenCount = 0;
+
+        [MenuItem("Tools/Scenery Object Disabler")]
+        public static void ShowWindow()
+        {
+            GetWindow<SceneryDisablerWindow>("Scenery Disabler");
+        }
 
         private void OnEnable()
         {
-            propTargetSceneName = serializedObject.FindProperty("targetSceneName");
-            propPathsToDisable = serializedObject.FindProperty("pathsToDisable");
-            propDestroyInstead = serializedObject.FindProperty("destroyInstead");
+            SceneVisibilityManager.visibilityChanged += UpdateHiddenStatus;
+            Selection.selectionChanged += Repaint;
+            EditorApplication.hierarchyChanged += FindDisablerAndRefresh;
+            FindDisablerAndRefresh();
+        }
 
-            reorderableList = new ReorderableList(serializedObject, propPathsToDisable,
-                true, true, true, true);
+        private void OnDisable()
+        {
+            SceneVisibilityManager.visibilityChanged -= UpdateHiddenStatus;
+            Selection.selectionChanged -= Repaint;
+            EditorApplication.hierarchyChanged -= FindDisablerAndRefresh;
+        }
 
-            reorderableList.drawHeaderCallback = (Rect rect) =>
+        private void FindDisablerAndRefresh()
+        {
+            var disablers = FindObjectsOfType<SceneryDisabler>();
+            if (disablers.Length > 0)
             {
-                EditorGUI.LabelField(rect, "GameObjects to Disable");
-            };
+                disablerInstance = disablers[0];
+                if (disablers.Length > 1) Debug.LogWarning($"[{nameof(SceneryDisablerWindow)}] Multiple instances of SceneryDisabler found. Using the first one: {disablerInstance.name}.");
 
-            reorderableList.elementHeightCallback = (_) => EditorGUIUtility.singleLineHeight * 2 + 4;
-
-            reorderableList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+                serializedDisabler = new SerializedObject(disablerInstance);
+                pathsToDisableProp = serializedDisabler.FindProperty("pathsToDisable");
+            }
+            else
             {
-                SerializedProperty element = reorderableList.serializedProperty.GetArrayElementAtIndex(index);
-                string path = element.stringValue;
+                disablerInstance = null;
+                serializedDisabler = null;
+                pathsToDisableProp = null;
+            }
+            UpdateHiddenStatus();
+            Repaint();
+        }
 
-                GameObject foundObject = SceneryDisabler.FindObjectByPath(path);
-
-                rect.y += 2;
-                rect.height = EditorGUIUtility.singleLineHeight;
-
-                Color originalColor = GUI.backgroundColor;
-                if (foundObject == null && !string.IsNullOrEmpty(path))
+        private void OnGUI()
+        {
+            if (disablerInstance == null)
+            {
+                EditorGUILayout.HelpBox("No SceneryDisabler found in the current scene. Please add the component to a GameObject.", MessageType.Warning);
+                if (GUILayout.Button("Create Disabler Object"))
                 {
-                    GUI.backgroundColor = new Color(1f, 0.6f, 0.6f);
+                    var go = new GameObject("SceneryDisabler_Manager");
+                    go.AddComponent<SceneryDisabler>();
+                    FindDisablerAndRefresh();
+                }
+                return;
+            }
+
+            serializedDisabler.Update();
+
+            EditorGUILayout.LabelField("Managing Disabler:", EditorStyles.boldLabel);
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.ObjectField(disablerInstance, typeof(SceneryDisabler), true);
+            EditorGUI.EndDisabledGroup();
+
+            EditorGUILayout.PropertyField(serializedDisabler.FindProperty("targetSceneName"));
+            EditorGUILayout.PropertyField(serializedDisabler.FindProperty("destroyInstead"));
+
+            EditorGUILayout.Space(10);
+
+            EditorGUILayout.LabelField("Scene Visibility Sync", EditorStyles.boldLabel);
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+
+            int totalCount = pathsToDisableProp.arraySize;
+            EditorGUILayout.LabelField($"Status: {hiddenCount} / {totalCount} objects hidden.");
+
+            EditorGUILayout.BeginHorizontal();
+            GUI.backgroundColor = new Color(1f, 0.7f, 0.7f);
+            if (GUILayout.Button("Hide All Targeted Objects"))
+            {
+                SyncVisibility(true);
+            }
+            GUI.backgroundColor = new Color(0.7f, 1f, 0.7f);
+            if (GUILayout.Button("Show All Targeted Objects"))
+            {
+                SyncVisibility(false);
+            }
+            GUI.backgroundColor = Color.white;
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+
+
+            EditorGUILayout.Space(10);
+
+            GUI.backgroundColor = new Color(0.8f, 0.9f, 1f);
+            EditorGUI.BeginDisabledGroup(Selection.gameObjects.Length == 0);
+            if (GUILayout.Button($"Add {Selection.gameObjects.Length} Selected Object(s)", GUILayout.Height(30)))
+            {
+                AddSelectedObjects();
+            }
+            EditorGUI.EndDisabledGroup();
+            GUI.backgroundColor = Color.white;
+
+            EditorGUILayout.Space(10);
+
+            EditorGUILayout.LabelField("Objects to Disable", EditorStyles.boldLabel);
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
+            int indexToRemove = -1;
+            for (int i = 0; i < pathsToDisableProp.arraySize; i++)
+            {
+                EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
+
+                SerializedProperty pathProp = pathsToDisableProp.GetArrayElementAtIndex(i);
+                EditorGUILayout.LabelField(pathProp.stringValue);
+
+                if (GUILayout.Button("Ping", GUILayout.Width(50)))
+                {
+                    GameObject obj = SceneryDisabler.FindObjectByPath(pathProp.stringValue);
+                    if (obj != null)
+                    {
+                        if (SceneVisibilityManager.instance.IsHidden(obj))
+                        {
+                            SceneVisibilityManager.instance.Show(obj, true);
+                        }
+                        EditorGUIUtility.PingObject(obj);
+                    }
                 }
 
-                EditorGUI.BeginChangeCheck();
-
-                GameObject newObject = (GameObject)EditorGUI.ObjectField(rect, foundObject, typeof(GameObject), true);
-
-                rect.y += EditorGUIUtility.singleLineHeight + 2;
-                EditorGUI.LabelField(rect, path);
-
-                GUI.backgroundColor = originalColor;
-
-                if (EditorGUI.EndChangeCheck())
+                if (GUILayout.Button("X", GUILayout.Width(25)))
                 {
-                    if (newObject != null)
+                    indexToRemove = i;
+                }
+
+                EditorGUILayout.EndHorizontal();
+            }
+
+            if (indexToRemove != -1)
+            {
+                string pathToRemove = pathsToDisableProp.GetArrayElementAtIndex(indexToRemove).stringValue;
+                GameObject obj = SceneryDisabler.FindObjectByPath(pathToRemove);
+                if (obj != null)
+                {
+                    SceneVisibilityManager.instance.Show(obj, true);
+                }
+                pathsToDisableProp.DeleteArrayElementAtIndex(indexToRemove);
+            }
+
+            EditorGUILayout.EndScrollView();
+
+            if (serializedDisabler.ApplyModifiedProperties())
+            {
+                UpdateHiddenStatus();
+            }
+        }
+
+        private void SyncVisibility(bool hide)
+        {
+            if (pathsToDisableProp == null) return;
+
+            Undo.RecordObject(SceneVisibilityManager.instance, hide ? "Hide Targeted Objects" : "Show Targeted Objects");
+
+            for (int i = 0; i < pathsToDisableProp.arraySize; i++)
+            {
+                string path = pathsToDisableProp.GetArrayElementAtIndex(i).stringValue;
+                GameObject obj = SceneryDisabler.FindObjectByPath(path);
+                if (obj != null)
+                {
+                    if (hide)
                     {
-                        element.stringValue = GenerateHierarchyPath(newObject);
+                        SceneVisibilityManager.instance.Hide(obj, true);
                     }
                     else
                     {
-                        element.stringValue = "";
+                        SceneVisibilityManager.instance.Show(obj, true);
                     }
-                }
-            };
-        }
-
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
-
-            EditorGUILayout.PropertyField(propTargetSceneName);
-            EditorGUILayout.Space();
-
-            propDestroyInstead.boolValue = EditorGUILayout.ToggleLeft("Fully destroy targets", propDestroyInstead.boolValue);
-            EditorGUILayout.Space();
-
-            reorderableList.DoLayoutList();
-
-            HandleDragAndDrop(GUILayoutUtility.GetLastRect());
-
-            serializedObject.ApplyModifiedProperties();
-        }
-
-        private void HandleDragAndDrop(Rect dropArea)
-        {
-            Event currentEvent = Event.current;
-            EventType eventType = currentEvent.type;
-
-            if (!dropArea.Contains(currentEvent.mousePosition))
-                return;
-
-            if (eventType == EventType.DragUpdated || eventType == EventType.DragPerform)
-            {
-                if (DragAndDrop.objectReferences.Any(obj => obj is GameObject))
-                {
-                    DragAndDrop.visualMode = DragAndDropVisualMode.Link;
-
-                    if (eventType == EventType.DragPerform)
-                    {
-                        DragAndDrop.AcceptDrag();
-
-                        foreach (var draggedObject in DragAndDrop.objectReferences)
-                        {
-                            if (draggedObject is GameObject go)
-                            {
-                                int newIndex = propPathsToDisable.arraySize;
-                                propPathsToDisable.InsertArrayElementAtIndex(newIndex);
-                                SerializedProperty newElement = propPathsToDisable.GetArrayElementAtIndex(newIndex);
-                                newElement.stringValue = GenerateHierarchyPath(go);
-                            }
-                        }
-                    }
-                    currentEvent.Use();
                 }
             }
+            UpdateHiddenStatus();
+        }
+
+        private void UpdateHiddenStatus()
+        {
+            if (disablerInstance == null || pathsToDisableProp == null)
+            {
+                hiddenCount = 0;
+                return;
+            }
+
+            int count = 0;
+            for (int i = 0; i < pathsToDisableProp.arraySize; i++)
+            {
+                string path = pathsToDisableProp.GetArrayElementAtIndex(i).stringValue;
+                GameObject obj = SceneryDisabler.FindObjectByPath(path);
+                if (obj != null && SceneVisibilityManager.instance.IsHidden(obj))
+                {
+                    count++;
+                }
+            }
+            hiddenCount = count;
+            Repaint();
+        }
+
+        private void AddSelectedObjects()
+        {
+            Undo.RecordObject(disablerInstance, "Add objects to disabler list");
+
+            int addedCount = 0;
+            foreach (var go in Selection.gameObjects)
+            {
+                string path = GenerateHierarchyPath(go);
+                if (!PathExists(path))
+                {
+                    int newIndex = pathsToDisableProp.arraySize;
+                    pathsToDisableProp.InsertArrayElementAtIndex(newIndex);
+                    pathsToDisableProp.GetArrayElementAtIndex(newIndex).stringValue = path;
+                    addedCount++;
+                }
+            }
+
+            if (addedCount > 0)
+            {
+                Debug.Log($"Added {addedCount} new object path(s) to the disabler list.");
+                EditorSceneManager.MarkSceneDirty(disablerInstance.gameObject.scene);
+            }
+
+            SyncVisibility(true);
+        }
+
+        private bool PathExists(string path)
+        {
+            for (int i = 0; i < pathsToDisableProp.arraySize; i++)
+            {
+                if (pathsToDisableProp.GetArrayElementAtIndex(i).stringValue == path) return true;
+            }
+            return false;
         }
 
         private string GenerateHierarchyPath(GameObject obj)
         {
-            if (obj == null) return "";
-
-            StringBuilder sb = new StringBuilder();
-            Transform current = obj.transform;
-
-            List<string> pathParts = new List<string>();
-            while (current != null)
-            {
-                pathParts.Add(current.name);
-                current = current.parent;
-            }
-
-            for (int i = pathParts.Count - 1; i >= 0; i--)
-            {
-                sb.Append(pathParts[i]);
-                if (i > 0) sb.Append("/");
-            }
-
-            return sb.ToString();
+            if (obj == null) return string.Empty;
+            return string.Join("/", obj.GetComponentsInParent<Transform>().Reverse().Select(t => t.name));
         }
     }
 }
