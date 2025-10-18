@@ -55,6 +55,7 @@ namespace tarkin.hideoutcat
             }
 
             dataController.OnFoodBowlFoodAdded += foodBowl.SetLevel;
+            foodBowl.SetLevel(dataController.CurrentFoodBowl);
         }
 
         void Awake()

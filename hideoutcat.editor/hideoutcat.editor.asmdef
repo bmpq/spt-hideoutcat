@@ -6,7 +6,8 @@
         "Vertx.Debugging.Runtime"
     ],
     "includePlatforms": [
-        "Editor"
+        "Editor",
+        "Switch"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
