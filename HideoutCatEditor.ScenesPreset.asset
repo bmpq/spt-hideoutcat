@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1350d4642f0bce2c3deb43ecabe26263, type: 3}
+  m_Name: HideoutCatEditor.ScenesPreset
+  m_EditorClassIdentifier: 
+  ActiveSceneGuid:
+    guid: 
+    _onlyOffline: 0
+  ServerName: bunker_2
+  ScenesGuids: []
+  ChildPresets: []
+  _activeSceneName: HideoutCatScene
+  _scenesResourceKeys:
+  - path: Assets/Content/Locations/bunker/bunker_2.unity
+    rcid: Assets/Content/Locations/bunker/bunker_2.unity
+    _onlyOffline: 0
+  - path: Assets/_Projects/HideoutCat/Solution/BundleResources/HideoutCatScene.unity
+    rcid: Assets/_Projects/HideoutCat/Solution/BundleResources/HideoutCatScene.unity
+    _onlyOffline: 0
+  - path: Assets/_Projects/HideoutCat/Solution/BundleResources/EditorScene.unity
+    rcid: Assets/_Projects/HideoutCat/Solution/BundleResources/EditorScene.unity
+    _onlyOffline: 0
+  - path: Assets/_TEST/FPSPlayerEmulator.unity
+    rcid: Assets/_TEST/FPSPlayerEmulator.unity
+    _onlyOffline: 0
